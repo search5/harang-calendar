@@ -1,0 +1,606 @@
+/*
+ * Material Design 3 shape, elevation and motion tokens. Colors are
+ * deliberately left on Obsidian's own theme variables (--background-*,
+ * --text-*, --interactive-accent, --shadow-*) instead of the M3 baseline
+ * palette, so the UI still follows whatever theme (light/dark/community)
+ * the user has chosen rather than a hardcoded Material color scheme.
+ */
+:root {
+	--hc-shape-xs: 4px;
+	--hc-shape-sm: 8px;
+	--hc-shape-md: 12px;
+	--hc-shape-full: 999px;
+	--hc-motion: 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.harang-calendar-view {
+	padding: var(--size-4-4);
+}
+
+.harang-calendar-empty-state {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+}
+
+.harang-calendar-toolbar {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: var(--size-4-3);
+}
+
+/* M3 "filled tonal button" */
+.harang-calendar-refresh-btn {
+	cursor: pointer;
+	border: none;
+	border-radius: var(--hc-shape-full);
+	padding: var(--size-4-1) var(--size-4-4);
+	background-color: var(--background-modifier-hover);
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-weight: 500;
+	transition: background-color var(--hc-motion), box-shadow var(--hc-motion);
+}
+
+.harang-calendar-refresh-btn:hover:not(:disabled) {
+	background-color: var(--background-modifier-active-hover);
+	box-shadow: var(--shadow-s);
+}
+
+.harang-calendar-refresh-btn:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.harang-calendar-days {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-5);
+}
+
+.harang-calendar-day-heading {
+	margin: 0 0 var(--size-4-2) 0;
+	font-size: var(--font-ui-medium);
+	font-weight: 600;
+	color: var(--text-normal);
+}
+
+.harang-calendar-event-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* M3 "filled card" */
+.harang-calendar-event-card {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	column-gap: var(--size-4-2);
+	align-items: baseline;
+	padding: var(--size-4-2) var(--size-4-3);
+	border-radius: var(--hc-shape-md);
+	background-color: var(--background-secondary);
+	border-left: 4px solid var(--interactive-accent);
+	cursor: pointer;
+	transition: background-color var(--hc-motion);
+}
+
+.harang-calendar-event-card:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.harang-calendar-event-card:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 1px;
+}
+
+/* A note carrying `harang-date` frontmatter, not a real CalDAV event - dashed left border keeps it visually distinct from actual server events in the same list. */
+.harang-calendar-note-event-card {
+	border-left-style: dashed;
+	border-left-color: var(--text-muted);
+}
+
+.harang-calendar-event-time {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.harang-calendar-event-summary {
+	font-weight: 500;
+	color: var(--text-normal);
+}
+
+.harang-calendar-event-calendar {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+
+.harang-calendar-event-location {
+	grid-column: 2 / -1;
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+
+.harang-calendar-event-suggestion {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: var(--size-4-1) 0;
+}
+
+.harang-calendar-event-suggestion-title {
+	color: var(--text-normal);
+	font-weight: 500;
+}
+
+.harang-calendar-event-suggestion-meta {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+
+.harang-calendar-date-suggestion {
+	padding: var(--size-4-1) 0;
+}
+
+/* Inline `[[event:<uid>]]` chip - M3 "assist chip" */
+
+.harang-calendar-event-chip {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.35em;
+	padding: 0.15em 0.75em;
+	border-radius: var(--hc-shape-full);
+	background-color: var(--background-modifier-hover);
+	color: var(--text-normal);
+	border: 1px solid var(--background-modifier-border);
+	font-size: 0.92em;
+	cursor: pointer;
+	white-space: nowrap;
+	line-height: 1.4;
+	transition: background-color var(--hc-motion), border-color var(--hc-motion), box-shadow var(--hc-motion);
+}
+
+.harang-calendar-event-chip:hover {
+	background-color: var(--background-modifier-active-hover);
+	border-color: var(--interactive-accent);
+	box-shadow: var(--shadow-s);
+}
+
+.harang-calendar-event-chip:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 2px;
+}
+
+.harang-calendar-event-chip-unresolved {
+	opacity: 0.6;
+	border-style: dashed;
+}
+
+.harang-calendar-event-chip-title {
+	font-weight: 600;
+}
+
+.harang-calendar-event-chip-time {
+	color: var(--text-muted);
+	font-size: 0.9em;
+}
+
+/* Event detail popup, opened from a chip or a date widget row - M3 "elevated card" (shadow only, no border) */
+
+.harang-calendar-event-popup {
+	z-index: var(--layer-popover, 70);
+	width: 280px;
+	padding: var(--size-4-4);
+	border-radius: var(--hc-shape-md);
+	background-color: var(--background-primary);
+	box-shadow: var(--shadow-l);
+}
+
+.harang-calendar-event-popup-title {
+	font-weight: 600;
+	font-size: var(--font-ui-medium);
+	margin-bottom: var(--size-4-2);
+	color: var(--text-normal);
+}
+
+.harang-calendar-event-popup-missing {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+}
+
+.harang-calendar-event-popup-fields {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-1);
+}
+
+.harang-calendar-event-popup-row {
+	display: flex;
+	gap: var(--size-4-2);
+	font-size: var(--font-ui-small);
+}
+
+.harang-calendar-event-popup-label {
+	color: var(--text-muted);
+	min-width: 44px;
+}
+
+.harang-calendar-event-popup-value {
+	color: var(--text-normal);
+	overflow-wrap: anywhere;
+}
+
+.harang-calendar-event-popup-source {
+	margin-top: var(--size-4-2);
+	padding-top: var(--size-4-2);
+	border-top: 1px solid var(--background-modifier-border);
+	color: var(--text-faint);
+	font-size: var(--font-ui-smaller);
+}
+
+/* Inline `[[cal:YYYY-MM-DD]]` widget - M3 "outlined card" (border, no shadow, since it's flat within note content) */
+
+.harang-calendar-date-widget {
+	display: block;
+	margin: var(--size-4-2) 0;
+	padding: var(--size-4-3);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--hc-shape-md);
+	background-color: var(--background-secondary);
+}
+
+.harang-calendar-date-widget-heading {
+	font-weight: 600;
+	font-size: var(--font-ui-small);
+	color: var(--text-normal);
+	margin-bottom: var(--size-4-2);
+}
+
+.harang-calendar-date-widget-warning {
+	color: var(--text-warning, var(--text-error));
+	font-size: var(--font-ui-smaller);
+	margin-bottom: var(--size-4-2);
+}
+
+.harang-calendar-date-widget-empty {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+
+.harang-calendar-date-widget-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-1);
+}
+
+.harang-calendar-date-widget-item {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	column-gap: var(--size-4-2);
+	align-items: baseline;
+	padding: var(--size-4-1) var(--size-4-2);
+	border-left: 3px solid var(--interactive-accent);
+	background-color: var(--background-primary);
+	border-radius: var(--hc-shape-sm);
+	cursor: pointer;
+	transition: background-color var(--hc-motion);
+}
+
+.harang-calendar-date-widget-item:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.harang-calendar-date-widget-item:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 1px;
+}
+
+/* Full-tab month grid view */
+
+.harang-calendar-month-toolbar {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	margin-bottom: var(--size-4-4);
+}
+
+.harang-calendar-month-toolbar-spacer {
+	flex: 1 1 auto;
+}
+
+.harang-calendar-month-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	cursor: pointer;
+	border: none;
+	border-radius: var(--hc-shape-full);
+	padding: var(--size-4-1) var(--size-4-3);
+	font-weight: 600;
+	font-size: var(--font-ui-large);
+	background-color: transparent;
+	color: var(--text-normal);
+	min-width: 9em;
+	justify-content: center;
+	transition: background-color var(--hc-motion);
+}
+
+.harang-calendar-month-label:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.harang-calendar-month-label-caret {
+	color: var(--text-muted);
+	font-size: 0.7em;
+}
+
+.harang-calendar-month-nav-btn {
+	cursor: pointer;
+	border: none;
+	border-radius: var(--hc-shape-full);
+	width: 2.25em;
+	height: 2.25em;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	background-color: var(--background-modifier-hover);
+	color: var(--text-normal);
+	font-size: var(--font-ui-medium);
+	transition: background-color var(--hc-motion), box-shadow var(--hc-motion);
+}
+
+.harang-calendar-month-nav-btn:hover {
+	background-color: var(--background-modifier-active-hover);
+	box-shadow: var(--shadow-s);
+}
+
+.harang-calendar-month-today-btn {
+	cursor: pointer;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--hc-shape-full);
+	padding: var(--size-4-1) var(--size-4-4);
+	background-color: transparent;
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-weight: 500;
+	transition: background-color var(--hc-motion), border-color var(--hc-motion);
+}
+
+.harang-calendar-month-today-btn:hover {
+	background-color: var(--background-modifier-hover);
+	border-color: var(--interactive-accent);
+}
+
+/*
+ * M3's own Date Picker component (https://m3.material.io/components/date-pickers)
+ * doesn't draw grid lines at all - days are just numbers in fixed-size
+ * circular touch targets, laid out with whitespace. That still governs the
+ * day-number treatment below (circular state layer on hover, outlined ring
+ * for "today", filled accent circle for "selected"). But unlike the plain
+ * date picker, each of our cells also carries a variable amount of event
+ * data, and without *some* visual separation the grid read as shapeless -
+ * so cell dividers are back, done as a 1px hairline (the grid's own
+ * background showing through a 1px gap between opaque cells) rather than
+ * per-cell borders, which would double up at every shared edge.
+ */
+.harang-calendar-month-frame {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--hc-shape-md);
+	overflow: hidden;
+}
+
+.harang-calendar-month-weekdays {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	padding: var(--size-4-2) 0;
+	background-color: var(--background-secondary);
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.harang-calendar-month-weekday {
+	text-align: center;
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
+.harang-calendar-month-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 1px;
+	background-color: var(--background-modifier-border);
+}
+
+.harang-calendar-month-day {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-height: 7em;
+	padding: var(--size-4-2) var(--size-4-1);
+	background-color: var(--background-primary);
+	cursor: pointer;
+	transition: background-color var(--hc-motion);
+}
+
+.harang-calendar-month-day:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+/* Only the selected day is ever a tab stop (roving tabindex), so this is exactly the arrow-key-focused cell. */
+.harang-calendar-month-day:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: -2px;
+}
+
+.harang-calendar-month-day-outside {
+	background-color: var(--background-secondary);
+}
+
+.harang-calendar-month-day-outside .harang-calendar-month-day-number {
+	color: var(--text-faint);
+}
+
+/* The day-number circle, not the whole cell, carries the today/selected treatment - matching M3's date picker. */
+.harang-calendar-month-day-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.1em;
+	height: 2.1em;
+	border-radius: var(--hc-shape-full);
+	font-size: var(--font-ui-small);
+	font-weight: 500;
+	color: var(--text-normal);
+	margin-bottom: var(--size-4-1);
+	transition: background-color var(--hc-motion), color var(--hc-motion), box-shadow var(--hc-motion);
+}
+
+.harang-calendar-month-day-today .harang-calendar-month-day-number {
+	box-shadow: inset 0 0 0 1.5px var(--interactive-accent);
+	color: var(--interactive-accent);
+	font-weight: 600;
+}
+
+.harang-calendar-month-day-selected .harang-calendar-month-day-number {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent, #fff);
+	font-weight: 600;
+}
+
+.harang-calendar-month-day-events {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+/* M3 "assist chip", condensed for a small grid cell */
+.harang-calendar-month-day-pill {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 2px 7px;
+	border-radius: var(--hc-shape-xs);
+	color: #fff;
+	font-size: var(--font-ui-smaller);
+	font-weight: 500;
+	line-height: 1.5;
+	transition: filter var(--hc-motion), box-shadow var(--hc-motion);
+}
+
+.harang-calendar-month-day-pill:hover {
+	filter: brightness(1.1);
+	box-shadow: var(--shadow-s);
+}
+
+/* A note carrying `harang-date` frontmatter, not a real CalDAV event. */
+.harang-calendar-month-day-pill-note {
+	color: var(--text-normal);
+	border: 1px dashed var(--text-muted);
+}
+
+.harang-calendar-month-day-more {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	padding: 0 7px;
+}
+
+.harang-calendar-month-selected {
+	margin-top: var(--size-4-5);
+	padding-top: var(--size-4-4);
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+/*
+ * Year/month picker modal: the year starts as plain clickable text (click
+ * to swap in a text input - type a year, Enter to jump - which reverts
+ * back to text afterward) above a pick-directly 12-month grid.
+ */
+
+.harang-calendar-month-picker-year-nav {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-bottom: var(--size-4-3);
+	margin-bottom: var(--size-4-4);
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.harang-calendar-month-picker-year-range {
+	cursor: pointer;
+	border: none;
+	border-radius: var(--hc-shape-full);
+	padding: var(--size-4-1) var(--size-4-3);
+	font-weight: 600;
+	font-size: var(--font-ui-medium);
+	min-width: 4em;
+	text-align: center;
+	background-color: transparent;
+	color: var(--text-normal);
+	transition: background-color var(--hc-motion);
+}
+
+.harang-calendar-month-picker-year-range:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.harang-calendar-month-picker-year-input {
+	border: 1px solid var(--interactive-accent);
+	border-radius: var(--hc-shape-full);
+	padding: var(--size-4-1) var(--size-4-3);
+	width: 7em;
+	text-align: center;
+	font-weight: 600;
+	font-size: var(--font-ui-medium);
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+}
+
+.harang-calendar-month-picker-year-input:focus {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 1px;
+}
+
+/* Chrome/Electron number spinners just add visual noise at this size. */
+.harang-calendar-month-picker-year-input::-webkit-inner-spin-button,
+.harang-calendar-month-picker-year-input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.harang-calendar-month-picker-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: var(--size-4-2);
+}
+
+.harang-calendar-month-picker-month {
+	cursor: pointer;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--hc-shape-sm);
+	padding: var(--size-4-3) var(--size-4-2);
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	transition: background-color var(--hc-motion), border-color var(--hc-motion);
+}
+
+.harang-calendar-month-picker-month:hover {
+	background-color: var(--background-modifier-hover);
+	border-color: var(--interactive-accent);
+}
+
+/* "current" = matches what was showing when the picker opened. */
+.harang-calendar-month-picker-month-current {
+	border-color: var(--interactive-accent);
+	background-color: var(--interactive-accent);
+	font-weight: 600;
+	color: var(--text-on-accent, #fff);
+}

@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Ji-Ho Lee
+# This file is distributed under the same license as the harang-calendar
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: harang-calendar 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-28 01:04+0900\n"
+"PO-Revision-Date: 2026-07-28 01:04+0900\n"
+"Last-Translator: Ji-Ho Lee <search5@mz.co.kr>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../index.rst:15
+msgid "Contents"
+msgstr "목차"
+
+#: ../../index.rst:2 f8061118eb31440087407ac080be8b5f
+msgid "harang-calendar documentation"
+msgstr "harang-calendar 문서"
+
+#: ../../index.rst:4 6ba45e04335945b7814a2964ed0ef952
+msgid ""
+"An `Obsidian <https://obsidian.md>`_ plugin that shows your `CalDAV "
+"<https://www.rfc-editor.org/rfc/rfc4791>`_ calendar events directly in "
+"your notes and in dedicated calendar views."
+msgstr ""
+"`CalDAV <https://www.rfc-editor.org/rfc/rfc4791>`_ 캘린더 일정을 노트와 전용 캘린더 "
+"뷰에서 바로 볼 수 있게 해주는 `Obsidian <https://obsidian.md>`_ 플러그인입니다."
+
+#: ../../index.rst:8 55129660cc0e45208a429eb0c6963563
+msgid ""
+"Reference a date or a specific event with a dedicated inline syntax; it "
+"is rendered as a card widget (a day's events) or a compact chip (one "
+"event) right in the note. A sidebar agenda list and a full-tab month grid"
+" give you two more ways to browse events without leaving Obsidian. The "
+"plugin is **read-only** — it never creates, edits, or deletes anything on"
+" your CalDAV server."
+msgstr ""
+"전용 인라인 문법으로 날짜나 특정 일정을 참조하면, 노트 안에 바로 카드 위젯(그 날의 일정 목록) 또는 작은 칩(일정 "
+"하나)으로 표시됩니다. 사이드바 아젠다 목록과 전체 탭 월간 그리드로도 Obsidian을 벗어나지 않고 일정을 둘러볼 수 "
+"있습니다. 이 플러그인은 **읽기 전용**\\ 이며, CalDAV 서버의 데이터를 생성·수정·삭제하지 않습니다."
+
+#: ../../index.rst:26 b8d410fac9a54867abeafcad415a1dc6
+msgid "Indices and tables"
+msgstr "색인 및 표"
+
+#: ../../index.rst:28 73e14895688c4673b90eb4d608ddb3bb
+msgid ":ref:`genindex`"
+msgstr ":ref:`genindex`"
+
+#: ../../index.rst:29 f87419d94c8f487292f60a711f3bf349
+msgid ":ref:`search`"
+msgstr ":ref:`search`"
