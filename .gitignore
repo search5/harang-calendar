@@ -1,0 +1,13 @@
+node_modules/
+main.js
+*.js.map
+.DS_Store
+dist/
+data.json
+
+docs/_build/
+docs/locale/**/*.mo
+
+# Prompt/spec files used to bootstrap this project - not part of the plugin
+AGENTS.md
+CLAUDE.md

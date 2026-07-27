@@ -1,0 +1,460 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Ji-Ho Lee
+# This file is distributed under the same license as the harang-calendar
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: harang-calendar 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-28 07:12+0900\n"
+"PO-Revision-Date: 2026-07-28 01:06+0900\n"
+"Last-Translator: Ji-Ho Lee <search5@mz.co.kr>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../usage.rst:2 641420cb51a34443b50de4af17e6aa89
+msgid "Usage"
+msgstr "사용법"
+
+#: ../../usage.rst:5 18431e2677144fa38ee8d4492886ee67
+msgid "Adding a CalDAV account"
+msgstr "CalDAV 계정 추가하기"
+
+#: ../../usage.rst:7 dc9c0ce3cbc94066aac7098bf2d1b46e
+msgid "Open **Settings → Harang Calendar**."
+msgstr "**설정 → Harang Calendar**\\ 를 여세요."
+
+#: ../../usage.rst:8 b9d5f217fe3243b391f7f0c2a12fd58c
+msgid "Under **CalDAV server accounts**, click **Add a new server account**."
+msgstr "**CalDAV 서버 계정** 아래에서 **새 서버 계정 추가**\\ 를 클릭하세요."
+
+#: ../../usage.rst:9 417eeb1baeb644f78a279918e6e3ee37
+msgid "Fill in the account:"
+msgstr "계정 정보를 입력하세요:"
+
+#: ../../usage.rst:14 93345c6af688447f8a75e51cdbe82ddb
+msgid "Field"
+msgstr "항목"
+
+#: ../../usage.rst:15 cce01e7d2ea24dd3904f66be09d3b82a
+msgid "Description"
+msgstr "설명"
+
+#: ../../usage.rst:16 6426ea7b920f420cbc1fdf5efe0fa858
+msgid "Account name"
+msgstr "계정 이름"
+
+#: ../../usage.rst:17 bad764f8b92049d99cfcac5853d627eb
+msgid ""
+"A label for this account. Also used in ``harang-account`` frontmatter "
+"(see below) to scope a note to this account's events."
+msgstr ""
+"이 계정을 가리키는 이름표입니다. 노트를 이 계정의 일정으로 범위를 제한할 때 ``harang-account`` 프론트매터(아래 "
+"참고)에도 그대로 씁니다."
+
+#: ../../usage.rst:19 514f2b196d564d4aa0dd0075ce137c57
+msgid "Server URL"
+msgstr "서버 URL"
+
+#: ../../usage.rst:20 ffbd5d17ba22410f9bd030d7cebf4b16
+msgid "The CalDAV base URL, or the exact calendar collection URL."
+msgstr "CalDAV 기본 URL 또는 정확한 캘린더 컬렉션 URL."
+
+#: ../../usage.rst:21 9f776f8b804946a6bb46f6482d1ccde2
+msgid "Username / Password"
+msgstr "사용자명 / 비밀번호"
+
+#: ../../usage.rst:22 4b5d2e159da74465a21df1c688fd8c83
+msgid "Your CalDAV account credentials."
+msgstr "CalDAV 계정의 로그인 정보."
+
+#: ../../usage.rst:23 9dd55fa2a5eb4cc2b66e30d170cc97f9
+msgid "Time zone"
+msgstr "시간대"
+
+#: ../../usage.rst:24 d629abcc80344d4db4e92eb54e116ddc
+msgid ""
+"Used to resolve event times that aren't already in UTC. Pick your "
+"calendar's zone from the list, or **Custom UTC offset…** if it isn't "
+"listed."
+msgstr ""
+"UTC가 아닌 일정 시간을 해석하는 데 사용됩니다. 목록에서 캘린더의 시간대를 고르거나, 목록에 없다면 **UTC 오프셋 직접 "
+"입력…**\\ 을 선택하세요."
+
+#: ../../usage.rst:28 ebcf00160af74a09b1660b322c67dfe9
+msgid ""
+"Click **Test connection & discover calendars**. The plugin walks the "
+"standard CalDAV discovery chain (``current-user-principal`` → ``calendar-"
+"home-set`` → calendar collections) and lists every calendar it finds "
+"under the account. If your Server URL already points directly at a "
+"calendar collection, it is used as-is without further discovery."
+msgstr ""
+"**연결 테스트 & 캘린더 검색**\\ 을 클릭하세요. 플러그인이 표준 CalDAV 검색 절차(``current-user-"
+"principal`` → ``calendar-home-set`` → 캘린더 컬렉션)를 따라가며 그 계정 아래 있는 모든 캘린더를 "
+"찾아 목록에 보여줍니다. 서버 URL이 이미 캘린더 컬렉션을 직접 가리키고 있다면, 추가 검색 없이 그대로 사용됩니다."
+
+#: ../../usage.rst:33 8ff800a9f2cc4a4eb4cdfb83751e97bb
+msgid ""
+"Each discovered calendar gets its own row, with a **Show this calendar** "
+"toggle and an optional color override (any valid CSS color, e.g. "
+"``#4285F4`` — leave blank to use the server's own color, if it provides "
+"one). Only calendars with the toggle on are fetched and shown anywhere in"
+" the plugin."
+msgstr ""
+"찾은 캘린더마다 각각 행이 생기고, **이 캘린더 표시** 토글과 선택적인 색상 재정의(``#4285F4``\\ 처럼 유효한 CSS"
+" 색상 값 — 비워두면 서버가 제공하는 색상을 사용, 있는 경우) 항목이 붙습니다. 토글이 켜진 캘린더만 가져와서 플러그인 "
+"어디에서든 표시됩니다."
+
+#: ../../usage.rst:39 d30c93a4ddfe4a20b3003252ae156a41
+msgid ""
+"You can add multiple accounts (for multiple servers, or multiple times to"
+" the same server); events from every enabled calendar across every "
+"account are merged in the agenda/month views. Re-run **Test connection & "
+"discover calendars** any time a calendar is added or removed on the "
+"server — the plugin doesn't detect that on its own."
+msgstr ""
+"계정은 여러 개 추가할 수 있습니다(여러 서버용으로, 또는 같은 서버를 여러 번). 모든 계정의 활성화된 캘린더 일정이 아젠다/월간"
+" 뷰에 합쳐져서 나타납니다. 서버에서 캘린더를 추가하거나 제거했다면 **연결 테스트 & 캘린더 검색**\\ 을 다시 실행하세요 — "
+"플러그인이 스스로 감지하지는 않습니다."
+
+#: ../../usage.rst:46 aff2bb3c1f314e72b28b806661db200b
+msgid "Referencing a date in a note"
+msgstr "노트에서 날짜 참조하기"
+
+#: ../../usage.rst:48 5b51def6183a4f25b927af4ed19aa3cb
+msgid "Type ``@date[`` followed by (part of) a date:"
+msgstr "``@date[`` 뒤에 날짜(의 일부)를 입력하세요:"
+
+#: ../../usage.rst:54 0eacc66ab9fa493a894521690385ba21
+msgid ""
+"An autocomplete popup lists matching upcoming dates as you narrow the "
+"query; typing ``@date[`` alone lists the next several days starting "
+"today. Selecting a candidate inserts ``[[cal:2026-08-07]]`` and renders "
+"it as a card widget: a heading for that date, and every matching event "
+"that day listed underneath (or a \"No events on this day.\" message if "
+"there are none). This works the same way in both Live Preview and Reading"
+" view. Clicking an event row in the widget opens the same detail popup "
+"described below."
+msgstr ""
+"입력을 좁혀갈수록 자동완성 팝업에 일치하는 다가오는 날짜들이 나열됩니다. ``@date[``\\ 만 입력하면 오늘부터 며칠간의 "
+"날짜가 나열됩니다. 후보를 선택하면 ``[[cal:2026-08-07]]``\\ 이 삽입되고 카드 위젯으로 표시됩니다 — 해당 날짜"
+" 제목과 그날 일치하는 일정 목록(없으면 \"이 날짜에는 일정이 없습니다.\" 메시지)이 함께 나옵니다. Live Preview와 "
+"읽기 모드 둘 다 동일하게 동작합니다. 위젯 안의 일정 행을 클릭하면 아래에서 설명하는 상세 팝업이 열립니다."
+
+#: ../../usage.rst:64 a0277f575e74465281e18209df10c8af
+msgid "Referencing a specific event in a note"
+msgstr "노트에서 특정 일정 참조하기"
+
+#: ../../usage.rst:66 5ec0c6440f1444178b9c82f5e3b000ca
+msgid "Type ``@event[`` followed by (part of) a title:"
+msgstr "``@event[`` 뒤에 제목(의 일부)을 입력하세요:"
+
+#: ../../usage.rst:72 6ce8761153b24823a01e3f05ecddcd20
+msgid ""
+"An autocomplete popup lists matching events by title (searched with a "
+"case-insensitive substring match, spaces included, so multi-word titles "
+"work). Selecting a candidate inserts ``[[event:<uid>]]`` and renders it "
+"as an inline chip — the event's title and time range in a rounded pill."
+msgstr ""
+"제목으로 일치하는 일정을 자동완성 팝업에 나열합니다(대소문자 구분 없는 부분 문자열 검색, 공백 포함이라 여러 단어로 된 제목도 "
+"검색됩니다). 후보를 선택하면 ``[[event:<uid>]]``\\ 이 삽입되고 인라인 칩(둥근 알약 모양 안에 일정 제목과 시간"
+" 범위)으로 표시됩니다."
+
+#: ../../usage.rst:77 7d6e147c948c46a7991a633e9cad8020
+msgid ""
+"Click a chip (or an event row inside a date widget) to open a small popup"
+" with the event's date/time, location, and notes (whichever of those "
+"fields the event has). Click anywhere outside the popup, or press "
+"**Esc**, to close it. If a chip looks faded with a dashed border, the "
+"plugin could not resolve it to a known event — see "
+":doc:`troubleshooting`."
+msgstr ""
+"칩(또는 날짜 위젯 안의 일정 행)을 클릭하면 그 일정의 일시/장소/메모(있는 항목만) 정보를 담은 작은 팝업이 열립니다. 팝업 "
+"바깥을 클릭하거나 **Esc**\\ 를 누르면 닫힙니다. 칩이 흐릿하게 점선 테두리로 보인다면, 플러그인이 알고 있는 일정으로 "
+"확인하지 못한 것입니다 — :doc:`troubleshooting`\\ 을 참고하세요."
+
+#: ../../usage.rst:84 a3fd814375194744aec213f05ddee6a5
+msgid "Scoping a note to one account or calendar"
+msgstr "노트를 특정 계정/캘린더로 범위 제한하기"
+
+#: ../../usage.rst:86 88296b24ee1c4607ac3e5d50843e47d4
+msgid ""
+"By default, a ``[[cal:...]]`` date widget draws from every enabled "
+"calendar across every account. Add frontmatter to a note to narrow that "
+"down:"
+msgstr ""
+"기본적으로 ``[[cal:...]]`` 날짜 위젯은 모든 계정의 활성화된 캘린더를 대상으로 합니다. 노트에 프론트매터를 추가하면 "
+"범위를 좁힐 수 있습니다:"
+
+#: ../../usage.rst:99 709196d9096e4daebe0ec6286ee46d19
+msgid "Frontmatter"
+msgstr "프론트매터"
+
+#: ../../usage.rst:100 1a53a077e15044179b9b472eb5d8f0eb
+msgid "Scope"
+msgstr "범위"
+
+#: ../../usage.rst:101 e42d550617bc475e9a6162d555bc31a0
+msgid "``harang-account`` only"
+msgstr "``harang-account``\\ 만"
+
+#: ../../usage.rst:102 bf2ebd15688c48038f0a4af0fcf2d391
+msgid "Every enabled calendar under that account."
+msgstr "그 계정 아래 활성화된 모든 캘린더."
+
+#: ../../usage.rst:103 766eac1a985d416e8548daf4e9d5fe50
+msgid "``harang-calendar`` only"
+msgstr "``harang-calendar``\\ 만"
+
+#: ../../usage.rst:104 df7e20e7dd3e4d4abdb8337d1cf8d0e0
+msgid ""
+"Any calendar with that exact name, across every account (useful if you "
+"only have one account, or don't need to disambiguate)."
+msgstr "그 이름과 정확히 일치하는 캘린더 — 모든 계정을 통틀어(계정이 하나뿐이거나 구분할 필요가 없을 때 유용합니다)."
+
+#: ../../usage.rst:106 1d163a8397e64badaa03de5ddb875993
+msgid "Both"
+msgstr "둘 다"
+
+#: ../../usage.rst:107 7b90bc1f78244f88a8939f8471e0564f
+msgid ""
+"Only that specific calendar within that specific account — the way to "
+"tell apart two calendars that happen to share a name, or two calendars "
+"with the same name under different accounts."
+msgstr ""
+"그 계정 안의 그 캘린더 하나로만 좁혀집니다 — 이름이 같은 두 캘린더를 구분하거나, 서로 다른 계정에 같은 이름의 캘린더가 있을 "
+"때 구분하는 방법입니다."
+
+#: ../../usage.rst:110 e220013dd9f2437982f8a7c04a38aec8
+msgid "Neither"
+msgstr "둘 다 없음"
+
+#: ../../usage.rst:111 13f540e8fa7f415bbc2b752052e67682
+msgid "No restriction (the default)."
+msgstr "범위 제한 없음(기본값)."
+
+#: ../../usage.rst:113 842c6c1d6fc3454f91a0dc32a45b21f6
+msgid ""
+"Both values are plain text — copy them from Settings exactly as shown "
+"there (account name as you named it; calendar name as the server reports "
+"it) and paste, or type them by hand. There is no autocomplete for either "
+"field. If a value doesn't match any known account/calendar, the date "
+"widget shows a warning naming the unrecognized value(s) instead of "
+"silently showing nothing."
+msgstr ""
+"두 값 모두 일반 텍스트입니다 — 설정 화면에 보이는 그대로(계정 이름은 직접 지은 이름, 캘린더 이름은 서버가 알려준 이름) "
+"복사해서 붙여넣거나 직접 타이핑하세요. 두 항목 다 자동완성은 제공하지 않습니다. 값이 알려진 계정/캘린더와 일치하지 않으면, 날짜"
+" 위젯은 아무것도 표시하지 않는 대신 인식 못한 값의 이름을 담은 경고를 보여줍니다."
+
+#: ../../usage.rst:122 0b9142bc52004e4681251c918ca075a0
+msgid ""
+"Obsidian's Properties panel remembers a property's value type (Text vs. "
+"List) per key across your whole vault, not per note. If ``harang-"
+"account`` or ``harang-calendar`` was ever entered as a list anywhere in "
+"your vault, the Properties panel may keep offering a list-style input for"
+" it afterward. A single-item list (e.g. ``harang-calendar:\\n  - Team "
+"events``) is read the same as a plain string, so this doesn't break "
+"anything — but a plain text field is all either key is meant to hold."
+msgstr ""
+"Obsidian의 Properties 패널은 속성의 값 타입(텍스트 vs 목록)을 노트 단위가 아니라 보관소(vault) 전체에서 "
+"키 단위로 기억합니다. ``harang-account``\\ 나 ``harang-calendar``\\ 를 보관소 어딘가에서 한 "
+"번이라도 목록으로 입력한 적이 있다면, 이후에도 Properties 패널이 목록 형태 입력창을 계속 제안할 수 있습니다. 항목이 "
+"하나뿐인 목록(예: ``harang-calendar:\\n  - Team events``)은 일반 문자열과 똑같이 읽히므로 문제가 "
+"되지는 않습니다 — 다만 두 키 모두 원래 의도한 건 일반 텍스트 값 하나뿐입니다."
+
+#: ../../usage.rst:131 e75e8148ee3e451784c3d5e5fc1b82b6
+msgid "Showing a note itself in the calendar views"
+msgstr "노트 자체를 캘린더 뷰에 표시하기"
+
+#: ../../usage.rst:133 577ac2f3a76141f299b3be793475ae64
+msgid ""
+"The features above all pull from your CalDAV server. Separately, a note "
+"can show up as an item in the sidebar agenda list and the month grid on "
+"its own — purely local to Obsidian, nothing is ever written to or read "
+"from the CalDAV server for this:"
+msgstr ""
+"위 기능들은 전부 CalDAV 서버에서 가져오는 것입니다. 이와 별개로, 노트 자체가 사이드바 아젠다 목록과 월간 그리드에 항목으로"
+" 나타날 수도 있습니다 — Obsidian 안에서만 일어나는 일이고, CalDAV 서버에 쓰거나 읽는 일은 전혀 없습니다:"
+
+#: ../../usage.rst:146 2e8c6b3945634bc1a3415133a2472bd8
+msgid ""
+"``harang-date`` (required, ``YYYY-MM-DD``) is the date the note shows up "
+"on. ``harang-repeat`` (optional) is an RRULE string — the exact same "
+"syntax and parsing (the `rrule <https://github.com/jkbrzt/rrule>`_ "
+"package) already used to expand a real recurring CalDAV event — that "
+"repeats the note across every matching occurrence; without it, the note "
+"shows up on ``harang-date`` alone. ``harang-time`` (optional) is a "
+"24-hour ``HH:MM-HH:MM`` range; without it, the note event displays as "
+"all-day. A note event always has a dashed border/outline to keep it "
+"visually distinct from a real CalDAV event in the same list. Clicking it "
+"opens the note itself, not an event detail popup."
+msgstr ""
+"``harang-date``\\ (필수, ``YYYY-MM-DD``)는 노트가 표시될 날짜입니다. ``harang-"
+"repeat``\\ (선택)은 RRULE 문자열입니다 — 실제 반복되는 CalDAV 일정을 전개할 때 이미 쓰고 있는 것과 정확히 "
+"같은 문법/파싱(`rrule <https://github.com/jkbrzt/rrule>`_ 패키지)이며, 일치하는 발생일마다 "
+"노트가 반복해서 나타나게 합니다. 없으면 ``harang-date``\\ 한 날짜에만 나타납니다. ``harang-"
+"time``\\ (선택)은 24시간제 ``HH:MM-HH:MM`` 범위입니다 — 없으면 노트 일정은 종일로 표시됩니다. 노트 "
+"일정에는 항상 같은 목록의 실제 CalDAV 일정과 시각적으로 구분되도록 점선 테두리가 붙습니다. 클릭하면 일정 상세 팝업이 아니라"
+" 그 노트 자체가 열립니다."
+
+#: ../../usage.rst:156 9354f077e0604d4189e005f62fe2105c
+msgid ""
+"An invalid ``harang-time`` value (wrong format, or a start not before the"
+" end) is ignored silently — the note falls back to showing as all-day, "
+"the same way an invalid ``harang-repeat`` falls back to not repeating."
+msgstr ""
+"``harang-time`` 값이 잘못됐거나(형식 오류, 또는 시작이 끝보다 늦은 경우) 조용히 무시됩니다 — ``harang-"
+"repeat`` 값이 잘못되면 그냥 반복하지 않는 것으로 대체되는 것과 마찬가지로, 노트는 종일 표시로 대체됩니다."
+
+#: ../../usage.rst:160 0c559375d6ab4b5ebcac0d48c56e3a6d
+msgid "``harang-repeat`` accepts the standard iCalendar RRULE keywords:"
+msgstr "``harang-repeat``\\ 은 표준 iCalendar RRULE 키워드를 받습니다:"
+
+#: ../../usage.rst:165 aef8e98631be4f4693c8a97bc1c0a46e
+msgid "Keyword"
+msgstr "키워드"
+
+#: ../../usage.rst:166 682aef5156de44b6a97a78231212ec11
+msgid "Meaning"
+msgstr "의미"
+
+#: ../../usage.rst:167 513aa68bcbf24a61abc8fa045920e733
+msgid "``FREQ`` (required)"
+msgstr "``FREQ``\\ (필수)"
+
+#: ../../usage.rst:168 758bc0126c4b46d48ba53b21f42efda1
+msgid "``DAILY``, ``WEEKLY``, ``MONTHLY``, or ``YEARLY``."
+msgstr "``DAILY``, ``WEEKLY``, ``MONTHLY``, ``YEARLY`` 중 하나."
+
+#: ../../usage.rst:169 31752f9d7ed343578b415b8b895f7335
+msgid "``INTERVAL``"
+msgstr "``INTERVAL``"
+
+#: ../../usage.rst:170 27b10a6ee41e43b3b2ed87d480a271ee
+msgid ""
+"Repeat every *N* units instead of every one, e.g. ``INTERVAL=2`` with "
+"``FREQ=WEEKLY`` means every 2 weeks."
+msgstr ""
+"매번이 아니라 *N*\\ 단위마다 반복합니다. 예를 들어 ``FREQ=WEEKLY``\\ 와 함께 ``INTERVAL=2``\\ 를"
+" 쓰면 2주마다입니다."
+
+#: ../../usage.rst:172 5cc502dbb9f144d6b162b691b145af75
+msgid "``BYDAY``"
+msgstr "``BYDAY``"
+
+#: ../../usage.rst:173 7c0500c4f8ba4bafaa91aa4a96a4a006
+msgid ""
+"One or more weekdays (``MO``, ``TU``, ``WE``, ``TH``, ``FR``, ``SA``, "
+"``SU``), comma-separated, e.g. ``BYDAY=MO,WE,FR``."
+msgstr ""
+"요일 하나 이상(``MO``, ``TU``, ``WE``, ``TH``, ``FR``, ``SA``, ``SU``)을 쉼표로 "
+"구분해서, 예: ``BYDAY=MO,WE,FR``."
+
+#: ../../usage.rst:175 8a52dd91a3a44f4e9c6d55d698760f78
+msgid "``COUNT``"
+msgstr "``COUNT``"
+
+#: ../../usage.rst:176 1e254c43ec4340ef8933a88c75eca2f3
+msgid "Total number of occurrences. Mutually exclusive with ``UNTIL``."
+msgstr "전체 발생 횟수. ``UNTIL``\\ 과 동시에 쓸 수 없습니다."
+
+#: ../../usage.rst:177 45fed56fc7824e978fa379f76af7cf61
+msgid "``UNTIL``"
+msgstr "``UNTIL``"
+
+#: ../../usage.rst:178 bf56e4cc20a24a94a99983345d0f2f17
+msgid ""
+"The last date to repeat through, as ``YYYYMMDD``, e.g. "
+"``UNTIL=20261231``. Mutually exclusive with ``COUNT``."
+msgstr ""
+"``YYYYMMDD`` 형식으로 마지막 반복 날짜, 예: ``UNTIL=20261231``. ``COUNT``\\ 와 동시에 쓸 수"
+" 없습니다."
+
+#: ../../usage.rst:188 f345386bf77e46c0a322e7dab783a15d
+msgid ""
+"An invalid ``harang-repeat`` value is ignored silently (the note simply "
+"doesn't repeat) rather than raising an error."
+msgstr "``harang-repeat`` 값이 잘못됐으면 에러를 내는 대신 조용히 무시됩니다(그 노트가 그냥 반복하지 않을 뿐입니다)."
+
+#: ../../usage.rst:192 e75e8148ee3e451784c3d5e5fc1b82b6
+msgid "Browsing events: sidebar agenda view"
+msgstr "일정 둘러보기: 사이드바 아젠다 뷰"
+
+#: ../../usage.rst:194 46270eb9ed0a4603b3aa2c533894d6b5
+msgid ""
+"Run the **Open calendar in sidebar** command (from the command palette) "
+"to open a sidebar view listing every event over the next 30 days (CalDAV "
+"events and any note carrying ``harang-date`` alike, merged and sorted "
+"together), grouped by day, with \"Today\"/\"Tomorrow\" used in place of "
+"those two dates' headings. All-day events are marked accordingly instead "
+"of showing a time. Click an event to open the same detail popup used "
+"elsewhere, or a note item to open that note."
+msgstr ""
+"명령 팔레트에서 **사이드바에서 캘린더 열기** 명령을 실행하면, 앞으로 30일간의 모든 일정(CalDAV 일정과 ``harang-"
+"date``\\ 가 있는 노트 모두 합쳐서 정렬됨)을 날짜별로 묶어 보여주는 사이드바 뷰가 열립니다. 오늘/내일에 해당하는 날짜는 "
+"제목이 \"오늘\"/\"내일\"로 표시됩니다. 종일 일정은 시간 대신 그렇게 표시됩니다. 일정을 클릭하면 다른 곳과 동일한 상세 "
+"팝업이 열리고, 노트 항목을 클릭하면 그 노트가 열립니다."
+
+#: ../../usage.rst:203 8c108122e2f14a1ebb49a4d05bebfd8d
+msgid "Browsing events: full month view"
+msgstr "일정 둘러보기: 전체 월간 뷰"
+
+#: ../../usage.rst:205 e6bf2321746b41348118671bb6796185
+msgid ""
+"Run the **Open calendar in a new tab** command to open a full-tab month "
+"grid. Click a date to select it and see that day's events; use the arrow "
+"keys to move the selection (Left/Right by a day, Up/Down by a week) once "
+"a date has focus. Use the ‹/› buttons to move a month at a time, or click"
+" the month/year heading to open a picker for jumping to an arbitrary "
+"month and year directly (click the year to switch it from a label to a "
+"text input)."
+msgstr ""
+"**새 탭에서 캘린더 열기** 명령을 실행하면 전체 탭을 차지하는 월간 그리드가 열립니다. 날짜를 클릭해 선택하면 그날 일정을 볼 "
+"수 있고, 날짜에 포커스가 있는 상태에서 방향키로 선택을 이동할 수 있습니다(좌/우는 하루씩, 상/하는 일주일씩). ‹/› 버튼으로"
+" 한 달씩 이동하거나, 월/연도 제목을 클릭하면 원하는 연도·월로 바로 이동할 수 있는 선택창이 열립니다(연도를 클릭하면 텍스트 "
+"입력창으로 바뀝니다)."
+
+#: ../../usage.rst:213 7fbd2f24520e47799ca1d0c73551434b
+msgid "Refreshing calendar data"
+msgstr "캘린더 데이터 새로고침"
+
+#: ../../usage.rst:215 6a8f05690ee34b71a4c5c3c4b6f9861c
+msgid ""
+"Events are cached and refreshed automatically once the cache lifetime "
+"(**Settings → Harang Calendar → Cache lifetime (minutes)**, default 30 "
+"minutes) elapses. Navigating the month view to a range outside what's "
+"already cached fetches just that gap on demand. To refresh immediately:"
+msgstr ""
+"일정은 캐시되며, 캐시 유효 시간(**설정 → Harang Calendar → 캐시 유효 시간(분)**, 기본값 30분)이 지나면 "
+"자동으로 서버에서 다시 가져옵니다. 월간 뷰에서 아직 캐시되지 않은 범위로 이동하면 그 빈 부분만 필요할 때 가져옵니다. 즉시 "
+"새로고침하려면:"
+
+#: ../../usage.rst:220 555928f9208748f4906154a570f02901
+msgid "Run the **Refresh calendars** command from the command palette, or"
+msgstr "명령 팔레트에서 **캘린더 새로고침** 명령을 실행하거나,"
+
+#: ../../usage.rst:221 43cf900c00d446a191edc0b26c0bf1f5
+msgid "Click **Refresh** next to **Refresh all calendars now** in settings."
+msgstr "설정에서 **모든 캘린더 지금 새로고침** 옆의 **새로고침**\\ 을 클릭하세요."
+
+#~ msgid ""
+#~ "Run the **Open calendar in sidebar** "
+#~ "command (or the ribbon/command palette) "
+#~ "to open a sidebar view listing "
+#~ "every event over the next 30 days,"
+#~ " grouped by day, with "
+#~ "\"Today\"/\"Tomorrow\" used in place of "
+#~ "those two dates' headings. All-day "
+#~ "events are marked accordingly instead of"
+#~ " showing a time. Click an event "
+#~ "to open the same detail popup used"
+#~ " elsewhere."
+#~ msgstr ""
+

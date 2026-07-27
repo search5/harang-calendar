@@ -1,0 +1,10 @@
+{
+	"id": "harang-calendar",
+	"name": "Harang Calendar",
+	"version": "0.0.1",
+	"minAppVersion": "1.12.7",
+	"description": "View CalDAV calendar events directly in your notes.",
+	"author": "search5",
+	"authorUrl": "",
+	"isDesktopOnly": false
+}
