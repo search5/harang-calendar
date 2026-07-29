@@ -6,19 +6,15 @@
 
 An [Obsidian](https://obsidian.md) plugin that lets you view events from a [CalDAV](https://www.rfc-editor.org/rfc/rfc4791) calendar directly from your notes. The plugin is **read-only** — it never creates, edits, or deletes anything on your CalDAV server.
 
-> **Status:** everything in `AGENTS.md`'s spec is implemented. What's left are non-blocking enhancements. See [ROADMAP.md](ROADMAP.md) for the detailed status and known limitations.
-
 ## Features
 
-- **`@date[` autocomplete for dates** — type `@date[2026-07-26` (narrowed progressively as you type) and pick it from the popup; it inserts `[[cal:2026-07-26]]`, which renders as a widget listing that day's events as cards.
-- **`@event[` autocomplete for events** — type `@event[` plus a title search and pick an event; it inserts `[[event:<uid>]]`, which renders as an inline chip. Click a chip (or a card in a date widget) to see the full detail popup.
+- **`{{hrcal:` staged autocomplete** — type `{{hrcal:` and pick an account, then a calendar, then either a date or an event title from one combined list. It inserts `{{hrcal:<accountName>:<calendarName>:date:yyyy-mm-dd}}` (renders as a widget listing that day's events as cards) or `{{hrcal:<accountName>:<calendarName>:event:<uid>}}` (renders as an inline chip). Click a chip (or a card in a date widget) to see the full detail popup.
 - **Calendar view** — an agenda list of upcoming events in the sidebar, and a full month grid (with navigation, and click-a-day to see its events) in a workspace tab, both built with Vue 3.
-- **Frontmatter linking** — connect a note to one or more calendars via a `harang-calendar: [Name, ...]` frontmatter key (with autocomplete for registered calendar names), scoping that note's date widgets to those calendars.
 - **Multiple CalDAV servers and calendars** — configure any number of server accounts; each account is tested and its calendars discovered and individually enabled/colored from Settings.
 - **Configurable time zone** — pick your calendar's IANA time zone or a manual UTC offset per account, used to resolve event times that aren't already UTC.
 - **Recurring events** — `RRULE`/`EXDATE` are expanded into their actual occurrences within whatever range is being viewed.
 - **Follows Obsidian's UI language** — Korean or English depending on your Obsidian language setting (via the official `getLanguage()` API).
-- **Frontmatter validation** — a date widget warns if any name in its note's `harang-calendar` frontmatter doesn't match a registered calendar.
+- **Stale-reference warnings** — a date widget warns if the account or calendar named in its `{{hrcal:...}}` reference no longer matches one you have configured (e.g. after a rename).
 
 ## Prerequisites
 
@@ -27,26 +23,17 @@ An [Obsidian](https://obsidian.md) plugin that lets you view events from a [CalD
 
 ## Installation
 
-**harang-calendar** is not yet published to the Obsidian Community Plugins directory, so it must be built from source.
+Open **Settings → Community plugins → Browse**, search for **Harang Calendar**, then click **Install** and **Enable**.
 
-**Requirements:** [Node.js](https://nodejs.org/) 18 or later
+Prefer installing pre-built files manually instead? See the [Installation guide](https://search5.github.io/harang-calendar/en/installation.html) in the documentation for that and other options.
 
-```bash
-git clone https://github.com/search5/harang-calendar.git
-cd harang-calendar
-npm install
-npm run build
-```
+## Usage
 
-Copy the resulting `main.js`, along with `manifest.json` and `styles.css`, into `<vault>/.obsidian/plugins/harang-calendar/`, then enable **Harang Calendar** under **Settings → Community plugins**.
+1. Open **Settings → Harang Calendar** and click **Add CalDAV server** to configure an account, then **Test connection & discover** to find its calendars.
+2. In any note, type `{{hrcal:` and pick an account, then a calendar, then a date or an event to insert a reference.
+3. Browse events any time with the **Open calendar in sidebar** or **Open calendar in a new tab** commands.
 
-## Development
-
-```bash
-npm run dev    # esbuild in watch mode
-npm run build  # type-check + production build
-npm run lint   # eslint (includes eslint-plugin-obsidianmd)
-```
+See the [Usage guide](https://search5.github.io/harang-calendar/en/usage.html) for full details.
 
 ## License
 

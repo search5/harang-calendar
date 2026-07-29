@@ -14,8 +14,8 @@ Adding a CalDAV account
    * - Field
      - Description
    * - Account name
-     - A label for this account. Also used in ``harang-account``
-       frontmatter (see below) to scope a note to this account's events.
+     - A label for this account, shown when picking it in the ``{{hrcal:``
+       autocomplete and embedded in any reference you insert from it.
    * - Server URL
      - The CalDAV base URL, or the exact calendar collection URL.
    * - Username / Password
@@ -25,7 +25,7 @@ Adding a CalDAV account
        calendar's zone from the list, or **Custom UTC offset…** if it isn't
        listed.
 
-4. Click **Test connection & discover calendars**. The plugin walks the
+4. Click **Test connection & discover**. The plugin walks the
    standard CalDAV discovery chain (``current-user-principal`` →
    ``calendar-home-set`` → calendar collections) and lists every calendar it
    finds under the account. If your Server URL already points directly at a
@@ -38,53 +38,58 @@ Adding a CalDAV account
 
 You can add multiple accounts (for multiple servers, or multiple times to
 the same server); events from every enabled calendar across every account
-are merged in the agenda/month views. Re-run **Test connection & discover
-calendars** any time a calendar is added or removed on the server — the
+are merged in the agenda/month views. Re-run **Test connection & discover**
+any time a calendar is added or removed on the server — the
 plugin doesn't detect that on its own.
 
-Referencing a date in a note
--------------------------------------
+Referencing a date or event in a note
+-------------------------------------------
 
-Type ``@date[`` followed by (part of) a date:
-
-.. code-block:: text
-
-   Let's meet @date[2026-08
-
-An autocomplete popup lists matching upcoming dates as you narrow the query;
-typing ``@date[`` alone lists the next several days starting today.
-Selecting a candidate inserts ``[[cal:2026-08-07]]`` and renders it as a
-card widget: a heading for that date, and every matching event that day
-listed underneath (or a "No events on this day." message if there are
-none). This works the same way in both Live Preview and Reading view.
-Clicking an event row in the widget opens the same detail popup described
-below.
-
-Referencing a specific event in a note
---------------------------------------------
-
-Type ``@event[`` followed by (part of) a title:
+Type ``{{hrcal:`` to start a staged reference - there's no separate trigger
+for dates vs. events:
 
 .. code-block:: text
 
-   Prep for @event[budget review
+   Let's meet {{hrcal:
 
-An autocomplete popup lists matching events by title (searched with a
-case-insensitive substring match, spaces included, so multi-word titles
-work). Selecting a candidate inserts ``[[event:<uid>]]`` and renders it as
-an inline chip — the event's title and time range in a rounded pill.
+1. An autocomplete popup lists your registered **account names**; typing
+   narrows it. Selecting one appends ``<accountName>:`` and immediately
+   opens the next stage.
+2. The popup now lists that account's **calendar names**. Selecting one
+   appends ``<calendarName>:``.
+3. The popup now shows a combined list of **upcoming dates** and **matching
+   events by title** (searched with a case-insensitive substring match,
+   spaces included) - typing digits narrows the dates, typing text narrows
+   the events, and both can appear together.
 
-Click a chip (or an event row inside a date widget) to open a small popup
-with the event's date/time, location, and notes (whichever of those fields
-the event has). Click anywhere outside the popup, or press **Esc**, to
-close it. If a chip looks faded with a dashed border, the plugin could not
-resolve it to a known event — see :doc:`troubleshooting`.
+Selecting a date candidate inserts
+``{{hrcal:<accountName>:<calendarName>:date:2026-08-07}}`` and renders it as
+a card widget: a heading for that date, and every matching event that day
+from that specific account/calendar listed underneath (or a "No events on
+this day." message if there are none).
+
+Selecting an event candidate inserts
+``{{hrcal:<accountName>:<calendarName>:event:<uid>}}`` and renders it as an
+inline chip — the event's title and time range in a rounded pill.
+
+Both render the same way in Live Preview and Reading view. Clicking a chip
+(or an event row inside a date widget) opens a small popup with the event's
+date/time, location, and notes (whichever of those fields the event has).
+Click anywhere outside the popup, or press **Esc**, to close it. If a chip
+looks faded with a dashed border, the plugin could not resolve it to a known
+event — see :doc:`troubleshooting`.
 
 Scoping a note to one account or calendar
 -------------------------------------------------
 
-By default, a ``[[cal:...]]`` date widget draws from every enabled calendar
-across every account. Add frontmatter to a note to narrow that down:
+.. warning::
+
+   **Currently unused.** ``{{hrcal:...}}`` references name their account and
+   calendar directly, so nothing reads this frontmatter to scope anything
+   any more. Kept documented here in case it's revived for a future feature.
+
+Historically, a date widget drew from every enabled calendar across every
+account by default, and frontmatter on the note narrowed that down:
 
 .. code-block:: yaml
 

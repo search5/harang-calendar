@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: harang-calendar 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-28 07:12+0900\n"
+"POT-Creation-Date: 2026-07-29 10:16+0900\n"
 "PO-Revision-Date: 2026-07-28 01:04+0900\n"
 "Last-Translator: Ji-Ho Lee <search5@mz.co.kr>\n"
 "Language: ko\n"
@@ -46,11 +46,11 @@ msgstr "``main.ts``"
 #: ../../architecture.rst:16 903dd099ad0f40759b75ed50a78b31a0
 msgid ""
 "Plugin entry point: loads settings, registers the sidebar/month views, "
-"both editor suggests, the live preview extension, and the post-processor;"
-" adds the **Open calendar in sidebar**, **Open calendar in a new tab**, "
+"the editor suggest, the live preview extension, and the post-processor; "
+"adds the **Open calendar in sidebar**, **Open calendar in a new tab**, "
 "and **Refresh calendars** commands."
 msgstr ""
-"플러그인 진입점: 설정을 불러오고, 사이드바/월간 뷰, 두 개의 에디터 서제스트, 라이브 프리뷰 확장, 포스트프로세서를 등록합니다."
+"플러그인 진입점: 설정을 불러오고, 사이드바/월간 뷰, 에디터 서제스트, 라이브 프리뷰 확장, 포스트프로세서를 등록합니다."
 " **사이드바에서 캘린더 열기**, **새 탭에서 캘린더 열기**, **캘린더 새로고침** 명령을 추가합니다."
 
 #: ../../architecture.rst:20 e5c9fc7537f7459fbe7754600e0e6b56
@@ -60,12 +60,12 @@ msgstr "``types.ts``"
 #: ../../architecture.rst:21 d884816bc6f746e49beb9db62c54c1b1
 msgid ""
 "Shared types: ``CalDavEvent``, ``CalDavCalendar``, ``CalDavAccount``, "
-"``CalDavTimezone``, ``HarangCalendarSettings``, ``FrontmatterScope``, "
-"``NoteEvent``, ``CalendarListItem``."
+"``CalDavTimezone``, ``HarangCalendarSettings``, ``CalendarScope``, "
+"``HrcalScope``, ``NoteEvent``, ``CalendarListItem``."
 msgstr ""
 "공유 타입: ``CalDavEvent``, ``CalDavCalendar``, ``CalDavAccount``, "
-"``CalDavTimezone``, ``HarangCalendarSettings``, ``FrontmatterScope``, "
-"``NoteEvent``, ``CalendarListItem``."
+"``CalDavTimezone``, ``HarangCalendarSettings``, ``CalendarScope``, "
+"``HrcalScope``, ``NoteEvent``, ``CalendarListItem``."
 
 #: ../../architecture.rst:24 0b6c79a284104cf8a44c22ba49523596
 msgid "``settings.ts`` / ``settingsTab.ts``"
@@ -164,123 +164,128 @@ msgstr ""
 "위한 온디맨드 공백 채우기, 범위 지정/검색/조회 헬퍼를 제공합니다."
 
 #: ../../architecture.rst:55 e23444010f0845aa92e51c7f3072489f
-msgid "``editorSuggest/DateEditorSuggest.ts``, ``dateCandidates.ts``"
-msgstr "``editorSuggest/DateEditorSuggest.ts``, ``dateCandidates.ts``"
+msgid "``editorSuggest/HrcalEditorSuggest.ts``, ``dateCandidates.ts``"
+msgstr "``editorSuggest/HrcalEditorSuggest.ts``, ``dateCandidates.ts``"
 
-#: ../../architecture.rst:56 f93e2127c1104fd0ac9087bbed1948c6
+#: ../../architecture.rst:56 c31ed7a2bac34585af6fdb25707bd0c4
 msgid ""
-"Triggers on ``@date[``, suggests upcoming dates matching the typed query,"
-" and inserts ``[[cal:YYYY-MM-DD]]``."
+"Triggers on ``{{hrcal:``. A single staged suggester (no separate "
+"``@date[``/``@event[`` triggers): it splits the typed query on ``:`` to "
+"figure out which stage it's in - account name, then that account's "
+"calendar name, then a combined date-candidate/event-title search - and "
+"inserts ``{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}`` or "
+"``{{hrcal:<accountName>:<calendarName>:event:<uid>}}``."
 msgstr ""
-"``@date[``\\ 에서 트리거되어, 입력한 검색어와 일치하는 다가오는 날짜를 제안하고 ``[[cal:YYYY-MM-"
-"DD]]``\\ 를 삽입합니다."
+"``{{hrcal:``\\ 에서 트리거됩니다. 별도의 ``@date[``/``@event[`` 트리거 없이 단계별로 이어지는 "
+"하나의 서제스터로, 입력한 검색어를 ``:``\\ 로 나눠 지금이 어느 단계인지(계정 이름, 그 계정의 캘린더 이름, 그다음 "
+"날짜 후보/일정 제목 통합 검색) 판단해서 ``{{hrcal:<accountName>:<calendarName>:date"
+":YYYY-MM-DD}}`` 또는 ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}``"
+"\\ 를 삽입합니다."
 
-#: ../../architecture.rst:58 b2e0a0f1217047239753ca231b0707b2
-msgid "``editorSuggest/EventEditorSuggest.ts``"
-msgstr "``editorSuggest/EventEditorSuggest.ts``"
-
-#: ../../architecture.rst:59 af04a0fd519b4c398ea964f228b8be95
-msgid ""
-"Triggers on ``@event[``, searches the cached event store by title, and "
-"inserts ``[[event:<uid>]]``."
-msgstr ""
-"``@event[``\\ 에서 트리거되어, 캐시된 일정 저장소를 제목으로 검색하고 ``[[event:<uid>]]``\\ 를 "
-"삽입합니다."
-
-#: ../../architecture.rst:61 63590d45c3584174803203af5c749c86
+#: ../../architecture.rst:63 63590d45c3584174803203af5c749c86
 msgid "``render/frontmatterScope.ts``"
 msgstr "``render/frontmatterScope.ts``"
 
-#: ../../architecture.rst:62 c35a0be6ac904d268f6e683779ca16b7
+#: ../../architecture.rst:64 a2714ce516374d5396bb5507008bb3cc
 msgid ""
 "Reads a note's ``harang-account``/``harang-calendar`` frontmatter into a "
-"``FrontmatterScope``."
+"``CalendarScope``. **Currently unused** - nothing calls this since "
+"``{{hrcal:...}}`` references name their account/calendar directly instead"
+" of relying on note frontmatter."
 msgstr ""
-"노트의 ``harang-account``/``harang-calendar`` 프론트매터를 ``FrontmatterScope``\\ "
-"로 읽어들입니다."
+"노트의 ``harang-account``/``harang-calendar`` 프론트매터를 ``CalendarScope``\\ 로 "
+"읽어들입니다. **현재 사용되지 않습니다** - ``{{hrcal:...}}`` 참조가 노트 프론트매터에 의존하는 대신 계정/캘린더를"
+" 직접 명시하므로, 이 함수를 호출하는 곳이 없습니다."
 
-#: ../../architecture.rst:64 7d6d5f03e1974269942ef74db74ce727
+#: ../../architecture.rst:68 7d6d5f03e1974269942ef74db74ce727
 msgid "``notes/noteEvents.ts``"
 msgstr "``notes/noteEvents.ts``"
 
-#: ../../architecture.rst:65 8e6a47b919d64e5a812c980eedd9bab8
+#: ../../architecture.rst:69 8e6a47b919d64e5a812c980eedd9bab8
 msgid ""
 "Scans the vault for ``harang-date``/``harang-repeat``/``harang-time`` "
 "frontmatter and expands each into ``NoteEvent`` occurrences inside a "
 "range - purely local to Obsidian, unrelated to any CalDAV server. Re-"
 "derives its own all-day-safe RRULE expansion rather than reusing "
-"``caldav/recurrence.ts`` (see below)."
+"``caldav/recurrence.ts`` (see below). Unrelated to "
+"``frontmatterScope.ts`` above - different frontmatter keys, different "
+"purpose."
 msgstr ""
 "``harang-date``/``harang-repeat``/``harang-time`` 프론트매터가 있는지 보관소를 스캔하고, "
-"각각을 범위 안의 ``NoteEvent`` 발생 항목으로 전개합니다 — Obsidian 안에서만 일어나고 CalDAV "
-"서버와는 무관합니다. ``caldav/recurrence.ts``\\ 를 재사용하지 않고 종일 날짜에 안전한 자체 "
-"RRULE 전개 로직을 따로 만들었습니다(아래 참고)."
+"각각을 범위 안의 ``NoteEvent`` 발생 항목으로 전개합니다 — Obsidian 안에서만 일어나고 CalDAV 서버와는 "
+"무관합니다. ``caldav/recurrence.ts``\\ 를 재사용하지 않고 종일 날짜에 안전한 자체 RRULE 전개 로직을 "
+"따로 만들었습니다(아래 참고). 위의 ``frontmatterScope.ts``\\ 와는 무관합니다 - 다른 프론트매터 키를 "
+"쓰고, 목적도 다릅니다."
 
-#: ../../architecture.rst:70 7d6d5f03e1974269942ef74db74ce727
+#: ../../architecture.rst:76 7d6d5f03e1974269942ef74db74ce727
 msgid "``render/dateWidget.ts``"
 msgstr "``render/dateWidget.ts``"
 
-#: ../../architecture.rst:71 41462033ece24cb29d19fe1a48f2aac6
+#: ../../architecture.rst:77 41462033ece24cb29d19fe1a48f2aac6
 msgid ""
-"Builds the ``[[cal:YYYY-MM-DD]]`` card widget: a heading, a warning if "
-"the note's frontmatter scope names an unregistered account/ calendar, and"
-" the day's events (scoped accordingly) as clickable rows."
+"Builds the ``{{hrcal:...:date:YYYY-MM-DD}}`` card widget: a heading, a "
+"warning if the embedded account/calendar name doesn't match a registered "
+"one, and that day's events from that specific account/calendar as "
+"clickable rows."
 msgstr ""
-"``[[cal:YYYY-MM-DD]]`` 카드 위젯을 만듭니다: 제목, 노트의 프론트매터 범위가 등록되지 않은 계정/캘린더를 가리킬"
-" 때의 경고, 그리고 그날의 일정(해당 범위로 제한)을 클릭 가능한 행으로 표시합니다."
+"``{{hrcal:...:date:YYYY-MM-DD}}`` 카드 위젯을 만듭니다: 제목, 참조에 담긴 계정/캘린더 이름이 등록된 "
+"것과 일치하지 않을 때의 경고, 그리고 그 특정 계정/캘린더의 그날 일정을 클릭 가능한 행으로 표시합니다."
 
-#: ../../architecture.rst:75 e5b6ca38347a469da74d921fc8200ec3
+#: ../../architecture.rst:81 e5b6ca38347a469da74d921fc8200ec3
 msgid "``render/eventChip.ts`` / ``render/eventCard.ts``"
 msgstr "``render/eventChip.ts`` / ``render/eventCard.ts``"
 
-#: ../../architecture.rst:76 147e98ae45624ffc945f3356f96dbe14
+#: ../../architecture.rst:82 147e98ae45624ffc945f3356f96dbe14
 msgid ""
 "The inline event chip, and the click-to-open detail popup (a manually "
-"positioned floating panel, closed on outside click or Esc). Event lookups"
-" are never scoped by frontmatter — a ``[[event:<uid>]]`` reference "
-"already names one exact event."
+"positioned floating panel, closed on outside click or Esc). The lookup is"
+" scoped to the ``accountName``/``calendarName`` embedded in the "
+"``{{hrcal:<accountName>:<calendarName>:event:<uid>}}`` reference itself -"
+" the reference already names one exact event."
 msgstr ""
-"인라인 일정 칩과, 클릭하면 열리는 상세 팝업(직접 위치를 계산하는 플로팅 패널, 바깥 클릭이나 Esc로 닫힘)입니다. 일정 조회는"
-" 프론트매터 범위의 영향을 받지 않습니다 — ``[[event:<uid>]]`` 참조는 이미 정확히 하나의 일정을 가리키기 "
+"인라인 일정 칩과, 클릭하면 열리는 상세 팝업(직접 위치를 계산하는 플로팅 패널, 바깥 클릭이나 Esc로 닫힘)입니다. 조회 "
+"범위는 ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}`` 참조 자체에 담긴 "
+"``accountName``/``calendarName``\\ 으로 정해집니다 — 참조가 이미 정확히 하나의 일정을 가리키기 "
 "때문입니다."
 
-#: ../../architecture.rst:80 7e033e9f9aee402e88a283a7cd94e4fb
+#: ../../architecture.rst:87 7e033e9f9aee402e88a283a7cd94e4fb
 msgid "``render/livePreview.ts``"
 msgstr "``render/livePreview.ts``"
 
-#: ../../architecture.rst:81 e01447b018a840c4a68079141af104c7
+#: ../../architecture.rst:88 e01447b018a840c4a68079141af104c7
 msgid ""
-"A CodeMirror 6 ``ViewPlugin`` that replaces "
-"``[[cal:...]]``/``[[event:...]]`` ranges with widget/chip widgets in Live"
-" Preview, skipping ranges the cursor or selection currently overlaps so "
-"the raw syntax stays editable."
+"A CodeMirror 6 ``ViewPlugin`` that replaces ``{{hrcal:...}}`` ranges "
+"(both ``date`` and ``event`` kinds, via one regex) with widget/chip "
+"widgets in Live Preview, skipping ranges the cursor or selection "
+"currently overlaps so the raw syntax stays editable."
 msgstr ""
-"Live Preview에서 ``[[cal:...]]``/``[[event:...]]`` 범위를 위젯/칩으로 바꾸는 "
-"CodeMirror 6 ``ViewPlugin``\\ 입니다. 커서나 선택 영역이 겹치는 범위는 건너뛰어서 원문 문법을 계속 편집할"
-" 수 있게 합니다."
+"Live Preview에서 ``{{hrcal:...}}`` 범위(``date``/``event`` 두 종류 모두, 정규식 하나로)를"
+" 위젯/칩으로 바꾸는 CodeMirror 6 ``ViewPlugin``\\ 입니다. 커서나 선택 영역이 겹치는 범위는 건너뛰어서 "
+"원문 문법을 계속 편집할 수 있게 합니다."
 
-#: ../../architecture.rst:85 95b322efe88948a1b00a5d03f54de428
+#: ../../architecture.rst:92 95b322efe88948a1b00a5d03f54de428
 msgid "``render/postProcessor.ts``"
 msgstr "``render/postProcessor.ts``"
 
-#: ../../architecture.rst:86 698299c311b94df694651d3ef7ddcacf
+#: ../../architecture.rst:93 5263fd2c18f3420894fe7b746689101d
 msgid ""
 "A Markdown post-processor that does the same replacement for Reading "
-"view. Obsidian parses ``[[...]]`` into a wikilink (``a.internal-link``) "
-"before any post-processor runs, so this reads each link's ``href"
-"``/``data-href`` rather than scanning raw text (a raw-text fallback still"
-" runs for bracket text that isn't inside a parsed wikilink)."
+"view, by scanning rendered text nodes directly - ``{{...}}`` isn't "
+"wikilink syntax, so unlike the old ``[[cal:...]]``/``[[event:...]]`` "
+"syntax it's never pre-parsed into an ``a.internal-link`` by Obsidian, and"
+" Live Preview and Reading view now share the exact same raw-text matching"
+" path."
 msgstr ""
-"읽기 모드에서 같은 치환을 수행하는 마크다운 포스트프로세서입니다. Obsidian은 포스트프로세서가 실행되기 전에 "
-"``[[...]]``\\ 를 위키링크(``a.internal-link``)로 먼저 파싱하므로, 원문 텍스트를 훑는 대신 각 링크의 "
-"``href``/``data-href``\\ 를 읽습니다(파싱된 위키링크에 속하지 않은 대괄호 텍스트를 위한 원문 텍스트 처리 "
-"방식도 폴백으로 남아 있습니다)."
+"읽기 모드에서 같은 치환을 수행하는 마크다운 포스트프로세서로, 렌더링된 텍스트 노드를 직접 스캔합니다 - "
+"``{{...}}``\\ 는 위키링크 문법이 아니므로, 예전의 ``[[cal:...]]``/``[[event:...]]`` 문법과"
+" 달리 Obsidian이 이를 ``a.internal-link``\\ 로 미리 파싱하는 일이 없고, Live Preview와 읽기 "
+"모드가 이제 완전히 동일한 원문 텍스트 매칭 경로를 공유합니다."
 
-#: ../../architecture.rst:92 e9d1db90de0742f78f6d9c78b6d7ef5f
+#: ../../architecture.rst:99 e9d1db90de0742f78f6d9c78b6d7ef5f
 msgid "``view/agenda.ts``, ``view/AgendaItemView.ts``, ``vue/AgendaView.vue``"
 msgstr "``view/agenda.ts``, ``view/AgendaItemView.ts``, ``vue/AgendaView.vue``"
 
-#: ../../architecture.rst:93 21d4bd06b10844b39703a7118283f7e5
+#: ../../architecture.rst:100 21d4bd06b10844b39703a7118283f7e5
 msgid ""
 "The sidebar agenda list: a fixed 30-day window of ``CalendarListItem`` "
 "(CalDAV events and note events merged) grouped by local day, rendered by "
@@ -289,11 +294,11 @@ msgstr ""
 "사이드바 아젠다 목록입니다: 고정 30일 범위의 ``CalendarListItem``\\ (CalDAV 일정과 노트 일정을 합친 "
 "것)을 로컬 날짜별로 묶어서, ``ItemView``\\ 가 호스팅하는 Vue 3 컴포넌트로 렌더링합니다."
 
-#: ../../architecture.rst:96 23f9feca165245b087a4758dca2bfc34
+#: ../../architecture.rst:103 23f9feca165245b087a4758dca2bfc34
 msgid "``view/monthGrid.ts``, ``view/MonthItemView.ts``, ``vue/MonthView.vue``"
 msgstr "``view/monthGrid.ts``, ``view/MonthItemView.ts``, ``vue/MonthView.vue``"
 
-#: ../../architecture.rst:97 ac64f99287e34b7c9977273db498b6c8
+#: ../../architecture.rst:104 ac64f99287e34b7c9977273db498b6c8
 msgid ""
 "The full-tab month grid view (same ``CalendarListItem`` merge as the "
 "agenda list), including keyboard (arrow-key) date navigation and cross-"
@@ -302,57 +307,62 @@ msgstr ""
 "전체 탭 월간 그리드 뷰로(아젠다 목록과 같은 ``CalendarListItem`` 병합 사용), 키보드(방향키) 날짜 탐색과 월 "
 "경계 처리까지 포함합니다."
 
-#: ../../architecture.rst:100 6289d817e15d4427868f7e08c6ad86d1
+#: ../../architecture.rst:107 6289d817e15d4427868f7e08c6ad86d1
 msgid "``view/MonthPickerModal.ts``"
 msgstr "``view/MonthPickerModal.ts``"
 
-#: ../../architecture.rst:101 ced7e5ca43c343fe81582b917dab5f3e
+#: ../../architecture.rst:108 ced7e5ca43c343fe81582b917dab5f3e
 msgid ""
 "The year/month picker opened from the month view's heading, with a click-"
 "to-edit year field."
 msgstr "월간 뷰 제목에서 여는 연도/월 선택창으로, 클릭하면 편집 가능해지는 연도 입력란이 있습니다."
 
-#: ../../architecture.rst:105 f65634e7153349a7997803f168b6aded
+#: ../../architecture.rst:112 f65634e7153349a7997803f168b6aded
 msgid "Data flow"
 msgstr "데이터 흐름"
 
-#: ../../architecture.rst:144 d1d8bac74f524255ab31b0d1932993ec
+#: ../../architecture.rst:151 d1d8bac74f524255ab31b0d1932993ec
 msgid "Reference syntax"
 msgstr "참조 문법"
 
-#: ../../architecture.rst:146 810083a246e441d3b4b5be3f1f26de5e
+#: ../../architecture.rst:153 e54535bb01d44dcf98a3428bedbbcf4d
 msgid ""
-"``[[cal:YYYY-MM-DD]]`` renders as a date widget; ``[[event:<uid>]]`` "
-"renders as an event chip. Both are normally inserted by the ``@date[``/ "
-"``@event[`` editor suggests, but either can be typed by hand too — an "
-"unresolvable ``event`` UID renders as a faded, dashed chip instead of "
-"failing silently."
+"``{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}`` renders as a "
+"date widget; ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}`` "
+"renders as an event chip. Both are normally inserted by the staged "
+"``{{hrcal:`` editor suggest, but either can be typed by hand too — an "
+"unresolvable reference renders as a faded, dashed chip (or, for a date "
+"whose account/calendar doesn't match a registered one, a warning inside "
+"the widget) instead of failing silently."
 msgstr ""
-"``[[cal:YYYY-MM-DD]]``\\ 는 날짜 위젯으로, ``[[event:<uid>]]``\\ 는 일정 칩으로 "
-"렌더링됩니다. 보통은 ``@date[``/``@event[`` 에디터 서제스트로 삽입되지만, 둘 다 직접 손으로 입력해도 됩니다 —"
-" 해석할 수 없는 ``event`` UID는 조용히 실패하는 대신 흐릿한 점선 칩으로 표시됩니다."
+"``{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}``\\ 는 날짜 위젯으로, "
+"``{{hrcal:<accountName>:<calendarName>:event:<uid>}}``\\ 는 일정 칩으로 렌더링됩니다. "
+"보통은 단계별 ``{{hrcal:`` 에디터 서제스트로 삽입되지만, 둘 다 직접 손으로 입력해도 됩니다 — 해석할 수 없는 "
+"참조는 조용히 실패하는 대신 흐릿한 점선 칩으로(또는 계정/캘린더가 등록된 것과 일치하지 않는 날짜라면 위젯 안의 경고로) "
+"표시됩니다."
 
-#: ../../architecture.rst:152 81db6cf0a77b4ac7b6f3182a3816b1b9
+#: ../../architecture.rst:161 ea34460b75b44cb29a1fc29fb2020cbc
 msgid ""
-"Frontmatter scoping (``harang-account``/``harang-calendar``, see "
-":doc:`usage`) only affects date widgets, not event chips, since a chip "
-"already names one exact event by UID."
+"Both kinds are always scoped by the ``accountName``/``calendarName`` "
+"named directly in the reference - note frontmatter (``harang-account``/ "
+"``harang-calendar``, see :doc:`usage`) plays no role here any more."
 msgstr ""
-"프론트매터 범위 지정(``harang-account``/``harang-calendar``, :doc:`usage` 참고)은 날짜 "
-"위젯에만 영향을 주고 일정 칩에는 영향을 주지 않습니다 — 칩은 이미 UID로 정확히 하나의 일정을 가리키기 때문입니다."
+"두 종류 모두 항상 참조에 직접 명시된 ``accountName``/``calendarName``\\ 으로 범위가 정해집니다 - "
+"노트 프론트매터(``harang-account``/``harang-calendar``, :doc:`usage` 참고)는 더 "
+"이상 여기서 아무 역할도 하지 않습니다."
 
-#: ../../architecture.rst:157 265d00fffabc4f73b7638655e7f2f2d6
+#: ../../architecture.rst:166 265d00fffabc4f73b7638655e7f2f2d6
 msgid "Note events (``harang-date``/``harang-repeat``/``harang-time``)"
 msgstr "노트 일정(``harang-date``/``harang-repeat``/``harang-time``)"
 
-#: ../../architecture.rst:159 611fa6674e554949a5de33c4370c29e3
+#: ../../architecture.rst:168 611fa6674e554949a5de33c4370c29e3
 msgid ""
 "Unrelated to the reference syntax above: a note carrying ``harang-date`` "
 "frontmatter (see :doc:`usage`) becomes a ``NoteEvent`` and shows up as an"
 " item in the sidebar agenda list and month grid only - never in a "
-"``[[cal:...]]`` date widget or as an event chip, and never written to or "
-"read from a CalDAV server. ``harang-repeat`` reuses the same ``rrule`` "
-"package as ``caldav/recurrence.ts``, but with its own from-scratch "
+"``{{hrcal:...}}`` date widget or as an event chip, and never written to "
+"or read from a CalDAV server. ``harang-repeat`` reuses the same ``rrule``"
+" package as ``caldav/recurrence.ts``, but with its own from-scratch "
 "expansion logic (see ``notes/noteEvents.ts`` above) rather than sharing "
 "that module's function directly, since a note event has no time-of-day at"
 " all by default and needs consistently UTC-midnight-anchored date math "
@@ -363,21 +373,21 @@ msgid ""
 "events, not the (still UTC-midnight-anchored) date expansion itself."
 msgstr ""
 "위 참조 문법과는 무관합니다: ``harang-date`` 프론트매터(:doc:`usage` 참고)가 있는 노트는 "
-"``NoteEvent``\\ 가 되어 사이드바 아젠다 목록과 월간 그리드에만 항목으로 나타납니다 — ``[[cal:...]]`` "
+"``NoteEvent``\\ 가 되어 사이드바 아젠다 목록과 월간 그리드에만 항목으로 나타납니다 — ``{{hrcal:...}}`` "
 "날짜 위젯이나 일정 칩에는 절대 나타나지 않고, CalDAV 서버에 쓰거나 읽는 일도 전혀 없습니다. ``harang-"
 "repeat``\\ 은 ``caldav/recurrence.ts``\\ 와 같은 ``rrule`` 패키지를 재사용하지만, 그 모듈의"
 " 함수를 그대로 공유하는 대신 자체적으로 처음부터 작성한 전개 로직을 씁니다(위 ``notes/noteEvents.ts`` 참고) "
 "— 노트 일정은 기본적으로 시간 개념이 전혀 없어서, 이 프로젝트에서 여러 번 겪고(그리고 고친) 로컬/UTC 종일 날짜 불일치를 "
-"여기서도 겪지 않으려면 날짜 계산 전체를 일관되게 UTC 자정 기준으로 처리해야 하기 때문입니다. ``harang-time``\\ 은 "
-"그 종일 날짜 계산 위에 선택적인 ``HH:MM-HH:MM`` 표시 범위를 얹을 뿐입니다 — ``NoteEvent``\\ 가 시간대가 "
-"있는 CalDAV 일정과 나란히 어떻게 표시되고 정렬되는지에만 영향을 주고, (여전히 UTC 자정 기준인) 날짜 전개 자체는 "
-"바뀌지 않습니다."
+"여기서도 겪지 않으려면 날짜 계산 전체를 일관되게 UTC 자정 기준으로 처리해야 하기 때문입니다. ``harang-time``\\ "
+"은 그 종일 날짜 계산 위에 선택적인 ``HH:MM-HH:MM`` 표시 범위를 얹을 뿐입니다 — ``NoteEvent``\\ 가 "
+"시간대가 있는 CalDAV 일정과 나란히 어떻게 표시되고 정렬되는지에만 영향을 주고, (여전히 UTC 자정 기준인) 날짜 전개 "
+"자체는 바뀌지 않습니다."
 
-#: ../../architecture.rst:175 5bac5ec31210483497ab5a2d2ccc8e22
+#: ../../architecture.rst:184 5bac5ec31210483497ab5a2d2ccc8e22
 msgid "No runtime dependencies beyond ``rrule``"
 msgstr "``rrule`` 외에는 런타임 의존성 없음"
 
-#: ../../architecture.rst:177 83e989969ccd4815ac2fafa6b4b10da5
+#: ../../architecture.rst:186 83e989969ccd4815ac2fafa6b4b10da5
 msgid ""
 "Beyond what Obsidian itself provides (the ``obsidian`` package, "
 "CodeMirror 6, Vue 3) and the `rrule <https://github.com/jkbrzt/rrule>`_ "
@@ -390,4 +400,65 @@ msgstr ""
 "`rrule <https://github.com/jkbrzt/rrule>`_ 패키지 외에는 런타임 의존성이 없습니다 — CalDAV"
 " 클라이언트와 iCalendar 파서 모두 npm에서 가져오지 않고 직접 작성해서, 번들 크기를 작게 유지하고 서드파티 "
 "HTTP/XML 파싱 라이브러리 자체의 취약점에 노출되는 것을 피합니다."
+
+#~ msgid ""
+#~ "Triggers on ``@date[``, suggests upcoming "
+#~ "dates matching the typed query, and "
+#~ "inserts ``[[cal:YYYY-MM-DD]]``."
+#~ msgstr ""
+#~ "``@date[``\\ 에서 트리거되어, 입력한 검색어와 일치하는 "
+#~ "다가오는 날짜를 제안하고 ``[[cal:YYYY-MM-DD]]``\\"
+#~ " 를 삽입합니다."
+
+#~ msgid "``editorSuggest/EventEditorSuggest.ts``"
+#~ msgstr "``editorSuggest/EventEditorSuggest.ts``"
+
+#~ msgid ""
+#~ "Triggers on ``@event[``, searches the "
+#~ "cached event store by title, and "
+#~ "inserts ``[[event:<uid>]]``."
+#~ msgstr ""
+#~ "``@event[``\\ 에서 트리거되어, 캐시된 일정 저장소를 "
+#~ "제목으로 검색하고 ``[[event:<uid>]]``\\ 를 삽입합니다."
+
+#~ msgid ""
+#~ "Reads a note's ``harang-account``/``harang-"
+#~ "calendar`` frontmatter into a "
+#~ "``FrontmatterScope``."
+#~ msgstr ""
+#~ "노트의 ``harang-account``/``harang-calendar`` "
+#~ "프론트매터를 ``FrontmatterScope``\\ 로 읽어들입니다."
+
+#~ msgid ""
+#~ "A Markdown post-processor that does "
+#~ "the same replacement for Reading view."
+#~ " Obsidian parses ``[[...]]`` into a "
+#~ "wikilink (``a.internal-link``) before any "
+#~ "post-processor runs, so this reads "
+#~ "each link's ``href``/``data-href`` rather "
+#~ "than scanning raw text (a raw-text"
+#~ " fallback still runs for bracket text"
+#~ " that isn't inside a parsed "
+#~ "wikilink)."
+#~ msgstr ""
+#~ "읽기 모드에서 같은 치환을 수행하는 마크다운 "
+#~ "포스트프로세서입니다. Obsidian은 포스트프로세서가 실행되기 전에 "
+#~ "``[[...]]``\\ 를 위키링크(``a.internal-link``)로 먼저"
+#~ " 파싱하므로, 원문 텍스트를 훑는 대신 각 링크의 "
+#~ "``href``/``data-href``\\ 를 읽습니다(파싱된 위키링크에 "
+#~ "속하지 않은 대괄호 텍스트를 위한 원문 텍스트 처리"
+#~ " 방식도 폴백으로 남아 있습니다)."
+
+#~ msgid ""
+#~ "Frontmatter scoping (``harang-account``/``harang-"
+#~ "calendar``, see :doc:`usage`) only affects "
+#~ "date widgets, not event chips, since "
+#~ "a chip already names one exact "
+#~ "event by UID."
+#~ msgstr ""
+#~ "프론트매터 범위 지정(``harang-account``/``harang-"
+#~ "calendar``, :doc:`usage` 참고)은 날짜 위젯에만 "
+#~ "영향을 주고 일정 칩에는 영향을 주지 않습니다 —"
+#~ " 칩은 이미 UID로 정확히 하나의 일정을 가리키기"
+#~ " 때문입니다."
 

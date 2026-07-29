@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: harang-calendar 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-28 01:04+0900\n"
+"POT-Creation-Date: 2026-07-29 10:16+0900\n"
 "PO-Revision-Date: 2026-07-28 01:04+0900\n"
 "Last-Translator: Ji-Ho Lee <search5@mz.co.kr>\n"
 "Language: ko\n"
@@ -27,80 +27,109 @@ msgstr "설치"
 msgid "Make sure you have completed the steps in :doc:`prerequisites` first."
 msgstr ":doc:`prerequisites`\\ 의 단계를 먼저 완료하세요."
 
-#: ../../installation.rst:6 875e417ca03d4bb7a2c5d6a260e96460
+#: ../../installation.rst:6 33efde0bc7244c91bcf829cdf6382de0
 msgid ""
-"**harang-calendar** is not yet published to the Obsidian Community "
-"Plugins directory, so for now it must be built (or downloaded pre-built) "
-"and installed manually."
+"**harang-calendar** is listed in Obsidian's Community Plugins directory, "
+"so most people should use Method 1 below. Manual installation (Methods 2 "
+"and 3) remains available for people who prefer it, or who want to install"
+" a specific pre-release build."
 msgstr ""
-"**harang-calendar**\\ 는 아직 Obsidian 커뮤니티 플러그인 디렉터리에 등록되지 않았으므로, 지금은 "
-"빌드하거나(또는 빌드된 파일을 받아) 수동으로 설치해야 합니다."
+"**harang-calendar**\\ 는 Obsidian 커뮤니티 플러그인 디렉터리에 등록되어 있으므로, 대부분의 "
+"사용자는 아래 방법 1을 사용하면 됩니다. 수동 설치(방법 2, 3)는 그 방식을 선호하거나 특정 사전 "
+"릴리스 빌드를 설치하고 싶은 사용자를 위해 계속 제공됩니다."
 
-#: ../../installation.rst:11 008840038b4c43e5a64e5c7363d75b20
-msgid "Method 1 — Manual install of pre-built files"
-msgstr "방법 1 — 빌드된 파일 수동 설치"
+#: ../../installation.rst:12 a169b017fc2549e5b9e2298dd0622391
+msgid "Method 1 — Community Plugins (recommended)"
+msgstr "방법 1 — 커뮤니티 플러그인 (권장)"
 
-#: ../../installation.rst:13 3bdae585bc2843fab69a363f86f7b4fa
+#: ../../installation.rst:14 3c58b5be07a743958fd5f8858b6a4cea
+msgid "In Obsidian, open **Settings → Community plugins**."
+msgstr "Obsidian에서 **설정 → 커뮤니티 플러그인**\\ 을 여세요."
+
+#: ../../installation.rst:15 bbbb0e37fd92497b9df546cd312f6382
+msgid "Click **Browse**, then search for **Harang Calendar**."
+msgstr "**찾아보기**\\ 를 클릭한 뒤 **Harang Calendar**\\ 를 검색하세요."
+
+#: ../../installation.rst:16 6038ab6d379c42f3a22122508910d6b5
+msgid "Click **Install**, then **Enable**."
+msgstr "**설치**\\ 를 클릭한 뒤 **활성화**\\ 하세요."
+
+#: ../../installation.rst:19 008840038b4c43e5a64e5c7363d75b20
+msgid "Method 2 — Manual install of pre-built files"
+msgstr "방법 2 — 빌드된 파일 수동 설치"
+
+#: ../../installation.rst:21 3bdae585bc2843fab69a363f86f7b4fa
 msgid ""
 "Use this method if you already have a built copy of the plugin "
 "(``main.js``, ``manifest.json``, ``styles.css``) — for example from a "
-"release archive."
+"release archive — and would rather not go through the Community Plugins "
+"browser."
 msgstr ""
-"플러그인의 빌드된 사본(``main.js``, ``manifest.json``, ``styles.css``)이 이미 있는 경우 "
-"이 방법을 사용하세요 — 예를 들어 릴리스 아카이브에서 받은 경우."
+"플러그인의 빌드된 사본(``main.js``, ``manifest.json``, ``styles.css``)이 이미 있고, "
+"커뮤니티 플러그인 화면을 거치고 싶지 않은 경우 이 방법을 사용하세요 — 예를 들어 릴리스 "
+"아카이브에서 받은 경우."
 
-#: ../../installation.rst:16 7a8d4c20cb7b484f86517529cd23ffb7
+#: ../../installation.rst:25 7a8d4c20cb7b484f86517529cd23ffb7
 msgid ""
 "In your vault, create the folder ``<vault>/.obsidian/plugins/harang-"
 "calendar/`` if it doesn't already exist."
-msgstr ""
-"보관소(vault)에 ``<vault>/.obsidian/plugins/harang-calendar/`` 폴더가 없다면 "
-"만드세요."
+msgstr "보관소(vault)에 ``<vault>/.obsidian/plugins/harang-calendar/`` 폴더가 없다면 만드세요."
 
-#: ../../installation.rst:19 c34077646c174edb873e3b43f5f24fd4
+#: ../../installation.rst:28 c34077646c174edb873e3b43f5f24fd4
 msgid "Copy ``main.js``, ``manifest.json``, and ``styles.css`` into that folder."
 msgstr "``main.js``, ``manifest.json``, ``styles.css``\\ 를 그 폴더로 복사하세요."
 
-#: ../../installation.rst:20 3c58b5be07a743958fd5f8858b6a4cea
+#: ../../installation.rst:29 3c58b5be07a743958fd5f8858b6a4cea
 msgid ""
 "Restart Obsidian, then enable **Harang Calendar** under **Settings → "
 "Community plugins**."
 msgstr "Obsidian을 재시작한 뒤 **설정 → 커뮤니티 플러그인**\\ 에서 **Harang Calendar**\\ 를 켜세요."
 
-#: ../../installation.rst:24 70fb0d6fb2694e9594e19d67e71a8c77
-msgid "Method 2 — Clone the Git repository and build from source"
-msgstr "방법 2 — Git 저장소를 클론해서 소스에서 빌드"
+#: ../../installation.rst:33 70fb0d6fb2694e9594e19d67e71a8c77
+msgid "Method 3 — Clone the Git repository and build from source"
+msgstr "방법 3 — Git 저장소를 클론해서 소스에서 빌드"
 
-#: ../../installation.rst:26 1bb6b2a6cd074f4693c6c147d6f6d271
+#: ../../installation.rst:35 1bb6b2a6cd074f4693c6c147d6f6d271
 msgid ""
 "Use this method if you want to build from a specific commit or contribute"
 " to the plugin."
 msgstr "특정 커밋에서 빌드하거나 플러그인 개발에 기여하고 싶다면 이 방법을 사용하세요."
 
-#: ../../installation.rst:29 7a94803137e74d33941ec781ede5585d
+#: ../../installation.rst:38 7a94803137e74d33941ec781ede5585d
 msgid "**Requirements:** `Node.js <https://nodejs.org/>`_ 18 or later."
 msgstr "**요구사항:** `Node.js <https://nodejs.org/>`_ 18 이상."
 
-#: ../../installation.rst:38 6cf020352638474a8acb4fe5953ffbef
+#: ../../installation.rst:47 6cf020352638474a8acb4fe5953ffbef
 msgid ""
 "This produces ``main.js`` in the project root. Copy it, together with "
 "``manifest.json`` and ``styles.css``, into ``<vault>/.obsidian/plugins"
-"/harang-calendar/`` as described in Method 1, then restart Obsidian and "
+"/harang-calendar/`` as described in Method 2, then restart Obsidian and "
 "enable the plugin."
 msgstr ""
-"프로젝트 루트에 ``main.js``\\ 가 생성됩니다. 이를 ``manifest.json``, ``styles.css``\\ "
-"와 함께 방법 1에서 설명한 것처럼 ``<vault>/.obsidian/plugins/harang-calendar/``\\ 로 "
-"복사한 뒤, Obsidian을 재시작하고 플러그인을 켜세요."
+"프로젝트 루트에 ``main.js``\\ 가 생성됩니다. 이를 ``manifest.json``, ``styles.css``\\ 와 "
+"함께 방법 2에서 설명한 것처럼 ``<vault>/.obsidian/plugins/harang-calendar/``\\ 로 복사한 "
+"뒤, Obsidian을 재시작하고 플러그인을 켜세요."
 
-#: ../../installation.rst:45 30b0ee7e26ac4427b4e769a6118e119c
+#: ../../installation.rst:54 30b0ee7e26ac4427b4e769a6118e119c
 msgid ""
 "``npm run dev`` starts esbuild in watch mode, rebuilding ``main.js`` on "
 "every source change — useful when iterating on the plugin itself."
 msgstr ""
-"``npm run dev``\\ 는 esbuild를 watch 모드로 실행해 소스가 바뀔 때마다 ``main.js``\\ 를 "
-"다시 빌드합니다 — 플러그인 자체를 수정할 때 유용합니다."
+"``npm run dev``\\ 는 esbuild를 watch 모드로 실행해 소스가 바뀔 때마다 ``main.js``\\ 를 다시 "
+"빌드합니다 — 플러그인 자체를 수정할 때 유용합니다."
 
-#: ../../installation.rst:48 53ca758315ac4074aa8518d0da4656ba
+#: ../../installation.rst:57 53ca758315ac4074aa8518d0da4656ba
 msgid "Once installed, continue to :doc:`usage` to set up a CalDAV account."
 msgstr "설치가 끝나면 :doc:`usage`\\ 로 이어가서 CalDAV 계정을 설정하세요."
+
+#~ msgid ""
+#~ "**harang-calendar** is not yet published"
+#~ " to the Obsidian Community Plugins "
+#~ "directory, so for now it must be"
+#~ " built (or downloaded pre-built) and"
+#~ " installed manually."
+#~ msgstr ""
+#~ "**harang-calendar**\\ 는 아직 Obsidian 커뮤니티"
+#~ " 플러그인 디렉터리에 등록되지 않았으므로, 지금은 빌드하거나(또는"
+#~ " 빌드된 파일을 받아) 수동으로 설치해야 합니다."
 

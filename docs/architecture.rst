@@ -14,13 +14,13 @@ All of the plugin's logic lives under ``src/``:
      - Responsibility
    * - ``main.ts``
      - Plugin entry point: loads settings, registers the sidebar/month
-       views, both editor suggests, the live preview extension, and the
+       views, the editor suggest, the live preview extension, and the
        post-processor; adds the **Open calendar in sidebar**, **Open
        calendar in a new tab**, and **Refresh calendars** commands.
    * - ``types.ts``
      - Shared types: ``CalDavEvent``, ``CalDavCalendar``, ``CalDavAccount``,
-       ``CalDavTimezone``, ``HarangCalendarSettings``, ``FrontmatterScope``,
-       ``NoteEvent``, ``CalendarListItem``.
+       ``CalDavTimezone``, ``HarangCalendarSettings``, ``CalendarScope``,
+       ``HrcalScope``, ``NoteEvent``, ``CalendarListItem``.
    * - ``settings.ts`` / ``settingsTab.ts``
      - Default settings and the settings UI. ``settingsTab.ts`` implements
        Obsidian's classic imperative ``display()`` API rather than the
@@ -52,43 +52,50 @@ All of the plugin's logic lives under ``src/``:
        account/calendar, with TTL-based staleness, on-demand gap-filling
        for the month view's range navigation, and scope/search/lookup
        helpers.
-   * - ``editorSuggest/DateEditorSuggest.ts``, ``dateCandidates.ts``
-     - Triggers on ``@date[``, suggests upcoming dates matching the typed
-       query, and inserts ``[[cal:YYYY-MM-DD]]``.
-   * - ``editorSuggest/EventEditorSuggest.ts``
-     - Triggers on ``@event[``, searches the cached event store by title,
-       and inserts ``[[event:<uid>]]``.
+   * - ``editorSuggest/HrcalEditorSuggest.ts``, ``dateCandidates.ts``
+     - Triggers on ``{{hrcal:``. A single staged suggester (no separate
+       ``@date[``/``@event[`` triggers): it splits the typed query on ``:``
+       to figure out which stage it's in - account name, then that
+       account's calendar name, then a combined date-candidate/event-title
+       search - and inserts
+       ``{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}`` or
+       ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}``.
    * - ``render/frontmatterScope.ts``
      - Reads a note's ``harang-account``/``harang-calendar`` frontmatter
-       into a ``FrontmatterScope``.
+       into a ``CalendarScope``. **Currently unused** - nothing calls
+       this since ``{{hrcal:...}}`` references name their account/calendar
+       directly instead of relying on note frontmatter.
    * - ``notes/noteEvents.ts``
      - Scans the vault for ``harang-date``/``harang-repeat``/``harang-time``
        frontmatter and expands each into ``NoteEvent`` occurrences inside a
        range - purely local to Obsidian, unrelated to any CalDAV server.
        Re-derives its own all-day-safe RRULE expansion rather than reusing
-       ``caldav/recurrence.ts`` (see below).
+       ``caldav/recurrence.ts`` (see below). Unrelated to
+       ``frontmatterScope.ts`` above - different frontmatter keys, different
+       purpose.
    * - ``render/dateWidget.ts``
-     - Builds the ``[[cal:YYYY-MM-DD]]`` card widget: a heading, a warning
-       if the note's frontmatter scope names an unregistered account/
-       calendar, and the day's events (scoped accordingly) as clickable
-       rows.
+     - Builds the ``{{hrcal:...:date:YYYY-MM-DD}}`` card widget: a heading,
+       a warning if the embedded account/calendar name doesn't match a
+       registered one, and that day's events from that specific
+       account/calendar as clickable rows.
    * - ``render/eventChip.ts`` / ``render/eventCard.ts``
      - The inline event chip, and the click-to-open detail popup (a
        manually positioned floating panel, closed on outside click or
-       Esc). Event lookups are never scoped by frontmatter — a
-       ``[[event:<uid>]]`` reference already names one exact event.
+       Esc). The lookup is scoped to the ``accountName``/``calendarName``
+       embedded in the ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}``
+       reference itself - the reference already names one exact event.
    * - ``render/livePreview.ts``
-     - A CodeMirror 6 ``ViewPlugin`` that replaces
-       ``[[cal:...]]``/``[[event:...]]`` ranges with widget/chip widgets in
-       Live Preview, skipping ranges the cursor or selection currently
-       overlaps so the raw syntax stays editable.
+     - A CodeMirror 6 ``ViewPlugin`` that replaces ``{{hrcal:...}}`` ranges
+       (both ``date`` and ``event`` kinds, via one regex) with widget/chip
+       widgets in Live Preview, skipping ranges the cursor or selection
+       currently overlaps so the raw syntax stays editable.
    * - ``render/postProcessor.ts``
      - A Markdown post-processor that does the same replacement for Reading
-       view. Obsidian parses ``[[...]]`` into a wikilink
-       (``a.internal-link``) before any post-processor runs, so this reads
-       each link's ``href``/``data-href`` rather than scanning raw text (a
-       raw-text fallback still runs for bracket text that isn't inside a
-       parsed wikilink).
+       view, by scanning rendered text nodes directly - ``{{...}}`` isn't
+       wikilink syntax, so unlike the old ``[[cal:...]]``/``[[event:...]]``
+       syntax it's never pre-parsed into an ``a.internal-link`` by Obsidian,
+       and Live Preview and Reading view now share the exact same raw-text
+       matching path.
    * - ``view/agenda.ts``, ``view/AgendaItemView.ts``, ``vue/AgendaView.vue``
      - The sidebar agenda list: a fixed 30-day window of ``CalendarListItem``
        (CalDAV events and note events merged) grouped by local day, rendered
@@ -143,15 +150,17 @@ Data flow
 Reference syntax
 ------------------
 
-``[[cal:YYYY-MM-DD]]`` renders as a date widget; ``[[event:<uid>]]``
-renders as an event chip. Both are normally inserted by the ``@date[``/
-``@event[`` editor suggests, but either can be typed by hand too — an
-unresolvable ``event`` UID renders as a faded, dashed chip instead of
+``{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}`` renders as a date
+widget; ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}`` renders as an
+event chip. Both are normally inserted by the staged ``{{hrcal:`` editor
+suggest, but either can be typed by hand too — an unresolvable reference
+renders as a faded, dashed chip (or, for a date whose account/calendar
+doesn't match a registered one, a warning inside the widget) instead of
 failing silently.
 
-Frontmatter scoping (``harang-account``/``harang-calendar``, see
-:doc:`usage`) only affects date widgets, not event chips, since a chip
-already names one exact event by UID.
+Both kinds are always scoped by the ``accountName``/``calendarName`` named
+directly in the reference - note frontmatter (``harang-account``/
+``harang-calendar``, see :doc:`usage`) plays no role here any more.
 
 Note events (``harang-date``/``harang-repeat``/``harang-time``)
 -------------------------------------------------------------------------
@@ -159,7 +168,7 @@ Note events (``harang-date``/``harang-repeat``/``harang-time``)
 Unrelated to the reference syntax above: a note carrying ``harang-date``
 frontmatter (see :doc:`usage`) becomes a ``NoteEvent`` and shows up as an
 item in the sidebar agenda list and month grid only - never in a
-``[[cal:...]]`` date widget or as an event chip, and never written to or
+``{{hrcal:...}}`` date widget or as an event chip, and never written to or
 read from a CalDAV server. ``harang-repeat`` reuses the same ``rrule``
 package as ``caldav/recurrence.ts``, but with its own from-scratch
 expansion logic (see ``notes/noteEvents.ts`` above) rather than sharing

@@ -12,8 +12,7 @@ Calendar, Fastmail, or any other server that implements
 `RFC 4791 <https://www.rfc-editor.org/rfc/rfc4791>`_. The plugin only reads
 from this server; it never writes, so a read-only account is fine if your
 server supports one. Only Basic Auth is supported — a server that requires
-OAuth2 (Google Calendar's own CalDAV endpoint, for example) cannot be used
-directly.
+OAuth2 instead cannot be used directly.
 
 You will need:
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: harang-calendar 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-28 01:04+0900\n"
+"POT-Creation-Date: 2026-07-29 10:16+0900\n"
 "PO-Revision-Date: 2026-07-28 01:04+0900\n"
 "Last-Translator: Ji-Ho Lee <search5@mz.co.kr>\n"
 "Language: ko\n"
@@ -39,73 +39,71 @@ msgid ""
 "<https://www.rfc-editor.org/rfc/rfc4791>`_. The plugin only reads from "
 "this server; it never writes, so a read-only account is fine if your "
 "server supports one. Only Basic Auth is supported — a server that "
-"requires OAuth2 (Google Calendar's own CalDAV endpoint, for example) "
-"cannot be used directly."
+"requires OAuth2 instead cannot be used directly."
 msgstr ""
 "HTTP(S)로 접속 가능한 CalDAV 호환 캘린더가 최소 하나 필요합니다 — 예를 들어 `Radicale "
 "<https://radicale.org/>`_, Nextcloud Calendar, Fastmail, 또는 `RFC 4791 "
 "<https://www.rfc-editor.org/rfc/rfc4791>`_\\ 을 구현한 다른 서버도 됩니다. 이 플러그인은 "
-"서버에서 읽기만 하고 쓰지 않으므로, 서버가 지원한다면 읽기 전용 계정도 괜찮습니다. Basic Auth만 지원하므로 "
-"OAuth2가 필요한 서버(예: 구글 캘린더 자체 CalDAV 엔드포인트)는 직접 연결할 수 없습니다."
+"서버에서 읽기만 하고 쓰지 않으므로, 서버가 지원한다면 읽기 전용 계정도 괜찮습니다. Basic Auth만 지원하므로 OAuth2가"
+" 필요한 서버는 직접 연결할 수 없습니다."
 
-#: ../../prerequisites.rst:18 4b751f7721ab40b69beb77aae952a058
+#: ../../prerequisites.rst:17 4b751f7721ab40b69beb77aae952a058
 msgid "You will need:"
 msgstr "다음 정보가 필요합니다:"
 
-#: ../../prerequisites.rst:23 e49582f40e1b463ebf263477f7659679
+#: ../../prerequisites.rst:22 e49582f40e1b463ebf263477f7659679
 msgid "Item"
 msgstr "항목"
 
-#: ../../prerequisites.rst:24 a6864320eca54f8ab911da611097b9ef
+#: ../../prerequisites.rst:23 a6864320eca54f8ab911da611097b9ef
 msgid "Notes"
 msgstr "설명"
 
-#: ../../prerequisites.rst:25 47c1374353b24271a79b92d8c334d266
+#: ../../prerequisites.rst:24 47c1374353b24271a79b92d8c334d266
 msgid "Server URL"
 msgstr "서버 URL"
 
-#: ../../prerequisites.rst:26 f9f16d57705840109054723461048c49
+#: ../../prerequisites.rst:25 f9f16d57705840109054723461048c49
 msgid ""
 "Either the CalDAV base URL or the exact calendar collection URL. The "
 "plugin auto-discovers every calendar under the account from either."
 msgstr ""
-"CalDAV 기본 URL 또는 정확한 캘린더 컬렉션 URL 둘 다 가능합니다. 어느 쪽이든 플러그인이 그 계정 아래 모든 "
-"캘린더를 자동으로 찾아냅니다."
+"CalDAV 기본 URL 또는 정확한 캘린더 컬렉션 URL 둘 다 가능합니다. 어느 쪽이든 플러그인이 그 계정 아래 모든 캘린더를 "
+"자동으로 찾아냅니다."
 
-#: ../../prerequisites.rst:28 249c0e74324249c5b2210a859520b4bf
+#: ../../prerequisites.rst:27 249c0e74324249c5b2210a859520b4bf
 msgid "Username"
 msgstr "사용자명"
 
-#: ../../prerequisites.rst:29 892a8cc6421a4c49b54ba671a5a9e786
+#: ../../prerequisites.rst:28 892a8cc6421a4c49b54ba671a5a9e786
 msgid "Your CalDAV account's username."
 msgstr "CalDAV 계정의 사용자명."
 
-#: ../../prerequisites.rst:30 c2d3406efd6448ae944c44a85ae5011e
+#: ../../prerequisites.rst:29 c2d3406efd6448ae944c44a85ae5011e
 msgid "Password"
 msgstr "비밀번호"
 
-#: ../../prerequisites.rst:31 a25426c8b4244f76921cae7c7bfa597f
+#: ../../prerequisites.rst:30 a25426c8b4244f76921cae7c7bfa597f
 msgid ""
 "Your CalDAV account's password, or an app-specific password if your "
 "server supports one (recommended over your main account password)."
-msgstr ""
-"CalDAV 계정의 비밀번호, 또는 서버가 지원한다면 앱 전용 비밀번호(주 계정 비밀번호보다 권장됩니다)."
+msgstr "CalDAV 계정의 비밀번호, 또는 서버가 지원한다면 앱 전용 비밀번호(주 계정 비밀번호보다 권장됩니다)."
 
-#: ../../prerequisites.rst:35 d098eda8000a465e938b02f7306ee95a
+#: ../../prerequisites.rst:34 d098eda8000a465e938b02f7306ee95a
 msgid "2. Obsidian 1.12.7 or later"
 msgstr "2. Obsidian 1.12.7 이상"
 
-#: ../../prerequisites.rst:37 36b7695b380443ba9e60352a69b23543
+#: ../../prerequisites.rst:36 36b7695b380443ba9e60352a69b23543
 msgid ""
 "This is the plugin's declared minimum supported Obsidian version. Among "
 "other things, it uses Obsidian's official ``getLanguage()`` API "
 "(available since 1.8.7) to match its UI language to your Obsidian "
 "language setting."
 msgstr ""
-"플러그인이 명시한 최소 지원 Obsidian 버전입니다. 이 밖에도, Obsidian 공식 ``getLanguage()`` API"
-"(1.8.7부터 제공)를 사용해 UI 언어를 Obsidian 언어 설정에 맞춥니다."
+"플러그인이 명시한 최소 지원 Obsidian 버전입니다. 이 밖에도, Obsidian 공식 ``getLanguage()`` "
+"API(1.8.7부터 제공)를 사용해 UI 언어를 Obsidian 언어 설정에 맞춥니다."
 
-#: ../../prerequisites.rst:41 b41b1c0c42aa40efbde4985ca55e5ead
+#: ../../prerequisites.rst:40 b41b1c0c42aa40efbde4985ca55e5ead
 msgid "Once both are in place, continue to :doc:`installation`."
 msgstr "둘 다 준비됐으면 :doc:`installation`\\ 으로 이어가세요."
 

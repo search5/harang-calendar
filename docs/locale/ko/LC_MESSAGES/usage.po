@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: harang-calendar 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-28 07:12+0900\n"
+"POT-Creation-Date: 2026-07-29 10:16+0900\n"
 "PO-Revision-Date: 2026-07-28 01:06+0900\n"
 "Last-Translator: Ji-Ho Lee <search5@mz.co.kr>\n"
 "Language: ko\n"
@@ -51,13 +51,12 @@ msgstr "설명"
 msgid "Account name"
 msgstr "계정 이름"
 
-#: ../../usage.rst:17 bad764f8b92049d99cfcac5853d627eb
+#: ../../usage.rst:17 14cd492f087249928c1ee16801cd2bea
 msgid ""
-"A label for this account. Also used in ``harang-account`` frontmatter "
-"(see below) to scope a note to this account's events."
+"A label for this account, shown when picking it in the ``{{hrcal:`` "
+"autocomplete and embedded in any reference you insert from it."
 msgstr ""
-"이 계정을 가리키는 이름표입니다. 노트를 이 계정의 일정으로 범위를 제한할 때 ``harang-account`` 프론트매터(아래 "
-"참고)에도 그대로 씁니다."
+"이 계정을 가리키는 이름표로, ``{{hrcal:`` 자동완성에서 고를 때 표시되고 거기서 삽입하는 참조에도 그대로 담깁니다."
 
 #: ../../usage.rst:19 514f2b196d564d4aa0dd0075ce137c57
 msgid "Server URL"
@@ -90,13 +89,13 @@ msgstr ""
 
 #: ../../usage.rst:28 ebcf00160af74a09b1660b322c67dfe9
 msgid ""
-"Click **Test connection & discover calendars**. The plugin walks the "
-"standard CalDAV discovery chain (``current-user-principal`` → ``calendar-"
-"home-set`` → calendar collections) and lists every calendar it finds "
-"under the account. If your Server URL already points directly at a "
-"calendar collection, it is used as-is without further discovery."
+"Click **Test connection & discover**. The plugin walks the standard "
+"CalDAV discovery chain (``current-user-principal`` → ``calendar-home-"
+"set`` → calendar collections) and lists every calendar it finds under the"
+" account. If your Server URL already points directly at a calendar "
+"collection, it is used as-is without further discovery."
 msgstr ""
-"**연결 테스트 & 캘린더 검색**\\ 을 클릭하세요. 플러그인이 표준 CalDAV 검색 절차(``current-user-"
+"**연결 테스트 및 탐색**\\ 을 클릭하세요. 플러그인이 표준 CalDAV 검색 절차(``current-user-"
 "principal`` → ``calendar-home-set`` → 캘린더 컬렉션)를 따라가며 그 계정 아래 있는 모든 캘린더를 "
 "찾아 목록에 보여줍니다. 서버 URL이 이미 캘린더 컬렉션을 직접 가리키고 있다면, 추가 검색 없이 그대로 사용됩니다."
 
@@ -117,113 +116,137 @@ msgid ""
 "You can add multiple accounts (for multiple servers, or multiple times to"
 " the same server); events from every enabled calendar across every "
 "account are merged in the agenda/month views. Re-run **Test connection & "
-"discover calendars** any time a calendar is added or removed on the "
-"server — the plugin doesn't detect that on its own."
+"discover** any time a calendar is added or removed on the server — the "
+"plugin doesn't detect that on its own."
 msgstr ""
 "계정은 여러 개 추가할 수 있습니다(여러 서버용으로, 또는 같은 서버를 여러 번). 모든 계정의 활성화된 캘린더 일정이 아젠다/월간"
-" 뷰에 합쳐져서 나타납니다. 서버에서 캘린더를 추가하거나 제거했다면 **연결 테스트 & 캘린더 검색**\\ 을 다시 실행하세요 — "
+" 뷰에 합쳐져서 나타납니다. 서버에서 캘린더를 추가하거나 제거했다면 **연결 테스트 및 탐색**\\ 을 다시 실행하세요 — "
 "플러그인이 스스로 감지하지는 않습니다."
 
-#: ../../usage.rst:46 aff2bb3c1f314e72b28b806661db200b
-msgid "Referencing a date in a note"
-msgstr "노트에서 날짜 참조하기"
+#: ../../usage.rst:46 a0277f575e74465281e18209df10c8af
+msgid "Referencing a date or event in a note"
+msgstr "노트에서 날짜/일정 참조하기"
 
-#: ../../usage.rst:48 5b51def6183a4f25b927af4ed19aa3cb
-msgid "Type ``@date[`` followed by (part of) a date:"
-msgstr "``@date[`` 뒤에 날짜(의 일부)를 입력하세요:"
-
-#: ../../usage.rst:54 0eacc66ab9fa493a894521690385ba21
+#: ../../usage.rst:48 9f96a42dfee74bd4bb5c59d8ba048686
 msgid ""
-"An autocomplete popup lists matching upcoming dates as you narrow the "
-"query; typing ``@date[`` alone lists the next several days starting "
-"today. Selecting a candidate inserts ``[[cal:2026-08-07]]`` and renders "
-"it as a card widget: a heading for that date, and every matching event "
-"that day listed underneath (or a \"No events on this day.\" message if "
-"there are none). This works the same way in both Live Preview and Reading"
-" view. Clicking an event row in the widget opens the same detail popup "
-"described below."
+"Type ``{{hrcal:`` to start a staged reference - there's no separate "
+"trigger for dates vs. events:"
 msgstr ""
-"입력을 좁혀갈수록 자동완성 팝업에 일치하는 다가오는 날짜들이 나열됩니다. ``@date[``\\ 만 입력하면 오늘부터 며칠간의 "
-"날짜가 나열됩니다. 후보를 선택하면 ``[[cal:2026-08-07]]``\\ 이 삽입되고 카드 위젯으로 표시됩니다 — 해당 날짜"
-" 제목과 그날 일치하는 일정 목록(없으면 \"이 날짜에는 일정이 없습니다.\" 메시지)이 함께 나옵니다. Live Preview와 "
-"읽기 모드 둘 다 동일하게 동작합니다. 위젯 안의 일정 행을 클릭하면 아래에서 설명하는 상세 팝업이 열립니다."
+"``{{hrcal:``\\ 을 입력해 단계별 참조를 시작하세요 - 날짜용과 일정용 트리거가 따로 있지 않습니다:"
 
-#: ../../usage.rst:64 a0277f575e74465281e18209df10c8af
-msgid "Referencing a specific event in a note"
-msgstr "노트에서 특정 일정 참조하기"
-
-#: ../../usage.rst:66 5ec0c6440f1444178b9c82f5e3b000ca
-msgid "Type ``@event[`` followed by (part of) a title:"
-msgstr "``@event[`` 뒤에 제목(의 일부)을 입력하세요:"
-
-#: ../../usage.rst:72 6ce8761153b24823a01e3f05ecddcd20
+#: ../../usage.rst:55 6ce8761153b24823a01e3f05ecddcd20
 msgid ""
-"An autocomplete popup lists matching events by title (searched with a "
-"case-insensitive substring match, spaces included, so multi-word titles "
-"work). Selecting a candidate inserts ``[[event:<uid>]]`` and renders it "
-"as an inline chip — the event's title and time range in a rounded pill."
+"An autocomplete popup lists your registered **account names**; typing "
+"narrows it. Selecting one appends ``<accountName>:`` and immediately "
+"opens the next stage."
 msgstr ""
-"제목으로 일치하는 일정을 자동완성 팝업에 나열합니다(대소문자 구분 없는 부분 문자열 검색, 공백 포함이라 여러 단어로 된 제목도 "
-"검색됩니다). 후보를 선택하면 ``[[event:<uid>]]``\\ 이 삽입되고 인라인 칩(둥근 알약 모양 안에 일정 제목과 시간"
-" 범위)으로 표시됩니다."
+"자동완성 팝업에 등록된 **계정 이름**\\ 이 나열됩니다. 입력하면 목록이 좁혀집니다. 하나를 선택하면 "
+"``<accountName>:``\\ 이 뒤에 붙고 바로 다음 단계가 열립니다."
 
-#: ../../usage.rst:77 7d6e147c948c46a7991a633e9cad8020
+#: ../../usage.rst:58 898ba40323e54f89bdfa4dcff623e319
 msgid ""
-"Click a chip (or an event row inside a date widget) to open a small popup"
-" with the event's date/time, location, and notes (whichever of those "
-"fields the event has). Click anywhere outside the popup, or press "
-"**Esc**, to close it. If a chip looks faded with a dashed border, the "
-"plugin could not resolve it to a known event — see "
-":doc:`troubleshooting`."
+"The popup now lists that account's **calendar names**. Selecting one "
+"appends ``<calendarName>:``."
+msgstr ""
+"이제 팝업에는 그 계정의 **캘린더 이름**\\ 이 나열됩니다. 하나를 선택하면 ``<calendarName>:``\\ 이 뒤에 "
+"붙습니다."
+
+#: ../../usage.rst:60 6ce8761153b24823a01e3f05ecddcd20
+msgid ""
+"The popup now shows a combined list of **upcoming dates** and **matching "
+"events by title** (searched with a case-insensitive substring match, "
+"spaces included) - typing digits narrows the dates, typing text narrows "
+"the events, and both can appear together."
+msgstr ""
+"이제 팝업에는 **다가오는 날짜**\\ 와 **제목이 일치하는 일정** (대소문자 구분 없는 부분 문자열 검색, 공백 포함)이 함께 "
+"나열됩니다 - 숫자를 입력하면 날짜 목록이 좁혀지고, 텍스트를 입력하면 일정 목록이 좁혀지며, 둘 다 함께 나타날 수도 있습니다."
+
+#: ../../usage.rst:65 0eacc66ab9fa493a894521690385ba21
+msgid ""
+"Selecting a date candidate inserts "
+"``{{hrcal:<accountName>:<calendarName>:date:2026-08-07}}`` and renders it"
+" as a card widget: a heading for that date, and every matching event that"
+" day from that specific account/calendar listed underneath (or a \"No "
+"events on this day.\" message if there are none)."
+msgstr ""
+"날짜 후보를 선택하면 ``{{hrcal:<accountName>:<calendarName>:date:2026-08-07}}``"
+"\\ 이 삽입되고 카드 위젯으로 표시됩니다: 그 날짜의 제목과, 그 특정 계정/캘린더의 그날 일치하는 일정이 모두 그 아래 "
+"나열됩니다(없으면 \"이 날짜에는 일정이 없습니다.\" 메시지)."
+
+#: ../../usage.rst:71 6ce8761153b24823a01e3f05ecddcd20
+msgid ""
+"Selecting an event candidate inserts "
+"``{{hrcal:<accountName>:<calendarName>:event:<uid>}}`` and renders it as "
+"an inline chip — the event's title and time range in a rounded pill."
+msgstr ""
+"일정 후보를 선택하면 ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}``\\ 이 "
+"삽입되고 인라인 칩(둥근 알약 모양 안에 일정 제목과 시간 범위)으로 표시됩니다."
+
+#: ../../usage.rst:75 7d6e147c948c46a7991a633e9cad8020
+msgid ""
+"Both render the same way in Live Preview and Reading view. Clicking a "
+"chip (or an event row inside a date widget) opens a small popup with the "
+"event's date/time, location, and notes (whichever of those fields the "
+"event has). Click anywhere outside the popup, or press **Esc**, to close "
+"it. If a chip looks faded with a dashed border, the plugin could not "
+"resolve it to a known event — see :doc:`troubleshooting`."
 msgstr ""
 "칩(또는 날짜 위젯 안의 일정 행)을 클릭하면 그 일정의 일시/장소/메모(있는 항목만) 정보를 담은 작은 팝업이 열립니다. 팝업 "
 "바깥을 클릭하거나 **Esc**\\ 를 누르면 닫힙니다. 칩이 흐릿하게 점선 테두리로 보인다면, 플러그인이 알고 있는 일정으로 "
 "확인하지 못한 것입니다 — :doc:`troubleshooting`\\ 을 참고하세요."
 
-#: ../../usage.rst:84 a3fd814375194744aec213f05ddee6a5
+#: ../../usage.rst:83 a3fd814375194744aec213f05ddee6a5
 msgid "Scoping a note to one account or calendar"
 msgstr "노트를 특정 계정/캘린더로 범위 제한하기"
 
-#: ../../usage.rst:86 88296b24ee1c4607ac3e5d50843e47d4
+#: ../../usage.rst:87 33d451418fc34cac9d3083e9ee4da851
 msgid ""
-"By default, a ``[[cal:...]]`` date widget draws from every enabled "
-"calendar across every account. Add frontmatter to a note to narrow that "
-"down:"
+"**Currently unused.** ``{{hrcal:...}}`` references name their account and"
+" calendar directly, so nothing reads this frontmatter to scope anything "
+"any more. Kept documented here in case it's revived for a future feature."
 msgstr ""
-"기본적으로 ``[[cal:...]]`` 날짜 위젯은 모든 계정의 활성화된 캘린더를 대상으로 합니다. 노트에 프론트매터를 추가하면 "
-"범위를 좁힐 수 있습니다:"
+"**현재 사용되지 않습니다.** ``{{hrcal:...}}`` 참조가 계정과 캘린더를 직접 명시하므로, 더 이상 이 프론트매터를"
+" 읽어서 범위를 정하는 곳이 없습니다. 나중에 다른 기능으로 되살아날 경우를 대비해 여기 문서로 남겨둡니다."
 
-#: ../../usage.rst:99 709196d9096e4daebe0ec6286ee46d19
+#: ../../usage.rst:91 88296b24ee1c4607ac3e5d50843e47d4
+msgid ""
+"Historically, a date widget drew from every enabled calendar across every"
+" account by default, and frontmatter on the note narrowed that down:"
+msgstr ""
+"과거에는 날짜 위젯이 기본적으로 모든 계정의 활성화된 캘린더를 대상으로 했고, 노트의 프론트매터로 그 범위를 좁힐 수 "
+"있었습니다:"
+
+#: ../../usage.rst:104 709196d9096e4daebe0ec6286ee46d19
 msgid "Frontmatter"
 msgstr "프론트매터"
 
-#: ../../usage.rst:100 1a53a077e15044179b9b472eb5d8f0eb
+#: ../../usage.rst:105 1a53a077e15044179b9b472eb5d8f0eb
 msgid "Scope"
 msgstr "범위"
 
-#: ../../usage.rst:101 e42d550617bc475e9a6162d555bc31a0
+#: ../../usage.rst:106 e42d550617bc475e9a6162d555bc31a0
 msgid "``harang-account`` only"
 msgstr "``harang-account``\\ 만"
 
-#: ../../usage.rst:102 bf2ebd15688c48038f0a4af0fcf2d391
+#: ../../usage.rst:107 bf2ebd15688c48038f0a4af0fcf2d391
 msgid "Every enabled calendar under that account."
 msgstr "그 계정 아래 활성화된 모든 캘린더."
 
-#: ../../usage.rst:103 766eac1a985d416e8548daf4e9d5fe50
+#: ../../usage.rst:108 766eac1a985d416e8548daf4e9d5fe50
 msgid "``harang-calendar`` only"
 msgstr "``harang-calendar``\\ 만"
 
-#: ../../usage.rst:104 df7e20e7dd3e4d4abdb8337d1cf8d0e0
+#: ../../usage.rst:109 df7e20e7dd3e4d4abdb8337d1cf8d0e0
 msgid ""
 "Any calendar with that exact name, across every account (useful if you "
 "only have one account, or don't need to disambiguate)."
 msgstr "그 이름과 정확히 일치하는 캘린더 — 모든 계정을 통틀어(계정이 하나뿐이거나 구분할 필요가 없을 때 유용합니다)."
 
-#: ../../usage.rst:106 1d163a8397e64badaa03de5ddb875993
+#: ../../usage.rst:111 1d163a8397e64badaa03de5ddb875993
 msgid "Both"
 msgstr "둘 다"
 
-#: ../../usage.rst:107 7b90bc1f78244f88a8939f8471e0564f
+#: ../../usage.rst:112 7b90bc1f78244f88a8939f8471e0564f
 msgid ""
 "Only that specific calendar within that specific account — the way to "
 "tell apart two calendars that happen to share a name, or two calendars "
@@ -232,15 +255,15 @@ msgstr ""
 "그 계정 안의 그 캘린더 하나로만 좁혀집니다 — 이름이 같은 두 캘린더를 구분하거나, 서로 다른 계정에 같은 이름의 캘린더가 있을 "
 "때 구분하는 방법입니다."
 
-#: ../../usage.rst:110 e220013dd9f2437982f8a7c04a38aec8
+#: ../../usage.rst:115 e220013dd9f2437982f8a7c04a38aec8
 msgid "Neither"
 msgstr "둘 다 없음"
 
-#: ../../usage.rst:111 13f540e8fa7f415bbc2b752052e67682
+#: ../../usage.rst:116 13f540e8fa7f415bbc2b752052e67682
 msgid "No restriction (the default)."
 msgstr "범위 제한 없음(기본값)."
 
-#: ../../usage.rst:113 842c6c1d6fc3454f91a0dc32a45b21f6
+#: ../../usage.rst:118 842c6c1d6fc3454f91a0dc32a45b21f6
 msgid ""
 "Both values are plain text — copy them from Settings exactly as shown "
 "there (account name as you named it; calendar name as the server reports "
@@ -253,7 +276,7 @@ msgstr ""
 "복사해서 붙여넣거나 직접 타이핑하세요. 두 항목 다 자동완성은 제공하지 않습니다. 값이 알려진 계정/캘린더와 일치하지 않으면, 날짜"
 " 위젯은 아무것도 표시하지 않는 대신 인식 못한 값의 이름을 담은 경고를 보여줍니다."
 
-#: ../../usage.rst:122 0b9142bc52004e4681251c918ca075a0
+#: ../../usage.rst:127 0b9142bc52004e4681251c918ca075a0
 msgid ""
 "Obsidian's Properties panel remembers a property's value type (Text vs. "
 "List) per key across your whole vault, not per note. If ``harang-"
@@ -269,11 +292,11 @@ msgstr ""
 "하나뿐인 목록(예: ``harang-calendar:\\n  - Team events``)은 일반 문자열과 똑같이 읽히므로 문제가 "
 "되지는 않습니다 — 다만 두 키 모두 원래 의도한 건 일반 텍스트 값 하나뿐입니다."
 
-#: ../../usage.rst:131 e75e8148ee3e451784c3d5e5fc1b82b6
+#: ../../usage.rst:136 e75e8148ee3e451784c3d5e5fc1b82b6
 msgid "Showing a note itself in the calendar views"
 msgstr "노트 자체를 캘린더 뷰에 표시하기"
 
-#: ../../usage.rst:133 577ac2f3a76141f299b3be793475ae64
+#: ../../usage.rst:138 577ac2f3a76141f299b3be793475ae64
 msgid ""
 "The features above all pull from your CalDAV server. Separately, a note "
 "can show up as an item in the sidebar agenda list and the month grid on "
@@ -283,7 +306,7 @@ msgstr ""
 "위 기능들은 전부 CalDAV 서버에서 가져오는 것입니다. 이와 별개로, 노트 자체가 사이드바 아젠다 목록과 월간 그리드에 항목으로"
 " 나타날 수도 있습니다 — Obsidian 안에서만 일어나는 일이고, CalDAV 서버에 쓰거나 읽는 일은 전혀 없습니다:"
 
-#: ../../usage.rst:146 2e8c6b3945634bc1a3415133a2472bd8
+#: ../../usage.rst:151 2e8c6b3945634bc1a3415133a2472bd8
 msgid ""
 "``harang-date`` (required, ``YYYY-MM-DD``) is the date the note shows up "
 "on. ``harang-repeat`` (optional) is an RRULE string — the exact same "
@@ -299,12 +322,12 @@ msgstr ""
 "``harang-date``\\ (필수, ``YYYY-MM-DD``)는 노트가 표시될 날짜입니다. ``harang-"
 "repeat``\\ (선택)은 RRULE 문자열입니다 — 실제 반복되는 CalDAV 일정을 전개할 때 이미 쓰고 있는 것과 정확히 "
 "같은 문법/파싱(`rrule <https://github.com/jkbrzt/rrule>`_ 패키지)이며, 일치하는 발생일마다 "
-"노트가 반복해서 나타나게 합니다. 없으면 ``harang-date``\\ 한 날짜에만 나타납니다. ``harang-"
-"time``\\ (선택)은 24시간제 ``HH:MM-HH:MM`` 범위입니다 — 없으면 노트 일정은 종일로 표시됩니다. 노트 "
-"일정에는 항상 같은 목록의 실제 CalDAV 일정과 시각적으로 구분되도록 점선 테두리가 붙습니다. 클릭하면 일정 상세 팝업이 아니라"
-" 그 노트 자체가 열립니다."
+"노트가 반복해서 나타나게 합니다. 없으면 ``harang-date``\\ 한 날짜에만 나타납니다. ``harang-time``\\ "
+"(선택)은 24시간제 ``HH:MM-HH:MM`` 범위입니다 — 없으면 노트 일정은 종일로 표시됩니다. 노트 일정에는 항상 같은 "
+"목록의 실제 CalDAV 일정과 시각적으로 구분되도록 점선 테두리가 붙습니다. 클릭하면 일정 상세 팝업이 아니라 그 노트 자체가 "
+"열립니다."
 
-#: ../../usage.rst:156 9354f077e0604d4189e005f62fe2105c
+#: ../../usage.rst:161 9354f077e0604d4189e005f62fe2105c
 msgid ""
 "An invalid ``harang-time`` value (wrong format, or a start not before the"
 " end) is ignored silently — the note falls back to showing as all-day, "
@@ -313,31 +336,31 @@ msgstr ""
 "``harang-time`` 값이 잘못됐거나(형식 오류, 또는 시작이 끝보다 늦은 경우) 조용히 무시됩니다 — ``harang-"
 "repeat`` 값이 잘못되면 그냥 반복하지 않는 것으로 대체되는 것과 마찬가지로, 노트는 종일 표시로 대체됩니다."
 
-#: ../../usage.rst:160 0c559375d6ab4b5ebcac0d48c56e3a6d
+#: ../../usage.rst:165 0c559375d6ab4b5ebcac0d48c56e3a6d
 msgid "``harang-repeat`` accepts the standard iCalendar RRULE keywords:"
 msgstr "``harang-repeat``\\ 은 표준 iCalendar RRULE 키워드를 받습니다:"
 
-#: ../../usage.rst:165 aef8e98631be4f4693c8a97bc1c0a46e
+#: ../../usage.rst:170 aef8e98631be4f4693c8a97bc1c0a46e
 msgid "Keyword"
 msgstr "키워드"
 
-#: ../../usage.rst:166 682aef5156de44b6a97a78231212ec11
+#: ../../usage.rst:171 682aef5156de44b6a97a78231212ec11
 msgid "Meaning"
 msgstr "의미"
 
-#: ../../usage.rst:167 513aa68bcbf24a61abc8fa045920e733
+#: ../../usage.rst:172 513aa68bcbf24a61abc8fa045920e733
 msgid "``FREQ`` (required)"
 msgstr "``FREQ``\\ (필수)"
 
-#: ../../usage.rst:168 758bc0126c4b46d48ba53b21f42efda1
+#: ../../usage.rst:173 758bc0126c4b46d48ba53b21f42efda1
 msgid "``DAILY``, ``WEEKLY``, ``MONTHLY``, or ``YEARLY``."
 msgstr "``DAILY``, ``WEEKLY``, ``MONTHLY``, ``YEARLY`` 중 하나."
 
-#: ../../usage.rst:169 31752f9d7ed343578b415b8b895f7335
+#: ../../usage.rst:174 31752f9d7ed343578b415b8b895f7335
 msgid "``INTERVAL``"
 msgstr "``INTERVAL``"
 
-#: ../../usage.rst:170 27b10a6ee41e43b3b2ed87d480a271ee
+#: ../../usage.rst:175 27b10a6ee41e43b3b2ed87d480a271ee
 msgid ""
 "Repeat every *N* units instead of every one, e.g. ``INTERVAL=2`` with "
 "``FREQ=WEEKLY`` means every 2 weeks."
@@ -345,11 +368,11 @@ msgstr ""
 "매번이 아니라 *N*\\ 단위마다 반복합니다. 예를 들어 ``FREQ=WEEKLY``\\ 와 함께 ``INTERVAL=2``\\ 를"
 " 쓰면 2주마다입니다."
 
-#: ../../usage.rst:172 5cc502dbb9f144d6b162b691b145af75
+#: ../../usage.rst:177 5cc502dbb9f144d6b162b691b145af75
 msgid "``BYDAY``"
 msgstr "``BYDAY``"
 
-#: ../../usage.rst:173 7c0500c4f8ba4bafaa91aa4a96a4a006
+#: ../../usage.rst:178 7c0500c4f8ba4bafaa91aa4a96a4a006
 msgid ""
 "One or more weekdays (``MO``, ``TU``, ``WE``, ``TH``, ``FR``, ``SA``, "
 "``SU``), comma-separated, e.g. ``BYDAY=MO,WE,FR``."
@@ -357,19 +380,19 @@ msgstr ""
 "요일 하나 이상(``MO``, ``TU``, ``WE``, ``TH``, ``FR``, ``SA``, ``SU``)을 쉼표로 "
 "구분해서, 예: ``BYDAY=MO,WE,FR``."
 
-#: ../../usage.rst:175 8a52dd91a3a44f4e9c6d55d698760f78
+#: ../../usage.rst:180 8a52dd91a3a44f4e9c6d55d698760f78
 msgid "``COUNT``"
 msgstr "``COUNT``"
 
-#: ../../usage.rst:176 1e254c43ec4340ef8933a88c75eca2f3
+#: ../../usage.rst:181 1e254c43ec4340ef8933a88c75eca2f3
 msgid "Total number of occurrences. Mutually exclusive with ``UNTIL``."
 msgstr "전체 발생 횟수. ``UNTIL``\\ 과 동시에 쓸 수 없습니다."
 
-#: ../../usage.rst:177 45fed56fc7824e978fa379f76af7cf61
+#: ../../usage.rst:182 45fed56fc7824e978fa379f76af7cf61
 msgid "``UNTIL``"
 msgstr "``UNTIL``"
 
-#: ../../usage.rst:178 bf56e4cc20a24a94a99983345d0f2f17
+#: ../../usage.rst:183 bf56e4cc20a24a94a99983345d0f2f17
 msgid ""
 "The last date to repeat through, as ``YYYYMMDD``, e.g. "
 "``UNTIL=20261231``. Mutually exclusive with ``COUNT``."
@@ -377,17 +400,17 @@ msgstr ""
 "``YYYYMMDD`` 형식으로 마지막 반복 날짜, 예: ``UNTIL=20261231``. ``COUNT``\\ 와 동시에 쓸 수"
 " 없습니다."
 
-#: ../../usage.rst:188 f345386bf77e46c0a322e7dab783a15d
+#: ../../usage.rst:193 f345386bf77e46c0a322e7dab783a15d
 msgid ""
 "An invalid ``harang-repeat`` value is ignored silently (the note simply "
 "doesn't repeat) rather than raising an error."
 msgstr "``harang-repeat`` 값이 잘못됐으면 에러를 내는 대신 조용히 무시됩니다(그 노트가 그냥 반복하지 않을 뿐입니다)."
 
-#: ../../usage.rst:192 e75e8148ee3e451784c3d5e5fc1b82b6
+#: ../../usage.rst:197 e75e8148ee3e451784c3d5e5fc1b82b6
 msgid "Browsing events: sidebar agenda view"
 msgstr "일정 둘러보기: 사이드바 아젠다 뷰"
 
-#: ../../usage.rst:194 46270eb9ed0a4603b3aa2c533894d6b5
+#: ../../usage.rst:199 46270eb9ed0a4603b3aa2c533894d6b5
 msgid ""
 "Run the **Open calendar in sidebar** command (from the command palette) "
 "to open a sidebar view listing every event over the next 30 days (CalDAV "
@@ -402,11 +425,11 @@ msgstr ""
 "제목이 \"오늘\"/\"내일\"로 표시됩니다. 종일 일정은 시간 대신 그렇게 표시됩니다. 일정을 클릭하면 다른 곳과 동일한 상세 "
 "팝업이 열리고, 노트 항목을 클릭하면 그 노트가 열립니다."
 
-#: ../../usage.rst:203 8c108122e2f14a1ebb49a4d05bebfd8d
+#: ../../usage.rst:208 8c108122e2f14a1ebb49a4d05bebfd8d
 msgid "Browsing events: full month view"
 msgstr "일정 둘러보기: 전체 월간 뷰"
 
-#: ../../usage.rst:205 e6bf2321746b41348118671bb6796185
+#: ../../usage.rst:210 e6bf2321746b41348118671bb6796185
 msgid ""
 "Run the **Open calendar in a new tab** command to open a full-tab month "
 "grid. Click a date to select it and see that day's events; use the arrow "
@@ -421,11 +444,11 @@ msgstr ""
 " 한 달씩 이동하거나, 월/연도 제목을 클릭하면 원하는 연도·월로 바로 이동할 수 있는 선택창이 열립니다(연도를 클릭하면 텍스트 "
 "입력창으로 바뀝니다)."
 
-#: ../../usage.rst:213 7fbd2f24520e47799ca1d0c73551434b
+#: ../../usage.rst:218 7fbd2f24520e47799ca1d0c73551434b
 msgid "Refreshing calendar data"
 msgstr "캘린더 데이터 새로고침"
 
-#: ../../usage.rst:215 6a8f05690ee34b71a4c5c3c4b6f9861c
+#: ../../usage.rst:220 6a8f05690ee34b71a4c5c3c4b6f9861c
 msgid ""
 "Events are cached and refreshed automatically once the cache lifetime "
 "(**Settings → Harang Calendar → Cache lifetime (minutes)**, default 30 "
@@ -436,11 +459,11 @@ msgstr ""
 "자동으로 서버에서 다시 가져옵니다. 월간 뷰에서 아직 캐시되지 않은 범위로 이동하면 그 빈 부분만 필요할 때 가져옵니다. 즉시 "
 "새로고침하려면:"
 
-#: ../../usage.rst:220 555928f9208748f4906154a570f02901
+#: ../../usage.rst:225 555928f9208748f4906154a570f02901
 msgid "Run the **Refresh calendars** command from the command palette, or"
 msgstr "명령 팔레트에서 **캘린더 새로고침** 명령을 실행하거나,"
 
-#: ../../usage.rst:221 43cf900c00d446a191edc0b26c0bf1f5
+#: ../../usage.rst:226 43cf900c00d446a191edc0b26c0bf1f5
 msgid "Click **Refresh** next to **Refresh all calendars now** in settings."
 msgstr "설정에서 **모든 캘린더 지금 새로고침** 옆의 **새로고침**\\ 을 클릭하세요."
 
@@ -457,4 +480,66 @@ msgstr "설정에서 **모든 캘린더 지금 새로고침** 옆의 **새로고
 #~ "to open the same detail popup used"
 #~ " elsewhere."
 #~ msgstr ""
+
+#~ msgid ""
+#~ "A label for this account. Also "
+#~ "used in ``harang-account`` frontmatter "
+#~ "(see below) to scope a note to "
+#~ "this account's events."
+#~ msgstr ""
+#~ "이 계정을 가리키는 이름표입니다. 노트를 이 계정의 "
+#~ "일정으로 범위를 제한할 때 ``harang-account`` "
+#~ "프론트매터(아래 참고)에도 그대로 씁니다."
+
+#~ msgid "Type ``@date[`` followed by (part of) a date:"
+#~ msgstr "``@date[`` 뒤에 날짜(의 일부)를 입력하세요:"
+
+#~ msgid ""
+#~ "An autocomplete popup lists matching "
+#~ "upcoming dates as you narrow the "
+#~ "query; typing ``@date[`` alone lists the"
+#~ " next several days starting today. "
+#~ "Selecting a candidate inserts "
+#~ "``[[cal:2026-08-07]]`` and renders it as "
+#~ "a card widget: a heading for that"
+#~ " date, and every matching event that"
+#~ " day listed underneath (or a \"No "
+#~ "events on this day.\" message if "
+#~ "there are none). This works the "
+#~ "same way in both Live Preview and"
+#~ " Reading view. Clicking an event row"
+#~ " in the widget opens the same "
+#~ "detail popup described below."
+#~ msgstr ""
+#~ "입력을 좁혀갈수록 자동완성 팝업에 일치하는 다가오는 날짜들이"
+#~ " 나열됩니다. ``@date[``\\ 만 입력하면 오늘부터 며칠간의"
+#~ " 날짜가 나열됩니다. 후보를 선택하면 "
+#~ "``[[cal:2026-08-07]]``\\ 이 삽입되고 카드 위젯으로 "
+#~ "표시됩니다 — 해당 날짜 제목과 그날 일치하는 일정"
+#~ " 목록(없으면 \"이 날짜에는 일정이 없습니다.\" 메시지)이"
+#~ " 함께 나옵니다. Live Preview와 읽기 모드 둘"
+#~ " 다 동일하게 동작합니다. 위젯 안의 일정 행을 "
+#~ "클릭하면 아래에서 설명하는 상세 팝업이 열립니다."
+
+#~ msgid "Referencing a specific event in a note"
+#~ msgstr "노트에서 특정 일정 참조하기"
+
+#~ msgid "Type ``@event[`` followed by (part of) a title:"
+#~ msgstr "``@event[`` 뒤에 제목(의 일부)을 입력하세요:"
+
+#~ msgid ""
+#~ "An autocomplete popup lists matching "
+#~ "events by title (searched with a "
+#~ "case-insensitive substring match, spaces "
+#~ "included, so multi-word titles work)."
+#~ " Selecting a candidate inserts "
+#~ "``[[event:<uid>]]`` and renders it as an"
+#~ " inline chip — the event's title "
+#~ "and time range in a rounded pill."
+#~ msgstr ""
+#~ "제목으로 일치하는 일정을 자동완성 팝업에 나열합니다(대소문자 "
+#~ "구분 없는 부분 문자열 검색, 공백 포함이라 여러"
+#~ " 단어로 된 제목도 검색됩니다). 후보를 선택하면 "
+#~ "``[[event:<uid>]]``\\ 이 삽입되고 인라인 칩(둥근 알약"
+#~ " 모양 안에 일정 제목과 시간 범위)으로 표시됩니다."
 
