@@ -1,4 +1,5 @@
 import { CalDavAccount, HarangCalendarSettings } from "./types";
+import type { GoogleAccount } from "./google/types";
 import { t } from "./i18n";
 import { getSystemTimezone } from "./caldav/timezone";
 
@@ -16,5 +17,19 @@ export function createEmptyAccount(): CalDavAccount {
 		password: "",
 		timezone: { kind: "iana", zone: getSystemTimezone() },
 		calendars: [],
+		google: null,
+	};
+}
+
+export function createGoogleAccount(google: GoogleAccount): CalDavAccount {
+	return {
+		id: `account-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+		name: t("settingsNewGoogleAccountDefaultName"),
+		serverUrl: "",
+		username: google.email ?? "",
+		password: "",
+		timezone: { kind: "iana", zone: getSystemTimezone() },
+		calendars: [],
+		google,
 	};
 }

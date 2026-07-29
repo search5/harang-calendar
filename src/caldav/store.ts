@@ -1,5 +1,5 @@
 import { Notice } from "obsidian";
-import { CalDavAccount, CalDavCalendar, CalDavEvent, FrontmatterScope, HarangCalendarSettings } from "../types";
+import { CalDavAccount, CalDavCalendar, CalDavEvent, CalendarScope, HarangCalendarSettings } from "../types";
 import { CalDavClient, CalDavTimeRange } from "./client";
 import { expandRecurrence } from "./recurrence";
 import { t } from "../i18n";
@@ -163,6 +163,8 @@ export class CalendarStore {
 		});
 
 		if (failures.length > 0) {
+			// Also log to the console - the Notice toast disappears too quickly to read/copy a multi-line failure list.
+			console.error("Harang calendar: calendar refresh failures\n" + failures.join("\n"));
 			new Notice(t("storeRefreshFailedNotice", { failures: failures.join("\n") }));
 		}
 		return merged;
@@ -174,9 +176,9 @@ export class CalendarStore {
 		return events.map((event) => ({ ...event, accountName: job.account.name }));
 	}
 
-	/** Events overlapping `range` (recurrence expanded), optionally scoped to a frontmatter account/calendar. */
-	getEventsInRange(range: CalDavTimeRange, scope?: FrontmatterScope): CalDavEvent[] {
-		const scoped = this.scopeToFrontmatter(scope);
+	/** Events overlapping `range` (recurrence expanded), optionally scoped to an account/calendar. */
+	getEventsInRange(range: CalDavTimeRange, scope?: CalendarScope): CalDavEvent[] {
+		const scoped = this.applyScope(scope);
 		return expandRecurrence(scoped, range).filter((event) => this.overlapsRange(event, range));
 	}
 
@@ -185,20 +187,20 @@ export class CalendarStore {
 	 * returns the base rule's own DTSTART occurrence, not a specific
 	 * expanded instance - see ROADMAP.md.
 	 */
-	getEventByUid(uid: string, scope?: FrontmatterScope): CalDavEvent | undefined {
-		return this.scopeToFrontmatter(scope).find((event) => event.uid === uid);
+	getEventByUid(uid: string, scope?: CalendarScope): CalDavEvent | undefined {
+		return this.applyScope(scope).find((event) => event.uid === uid);
 	}
 
-	/** Case-insensitive substring search over event titles. */
-	searchEvents(query: string, limit = Infinity): CalDavEvent[] {
+	/** Case-insensitive substring search over event titles, optionally scoped to an account/calendar. */
+	searchEvents(query: string, limit = Infinity, scope?: CalendarScope): CalDavEvent[] {
 		const q = query.trim().toLowerCase();
-		const all = this.getAll();
+		const all = this.applyScope(scope);
 		const source = q.length === 0 ? all : all.filter((event) => event.summary.toLowerCase().includes(q));
 		return source.slice(0, limit);
 	}
 
 	/** Either field alone matches across every account/calendar; both together require the specific pairing. */
-	private scopeToFrontmatter(scope: FrontmatterScope | undefined): CalDavEvent[] {
+	private applyScope(scope: CalendarScope | undefined): CalDavEvent[] {
 		const all = this.getAll();
 		if (!scope) return all;
 		return all.filter(

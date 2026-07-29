@@ -1,14 +1,20 @@
 import { App, Notice, PluginSettingTab, Setting } from "obsidian";
 import type HarangCalendarPlugin from "./main";
-import { createEmptyAccount } from "./settings";
+import { createEmptyAccount, createGoogleAccount } from "./settings";
 import { listKnownTimezones, formatUtcOffsetMinutes, parseUtcOffsetInput } from "./caldav/timezone";
 import { CalDavClient, CalDavError } from "./caldav/client";
 import { CalDavAccount } from "./types";
+import { DeviceCodeModal } from "./google/DeviceCodeModal";
+import { GoogleCalendarClient, GoogleCalendarError } from "./google/calendarClient";
+import { caldavPasswordSecretId, googleTokenSecretId } from "./secrets";
+import { GOOGLE_INTEGRATION_ENABLED } from "./featureFlags";
 import { t } from "./i18n";
 
 const SERVER_URL_PLACEHOLDER = "https://example.com/dav.php/calendars/user/";
 const CUSTOM_OFFSET_OPTION = "__custom_offset__";
 const KNOWN_TIMEZONES = listKnownTimezones();
+const GOOGLE_CALDAV_EVENTS_URL = (calendarId: string): string =>
+	`https://apidata.googleusercontent.com/caldav/v2/${encodeURIComponent(calendarId)}/events`;
 
 export class HarangCalendarSettingTab extends PluginSettingTab {
 	constructor(app: App, private plugin: HarangCalendarPlugin) {
@@ -46,16 +52,32 @@ export class HarangCalendarSettingTab extends PluginSettingTab {
 			this.renderAccount(containerEl, account.id);
 		}
 
-		new Setting(containerEl).addButton((btn) =>
-			btn
-				.setButtonText(t("settingsAddAccountName"))
-				.setCta()
-				.onClick(async () => {
+		const addAccountSetting = new Setting(containerEl)
+			.setDesc(t("settingsAddAccountDesc"))
+			.addButton((btn) =>
+				btn.setButtonText(t("settingsAddCaldavAccountButton")).onClick(async () => {
 					this.plugin.settings.accounts.push(createEmptyAccount());
 					await this.plugin.saveSettings();
 					this.display();
 				})
-		);
+			);
+
+		if (GOOGLE_INTEGRATION_ENABLED) {
+			addAccountSetting.addButton((btn) =>
+				btn
+					.setButtonText(t("settingsAddGoogleAccountButton"))
+					.setCta()
+					.onClick(() => {
+						new DeviceCodeModal(this.app, async (connected) => {
+							const account = createGoogleAccount(connected);
+							this.plugin.settings.accounts.push(account);
+							await this.plugin.saveSettings();
+							await this.discoverGoogleCalendars(account.id);
+							this.display();
+						}).open();
+					})
+			);
+		}
 	}
 
 	private renderAccount(containerEl: HTMLElement, accountId: string): void {
@@ -64,6 +86,49 @@ export class HarangCalendarSettingTab extends PluginSettingTab {
 
 		const section = containerEl.createDiv({ cls: "harang-calendar-account" });
 		new Setting(section).setName(account.name || t("settingsUnnamedAccount")).setHeading();
+
+		if (account.google) {
+			new Setting(section)
+				.setName(t("settingsAccountNameLabel"))
+				.setDesc(t("googleConnectedAs", { email: account.google.email ?? "" }))
+				.addText((text) =>
+					text.setValue(account.name).onChange(async (value) => {
+						account.name = value;
+						await this.plugin.saveSettings();
+					})
+				);
+
+			new Setting(section)
+				.setName(t("settingsDiscoverName"))
+				.setDesc(account.calendars.length > 0 ? t("settingsCalendarsSummary", { count: account.calendars.length }) : t("settingsCalendarsPending"))
+				.addButton((btn) =>
+					btn.setButtonText(t("googleDiscoverCalendarsButton")).onClick(async () => {
+						btn.setDisabled(true);
+						try {
+							await this.discoverGoogleCalendars(accountId);
+							this.display();
+						} finally {
+							btn.setDisabled(false);
+						}
+					})
+				)
+				.addButton((btn) =>
+					btn
+						.setButtonText(t("googleDisconnectButton"))
+						.setWarning()
+						.onClick(async () => {
+							this.plugin.settings.accounts = this.plugin.settings.accounts.filter((a) => a.id !== accountId);
+							this.app.secretStorage.setSecret(googleTokenSecretId(accountId), "");
+							await this.plugin.saveSettings();
+							this.display();
+						})
+				);
+
+			for (const calendar of account.calendars) {
+				this.renderCalendar(section, accountId, calendar.id);
+			}
+			return;
+		}
 
 		new Setting(section)
 			.setName(t("settingsAccountNameLabel"))
@@ -95,13 +160,16 @@ export class HarangCalendarSettingTab extends PluginSettingTab {
 			})
 		);
 
-		new Setting(section).setName(t("settingsPasswordLabel")).addText((text) => {
-			text.inputEl.type = "password";
-			text.setValue(account.password).onChange(async (value) => {
-				account.password = value;
-				await this.plugin.saveSettings();
+		new Setting(section)
+			.setName(t("settingsPasswordLabel"))
+			.setDesc(t("settingsPasswordDesc"))
+			.addText((text) => {
+				text.inputEl.type = "password";
+				text.setValue(account.password).onChange(async (value) => {
+					account.password = value;
+					await this.plugin.saveSettings();
+				});
 			});
-		});
 
 		new Setting(section)
 			.setName(t("settingsTimezoneLabel"))
@@ -163,6 +231,7 @@ export class HarangCalendarSettingTab extends PluginSettingTab {
 				.setWarning()
 				.onClick(async () => {
 					this.plugin.settings.accounts = this.plugin.settings.accounts.filter((a) => a.id !== accountId);
+					this.app.secretStorage.setSecret(caldavPasswordSecretId(accountId), "");
 					await this.plugin.saveSettings();
 					this.display();
 				})
@@ -214,6 +283,41 @@ export class HarangCalendarSettingTab extends PluginSettingTab {
 			await this.plugin.calendarStore.refreshAll();
 		} catch (e) {
 			const message = e instanceof CalDavError ? e.message : String(e);
+			new Notice(t("settingsDiscoveryFailNotice", { message }));
+		}
+	}
+
+	/**
+	 * Uses the Calendar API's calendarList (not CalDAV) to enumerate a Google
+	 * account's calendars, since CalDAV alone can't discover them - you need
+	 * to already know a calendar's ID to address it. Actual event fetching
+	 * still goes through CalDavClient against the resulting per-calendar
+	 * CalDAV URL, same as any other CalDAV calendar.
+	 */
+	private async discoverGoogleCalendars(accountId: string): Promise<void> {
+		const account = this.plugin.settings.accounts.find((a) => a.id === accountId);
+		if (!account?.google) return;
+		try {
+			const client = new GoogleCalendarClient(account.google, (refreshed) => {
+				account.google = refreshed;
+			});
+			const entries = await client.listCalendars();
+			const existingById = new Map(account.calendars.map((c) => [c.id, c]));
+			account.calendars = entries.map((entry) => {
+				const existing = existingById.get(entry.id);
+				return {
+					id: entry.id,
+					url: GOOGLE_CALDAV_EVENTS_URL(entry.id),
+					displayName: entry.summary,
+					color: existing?.color ?? entry.backgroundColor ?? null,
+					enabled: existing?.enabled ?? true,
+				};
+			});
+			await this.plugin.saveSettings();
+			new Notice(t("settingsDiscoverySuccessNotice", { count: entries.length }));
+			await this.plugin.calendarStore.refreshAll();
+		} catch (e) {
+			const message = e instanceof GoogleCalendarError ? e.message : String(e);
 			new Notice(t("settingsDiscoveryFailNotice", { message }));
 		}
 	}

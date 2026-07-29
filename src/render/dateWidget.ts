@@ -1,5 +1,5 @@
 import type HarangCalendarPlugin from "../main";
-import { CalDavEvent, FrontmatterScope } from "../types";
+import { CalDavEvent, HrcalScope } from "../types";
 import { formatDate, formatEventTime, todayKey, tomorrowKey } from "../view/agenda";
 import { openEventCard } from "./eventCard";
 import { t } from "../i18n";
@@ -22,15 +22,14 @@ function colorForCalendar(plugin: HarangCalendarPlugin, calendarId: string): str
 	return null;
 }
 
-/** Frontmatter account/calendar names in `scope` that don't match any registered account/calendar. */
-export function unknownScopeNames(plugin: HarangCalendarPlugin, scope: FrontmatterScope | null): string[] {
-	if (!scope) return [];
+/** Account/calendar names in `scope` (from a `{{hrcal:...}}` reference) that don't match any registered account/calendar - e.g. a hand-typed or stale reference. */
+export function unknownScopeNames(plugin: HarangCalendarPlugin, scope: HrcalScope): string[] {
 	const unknown: string[] = [];
-	if (scope.accountName && !plugin.settings.accounts.some((account) => account.name === scope.accountName)) {
+	if (!plugin.settings.accounts.some((account) => account.name === scope.accountName)) {
 		unknown.push(scope.accountName);
 	}
 	const knownCalendars = new Set(plugin.settings.accounts.flatMap((account) => account.calendars.map((c) => c.displayName)));
-	if (scope.calendarName && !knownCalendars.has(scope.calendarName)) {
+	if (!knownCalendars.has(scope.calendarName)) {
 		unknown.push(scope.calendarName);
 	}
 	return unknown;
@@ -56,12 +55,12 @@ function createDateWidgetItem(plugin: HarangCalendarPlugin, event: CalDavEvent):
 }
 
 /**
- * Builds the inline "[[cal:YYYY-MM-DD]]" widget: a heading plus that day's
- * events unfolded as clickable rows (click/Enter/Space opens the same
- * detail popup as an event chip). `scope` restricts to the note's
- * `harang-account`/`harang-calendar` frontmatter, if any.
+ * Builds the inline "{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}"
+ * widget: a heading plus that day's events (from that one specific
+ * account/calendar) unfolded as clickable rows (click/Enter/Space opens the
+ * same detail popup as an event chip).
  */
-export function createDateWidget(plugin: HarangCalendarPlugin, dateIso: string, scope: FrontmatterScope | null): HTMLElement {
+export function createDateWidget(plugin: HarangCalendarPlugin, dateIso: string, scope: HrcalScope): HTMLElement {
 	const container = createDiv({ cls: "harang-calendar-date-widget" });
 	const [year, month, day] = dateIso.split("-").map(Number);
 
@@ -82,7 +81,7 @@ export function createDateWidget(plugin: HarangCalendarPlugin, dateIso: string, 
 	const start = new Date(year, month - 1, day);
 	const end = new Date(year, month - 1, day + 1);
 	const events = plugin.calendarStore
-		.getEventsInRange({ start, end }, scope ?? undefined)
+		.getEventsInRange({ start, end }, scope)
 		.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 
 	if (events.length === 0) {

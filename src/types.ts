@@ -1,4 +1,5 @@
 import type { TFile } from "obsidian";
+import type { GoogleAccount } from "./google/types";
 
 export interface CalDavCalendar {
 	id: string;
@@ -24,6 +25,17 @@ export interface CalDavAccount {
 	password: string;
 	timezone: CalDavTimezone;
 	calendars: CalDavCalendar[];
+	/**
+	 * Set only for a Google-connected account (OAuth device flow, see
+	 * google/). CalDavClient uses this account's accessToken as a Bearer
+	 * token instead of username/password Basic auth - Google's CalDAV
+	 * server rejects Basic auth outright. serverUrl/username/password are
+	 * unused (left blank) for these accounts; calendar discovery goes
+	 * through the Google Calendar API's calendarList instead of PROPFIND,
+	 * since CalDAV alone can't enumerate a Google account's calendars -
+	 * see settingsTab.ts.
+	 */
+	google: GoogleAccount | null;
 }
 
 export interface HarangCalendarSettings {
@@ -32,14 +44,20 @@ export interface HarangCalendarSettings {
 }
 
 /**
- * A note's `harang-account`/`harang-calendar` frontmatter, parsed. Either
+ * An optional account/calendar filter for `CalendarStore` lookups. Either
  * field alone scopes to that account or that calendar name (across every
  * account); both together scope to that specific calendar within that
- * specific account. Never both null - see `getFrontmatterScope`.
+ * specific account.
  */
-export interface FrontmatterScope {
+export interface CalendarScope {
 	accountName: string | null;
 	calendarName: string | null;
+}
+
+/** A fully-specified account+calendar pair, embedded directly in a `{{hrcal:...}}` reference (see render/postProcessor.ts). Assignable to `CalendarScope` wherever a scope is accepted. */
+export interface HrcalScope {
+	accountName: string;
+	calendarName: string;
 }
 
 export interface CalDavEvent {
@@ -82,7 +100,7 @@ export interface NoteEvent {
 /**
  * The agenda/month views merge CalDAV events and note events into one
  * chronological list; this is the shared shape they're rendered through.
- * `[[cal:...]]` date widgets and event chips are unaffected - they only
+ * `{{hrcal:...}}` date widgets and event chips are unaffected - they only
  * ever deal with `CalDavEvent`.
  */
 export type CalendarListItem = { kind: "caldav"; event: CalDavEvent } | { kind: "note"; noteEvent: NoteEvent };

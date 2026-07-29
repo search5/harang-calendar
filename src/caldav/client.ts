@@ -1,6 +1,7 @@
 import { requestUrl } from "obsidian";
 import { CalDavAccount, CalDavEvent } from "../types";
 import { parseICalEvents } from "./ics";
+import { refreshAccessToken } from "../google/deviceAuth";
 import { t } from "../i18n";
 
 const DAV_NS = "DAV:";
@@ -42,10 +43,23 @@ function toICalUtc(date: Date): string {
 }
 
 export class CalDavClient {
-	constructor(private account: CalDavAccount) {}
+	constructor(
+		private account: CalDavAccount,
+		private onGoogleTokenRefreshed?: (google: NonNullable<CalDavAccount["google"]>) => void
+	) {}
 
-	private authHeader(): string {
+	/** Google's CalDAV server rejects Basic auth outright - a connected account uses its OAuth access token as a Bearer token instead. */
+	private async authHeader(): Promise<string> {
+		if (this.account.google) return `Bearer ${await this.ensureFreshGoogleToken(this.account.google)}`;
 		return basicAuthHeader(this.account.username, this.account.password);
+	}
+
+	private async ensureFreshGoogleToken(google: NonNullable<CalDavAccount["google"]>): Promise<string> {
+		if (Date.now() < google.expiresAt - 60_000) return google.accessToken;
+		const refreshed = await refreshAccessToken(google.refreshToken);
+		this.account.google = { ...google, accessToken: refreshed.accessToken, expiresAt: refreshed.expiresAt };
+		this.onGoogleTokenRefreshed?.(this.account.google);
+		return this.account.google.accessToken;
 	}
 
 	private async dav(url: string, method: string, depth: string, body: string): Promise<{ status: number; text: string; url: string }> {
@@ -53,7 +67,7 @@ export class CalDavClient {
 			url,
 			method,
 			headers: {
-				Authorization: this.authHeader(),
+				Authorization: await this.authHeader(),
 				"Content-Type": "application/xml; charset=utf-8",
 				Depth: depth,
 			},
@@ -61,7 +75,8 @@ export class CalDavClient {
 			throw: false,
 		});
 		if (res.status >= 400) {
-			throw new CalDavError(t("davRequestFailed", { method, url, status: res.status }));
+			const bodySnippet = res.text ? `: ${res.text.slice(0, 500)}` : "";
+			throw new CalDavError(t("davRequestFailed", { method, url, status: res.status }) + bodySnippet);
 		}
 		return { status: res.status, text: res.text, url };
 	}

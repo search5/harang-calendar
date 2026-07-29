@@ -1,5 +1,5 @@
 import { App, TFile } from "obsidian";
-import { FrontmatterScope } from "../types";
+import { CalendarScope } from "../types";
 
 /**
  * Reads a single-value frontmatter field, tolerating a one-item YAML list
@@ -20,8 +20,13 @@ function readTextFrontmatter(frontmatter: Record<string, unknown> | undefined, k
 	return trimmed.length > 0 ? trimmed : null;
 }
 
-/** Reads the `harang-account`/`harang-calendar` frontmatter for a file. Returns null if both are absent/empty, meaning "no scope restriction". */
-export function getFrontmatterScope(app: App, file: TFile): FrontmatterScope | null {
+/**
+ * Reads the `harang-account`/`harang-calendar` frontmatter for a file.
+ * Returns null if both are absent/empty, meaning "no scope restriction".
+ * Not currently called anywhere - `{{hrcal:...}}` references carry their
+ * own account/calendar instead - kept for a planned future sync feature.
+ */
+export function getFrontmatterScope(app: App, file: TFile): CalendarScope | null {
 	const frontmatter = app.metadataCache.getFileCache(file)?.frontmatter;
 	const accountName = readTextFrontmatter(frontmatter, "harang-account");
 	const calendarName = readTextFrontmatter(frontmatter, "harang-calendar");

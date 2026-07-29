@@ -604,3 +604,21 @@
 	font-weight: 600;
 	color: var(--text-on-accent, #fff);
 }
+
+.harang-calendar-google-device-code {
+	font-family: var(--font-monospace);
+	font-size: var(--font-ui-larger);
+	font-weight: 600;
+	letter-spacing: 0.15em;
+	text-align: center;
+	padding: var(--size-4-3);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--hc-shape-sm);
+	background-color: var(--background-secondary);
+	user-select: all;
+}
+
+.harang-calendar-google-device-waiting {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+}
