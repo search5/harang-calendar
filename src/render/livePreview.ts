@@ -64,7 +64,10 @@ export function buildHarangCalendarLivePreviewPlugin(plugin: HarangCalendarPlugi
 			}
 
 			update(update: ViewUpdate): void {
-				if (update.docChanged || update.viewportChanged || update.selectionSet) {
+				const livePreviewChanged =
+					update.startState.field(editorLivePreviewField, false) !==
+					update.state.field(editorLivePreviewField, false);
+				if (update.docChanged || update.viewportChanged || update.selectionSet || livePreviewChanged) {
 					this.decorations = this.build(update.view);
 				}
 			}
