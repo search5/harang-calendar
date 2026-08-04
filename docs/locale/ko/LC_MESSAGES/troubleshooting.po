@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: harang-calendar 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-29 10:16+0900\n"
+"POT-Creation-Date: 2026-08-01 17:01+0900\n"
 "PO-Revision-Date: 2026-07-28 01:04+0900\n"
 "Last-Translator: Ji-Ho Lee <search5@mz.co.kr>\n"
 "Language: ko\n"
@@ -19,35 +19,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../troubleshooting.rst:2 dcdb586a65674f25a490fe1d0e7c1e5c
+#: ../../troubleshooting.rst:2 b61e89b4343f4caf816a280d2f0f70d3
 msgid "Troubleshooting & FAQ"
 msgstr "문제 해결 & FAQ"
 
-#: ../../troubleshooting.rst:5 37275688bc454a54b96dec6e1d7405e1
+#: ../../troubleshooting.rst:5 a43248eb4f624ad59706e2331343a851
 msgid "\"Connection failed\" when discovering calendars"
 msgstr "캘린더 검색 시 \"연결 실패\""
 
-#: ../../troubleshooting.rst:7 961f6b1a3b164e02b011e2643af11d98
+#: ../../troubleshooting.rst:7 2aae5eb268b14eaa8ac5d41667742d13
 msgid ""
 "**Symptom:** clicking **Test connection & discover** shows a \"Harang "
 "calendar: Connection failed - ...\" notice."
 msgstr ""
-"**증상:** **연결 테스트 및 탐색**\\ 을 클릭하면 \"Harang calendar: Connection failed"
-" - ...\" 알림이 뜹니다."
+"**증상:** **연결 테스트 및 탐색**\\ 을 클릭하면 \"Harang calendar: Connection failed - "
+"...\" 알림이 뜹니다."
 
-#: ../../troubleshooting.rst:10 6fb624c06cb44295acd69e71d26893e1
+#: ../../troubleshooting.rst:10 0cc462536418429cb5fe9ef026291635
 msgid "**Cause:** most commonly one of:"
 msgstr "**원인:** 대개 다음 중 하나입니다:"
 
-#: ../../troubleshooting.rst:12 2f7a7c1793224b90b8932081831eb755
+#: ../../troubleshooting.rst:12 fce5681ce99045f7b79563a2ef32b273
 msgid "The Server URL is wrong, unreachable, or missing the ``https://`` scheme."
 msgstr "서버 URL이 잘못됐거나, 접속할 수 없거나, ``https://`` 스킴이 빠져 있습니다."
 
-#: ../../troubleshooting.rst:13 4b7a5dab402d4919942b6ca98bb6db4f
+#: ../../troubleshooting.rst:13 8ad9862dff104d8f83bcf4e42148e37c
 msgid "The username or password is incorrect."
 msgstr "사용자명이나 비밀번호가 틀렸습니다."
 
-#: ../../troubleshooting.rst:14 0bfed29885564e9c8c2dcd6848f5c1ad
+#: ../../troubleshooting.rst:14 a6c69f01afe34b35895ffb92bb1dc5a8
 msgid ""
 "The server doesn't support the standard CalDAV discovery chain "
 "(``current-user-principal`` → ``calendar-home-set``) and isn't pointed "
@@ -56,33 +56,33 @@ msgstr ""
 "서버가 표준 CalDAV 검색 절차(``current-user-principal`` → ``calendar-home-set``)를 "
 "지원하지 않고, 캘린더 컬렉션을 직접 가리키고 있지도 않습니다."
 
-#: ../../troubleshooting.rst:17 a357531fe536470fa75c9040693f6e45
+#: ../../troubleshooting.rst:17 c5c2792a43944be188e7360b835f29ec
 msgid ""
 "The server requires OAuth2 rather than Basic Auth — only Basic Auth is "
 "supported."
 msgstr "서버가 Basic Auth가 아니라 OAuth2를 요구합니다 — Basic Auth만 지원합니다."
 
-#: ../../troubleshooting.rst:20 762bdf15778a4e2fb928790b8b2c5379
+#: ../../troubleshooting.rst:20 f0651e3ab75e4331910bb1cfd90e9b9a
 msgid ""
 "**Fix:** double-check the credentials, and if discovery keeps failing, "
 "try pointing Server URL directly at a calendar collection URL instead of "
 "the server root."
 msgstr "**해결:** 로그인 정보를 다시 확인하고, 검색이 계속 실패하면 서버 URL을 루트 대신 캘린더 컬렉션 URL로 직접 지정해보세요."
 
-#: ../../troubleshooting.rst:25 b362cf8a65b94f18aebe171fc810ff27
+#: ../../troubleshooting.rst:25 0c762223d9104cbdb7d2dacfa94103fd
 msgid "An event chip looks faded with a dashed border (\"unresolved\")"
 msgstr "일정 칩이 흐릿하게 점선 테두리로 보임(\"미해결\")"
 
-#: ../../troubleshooting.rst:27 299c3090bb5b41d389636be5f94d50cb
+#: ../../troubleshooting.rst:27 758ca63935714bc585f9530313194c5f
 msgid ""
 "**Symptom:** a ``{{hrcal:...:event:...}}`` chip renders with reduced "
 "opacity and a dashed border instead of a normal filled chip, and clicking"
 " it shows \"This event could not be found. A refresh may be needed.\""
 msgstr ""
-"**증상:** ``{{hrcal:...:event:...}}`` 칩이 일반 칩이 아니라 반투명에 점선 테두리로 표시되고, "
-"클릭하면 \"이 이벤트를 찾을 수 없습니다. 새로고침이 필요할 수 있습니다.\"라고 나옵니다."
+"**증상:** ``{{hrcal:...:event:...}}`` 칩이 일반 칩이 아니라 반투명에 점선 테두리로 표시되고, 클릭하면 "
+"\"이 이벤트를 찾을 수 없습니다. 새로고침이 필요할 수 있습니다.\"라고 나옵니다."
 
-#: ../../troubleshooting.rst:31 12886849ee984d2ab7fd532573e14849
+#: ../../troubleshooting.rst:31 34add7dd91f04298a9d8a40355eddbdb
 msgid ""
 "**Cause:** the plugin could not find a matching event in its current "
 "cache. This happens when the referenced event was deleted from the "
@@ -92,7 +92,7 @@ msgstr ""
 "**원인:** 플러그인이 현재 캐시에서 일치하는 일정을 찾지 못했습니다. 참조된 일정이 서버에서 삭제됐거나, 속한 캘린더가 "
 "비활성화됐거나, 노트를 작성한 뒤로 로컬 캐시가 아직 새로고침되지 않았을 때 발생합니다."
 
-#: ../../troubleshooting.rst:36 ceab0fe19f8541ae94c199e1e94535cc
+#: ../../troubleshooting.rst:36 5ae3ce1ef7ab4b9cbfa6ff1d4bfcba0d
 msgid ""
 "**Fix:** run the **Refresh calendars** command (or click **Refresh** in "
 "settings), then reopen the note. If the chip is still unresolved after a "
@@ -103,11 +103,11 @@ msgstr ""
 "여전히 미해결이면, 그 일정이 서버에서 정말로 삭제됐거나(또는 그 캘린더가 비활성화된 것일 수 있으니 설정에서 **이 캘린더 "
 "표시**\\ 를 확인하세요)."
 
-#: ../../troubleshooting.rst:42 d48cd23a785444e9a1830df675ab7219
+#: ../../troubleshooting.rst:42 32b0ec4ebcd24badae0c06e137d2b433
 msgid "A recurring event's time looks off by an hour around a DST change"
 msgstr "반복 일정 시간이 DST(서머타임) 전환 시점 근처에서 한 시간 어긋나 보임"
 
-#: ../../troubleshooting.rst:44 0366b23345a242ba99bc115497e4b05e
+#: ../../troubleshooting.rst:44 cbd8dc69625d4174857bce6570c7a9ff
 msgid ""
 "**Cause:** the underlying ``rrule`` library expands recurrence using UTC "
 "calendar fields, so a recurring event's *local* clock time can drift by "
@@ -118,31 +118,31 @@ msgstr ""
 "적용하는 시간대에서는 전환 시점을 지나면 반복 일정의 *현지* 시각이 서머타임 적용분만큼 어긋날 수 있습니다. 이는 현재 구현의 "
 "알려져 있고 받아들여진 제한사항입니다."
 
-#: ../../troubleshooting.rst:50 8cf05e425bbc4a78acb03f87a2dd5775
+#: ../../troubleshooting.rst:50 2a106f0e90ce4f11baddb7f8c91f8475
 msgid "The plugin doesn't appear after installing"
 msgstr "설치 후 플러그인이 보이지 않음"
 
-#: ../../troubleshooting.rst:52 81ccdb91266f46e58c644b114c46bcfb
+#: ../../troubleshooting.rst:52 57da0414409f4fff9a504122fa0315b8
 msgid ""
 "**Fix:** confirm the plugin is enabled under **Settings → Community "
 "plugins** (installing it via **Browse** does not enable it "
-"automatically), and that Obsidian is on version 1.12.7 or later (see "
+"automatically), and that Obsidian is on version 1.13.4 or later (see "
 ":doc:`prerequisites`). If you installed manually, also confirm "
 "``main.js``, ``manifest.json``, and ``styles.css`` are directly inside "
 "``<vault>/.obsidian/plugins/harang-calendar/`` (not a subfolder), and "
 "fully restart Obsidian after copying the files."
 msgstr ""
-"**해결:** **설정 → 커뮤니티 플러그인**\\ 에서 플러그인이 켜져 있는지 확인하세요(**찾아보기**\\ 로 설치해도 "
-"자동으로 켜지지는 않습니다), Obsidian이 1.12.7 이상인지도 확인하세요(:doc:`prerequisites` 참고). "
-"수동으로 설치했다면 ``main.js``, ``manifest.json``, ``styles.css``\\ 가 "
-"``<vault>/.obsidian/plugins/harang-calendar/`` 바로 안에 있는지(하위 폴더가 아니라) 확인하고, "
-"파일을 복사한 뒤에는 Obsidian을 완전히 재시작하세요."
+"**해결:** **설정 → 커뮤니티 플러그인**\\ 에서 플러그인이 켜져 있는지 확인하세요(**찾아보기**\\ 로 설치해도 자동으로"
+" 켜지지는 않습니다), Obsidian이 1.13.4 이상인지도 확인하세요(:doc:`prerequisites` 참고). 수동으로 "
+"설치했다면 ``main.js``, ``manifest.json``, ``styles.css``\\ 가 "
+"``<vault>/.obsidian/plugins/harang-calendar/`` 바로 안에 있는지(하위 폴더가 아니라) "
+"확인하고, 파일을 복사한 뒤에는 Obsidian을 완전히 재시작하세요."
 
-#: ../../troubleshooting.rst:61 07fbd62e074b4a56bf6511d8dcf4bb77
+#: ../../troubleshooting.rst:61 478854c115fb49479367b98b2a1a359a
 msgid "If you installed from source"
 msgstr "소스에서 설치한 경우"
 
-#: ../../troubleshooting.rst:63 88e7a9226f25486285767a3d2ce29bdd
+#: ../../troubleshooting.rst:63 b3b7c306f93941aa8776f6210dd4d82c
 msgid ""
 "The following applies only if you built the plugin yourself, per "
 ":doc:`installation` Method 3 — most users installing through Community "
@@ -151,13 +151,13 @@ msgstr ""
 "아래 내용은 :doc:`installation`\\ 의 방법 3에 따라 플러그인을 직접 빌드한 경우에만 해당합니다 — 커뮤니티 "
 "플러그인으로 설치한 대부분의 사용자는 겪을 일이 없습니다."
 
-#: ../../troubleshooting.rst:67 8c66c26509434d4780acc3ebdfb3c20b
+#: ../../troubleshooting.rst:67 bdd1584e2cea42a2b807cb169efab25d
 msgid ""
 "**Symptom:** you pulled the latest source changes, but Obsidian still "
 "behaves like the old version."
 msgstr "**증상:** 최신 소스 변경사항을 pull했는데, Obsidian은 여전히 예전 버전처럼 동작합니다."
 
-#: ../../troubleshooting.rst:70 e75ede9c626a4c259e4137537da92a7a
+#: ../../troubleshooting.rst:70 000af5b81a714d09ae0f9e582cc4f0c5
 msgid ""
 "**Cause:** installing from source requires an explicit rebuild and a "
 "manual copy step — pulling new source alone does not update the files "
@@ -166,11 +166,11 @@ msgstr ""
 "**원인:** 소스에서 설치하려면 명시적인 재빌드와 수동 복사 단계가 필요합니다 — 새 소스를 pull하는 것만으로는 "
 "Obsidian이 실제로 불러오는 파일이 갱신되지 않습니다."
 
-#: ../../troubleshooting.rst:74 cf26ff0b276345319f5f88e3ef4c7730
+#: ../../troubleshooting.rst:74 36d7b32a03894c9fa1adeade07593c77
 msgid "**Fix:** run the full update sequence:"
 msgstr "**해결:** 전체 업데이트 절차를 실행하세요:"
 
-#: ../../troubleshooting.rst:82 d9273ee45fb74b7ebc8a94f3a71c5215
+#: ../../troubleshooting.rst:82 7d2cdf24219a4897b19a6532cd04f082
 msgid ""
 "Then copy the freshly built ``main.js`` (and ``manifest.json``/ "
 "``styles.css`` if they changed) into ``<vault>/.obsidian/plugins/harang-"

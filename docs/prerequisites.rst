@@ -30,7 +30,7 @@ You will need:
      - Your CalDAV account's password, or an app-specific password if your
        server supports one (recommended over your main account password).
 
-2. Obsidian 1.12.7 or later
+2. Obsidian 1.13.4 or later
 ------------------------------
 
 This is the plugin's declared minimum supported Obsidian version. Among

@@ -19,7 +19,7 @@ An [Obsidian](https://obsidian.md) plugin that lets you view events from a [CalD
 ## Prerequisites
 
 - A CalDAV-compatible calendar reachable over HTTP(S) with Basic Auth — e.g. [Radicale](https://radicale.org/), Nextcloud Calendar, Fastmail, or any [RFC 4791](https://www.rfc-editor.org/rfc/rfc4791) server.
-- Obsidian 1.12.7 or later.
+- Obsidian 1.13.4 or later.
 
 ## Installation
 

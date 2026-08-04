@@ -19,7 +19,7 @@
 ## 사전 요구사항
 
 - Basic Auth로 접근 가능한 CalDAV 호환 캘린더 — 예: [Radicale](https://radicale.org/), Nextcloud Calendar, Fastmail 등 [RFC 4791](https://www.rfc-editor.org/rfc/rfc4791) 서버.
-- Obsidian 1.12.7 이상.
+- Obsidian 1.13.4 이상.
 
 ## 설치
 

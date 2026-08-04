@@ -23,9 +23,10 @@ All of the plugin's logic lives under ``src/``:
        ``HrcalScope``, ``NoteEvent``, ``CalendarListItem``.
    * - ``settings.ts`` / ``settingsTab.ts``
      - Default settings and the settings UI. ``settingsTab.ts`` implements
-       Obsidian's classic imperative ``display()`` API rather than the
-       newer declarative ``getSettingDefinitions()`` API (1.13.0+), so the
-       settings UI works on Obsidian versions below 1.13.0 too.
+       Obsidian's newer declarative ``getSettingDefinitions()`` API
+       (1.13.0+) exclusively, with no legacy imperative ``display()``
+       fallback - safe because the plugin's declared ``minAppVersion`` is
+       1.13.4.
    * - ``i18n.ts``
      - Looks up the current Obsidian UI language via the official
        ``getLanguage()`` API and returns matching strings from a small

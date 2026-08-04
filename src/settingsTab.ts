@@ -1,4 +1,4 @@
-import { App, Notice, PluginSettingTab, Setting } from "obsidian";
+import { App, Notice, PluginSettingTab, SettingDefinitionItem, SettingGroup } from "obsidian";
 import type HarangCalendarPlugin from "./main";
 import { createEmptyAccount, createGoogleAccount } from "./settings";
 import { listKnownTimezones, formatUtcOffsetMinutes, parseUtcOffsetInput } from "./caldav/timezone";
@@ -21,108 +21,127 @@ export class HarangCalendarSettingTab extends PluginSettingTab {
 		super(app, plugin);
 	}
 
-	display(): void {
-		const { containerEl } = this;
-		containerEl.empty();
+	getSettingDefinitions(): SettingDefinitionItem[] {
+		return [
+			{
+				name: t("settingsCacheTtlName"),
+				desc: t("settingsCacheTtlDesc"),
+				render: (setting) => {
+					setting
+						.setName(t("settingsCacheTtlName"))
+						.setDesc(t("settingsCacheTtlDesc"))
+						.addText((text) =>
+							text.setValue(String(this.plugin.settings.cacheTtlMinutes)).onChange(async (value) => {
+								const parsed = Number(value);
+								if (!Number.isFinite(parsed) || parsed <= 0) return;
+								this.plugin.settings.cacheTtlMinutes = parsed;
+								await this.plugin.saveSettings();
+							})
+						);
+				},
+			},
+			{
+				name: t("settingsRefreshAllName"),
+				render: (setting) => {
+					setting.setName(t("settingsRefreshAllName")).addButton((btn) =>
+						btn.setButtonText(t("settingsRefreshButtonIdle")).onClick(async () => {
+							btn.setDisabled(true).setButtonText(t("settingsRefreshButtonLoading"));
+							await this.plugin.calendarStore.refreshAll();
+							btn.setDisabled(false).setButtonText(t("settingsRefreshButtonIdle"));
+							new Notice(t("settingsRefreshNotice"));
+						})
+					);
+				},
+			},
+			{
+				name: t("settingsAccountsHeading"),
+				render: (setting, group) => {
+					setting.setName(t("settingsAccountsHeading")).setHeading();
 
-		new Setting(containerEl)
-			.setName(t("settingsCacheTtlName"))
-			.setDesc(t("settingsCacheTtlDesc"))
-			.addText((text) =>
-				text.setValue(String(this.plugin.settings.cacheTtlMinutes)).onChange(async (value) => {
-					const parsed = Number(value);
-					if (!Number.isFinite(parsed) || parsed <= 0) return;
-					this.plugin.settings.cacheTtlMinutes = parsed;
-					await this.plugin.saveSettings();
-				})
-			);
+					for (const account of this.plugin.settings.accounts) {
+						this.renderAccount(group, account.id);
+					}
 
-		new Setting(containerEl).setName(t("settingsRefreshAllName")).addButton((btn) =>
-			btn.setButtonText(t("settingsRefreshButtonIdle")).onClick(async () => {
-				btn.setDisabled(true).setButtonText(t("settingsRefreshButtonLoading"));
-				await this.plugin.calendarStore.refreshAll();
-				btn.setDisabled(false).setButtonText(t("settingsRefreshButtonIdle"));
-				new Notice(t("settingsRefreshNotice"));
-			})
-		);
+					group.addSetting((addAccountSetting) => {
+						addAccountSetting.setDesc(t("settingsAddAccountDesc")).addButton((btn) =>
+							btn.setButtonText(t("settingsAddCaldavAccountButton")).onClick(async () => {
+								this.plugin.settings.accounts.push(createEmptyAccount());
+								await this.plugin.saveSettings();
+								this.update();
+							})
+						);
 
-		new Setting(containerEl).setName(t("settingsAccountsHeading")).setHeading();
-
-		for (const account of this.plugin.settings.accounts) {
-			this.renderAccount(containerEl, account.id);
-		}
-
-		const addAccountSetting = new Setting(containerEl)
-			.setDesc(t("settingsAddAccountDesc"))
-			.addButton((btn) =>
-				btn.setButtonText(t("settingsAddCaldavAccountButton")).onClick(async () => {
-					this.plugin.settings.accounts.push(createEmptyAccount());
-					await this.plugin.saveSettings();
-					this.display();
-				})
-			);
-
-		if (GOOGLE_INTEGRATION_ENABLED) {
-			addAccountSetting.addButton((btn) =>
-				btn
-					.setButtonText(t("settingsAddGoogleAccountButton"))
-					.setCta()
-					.onClick(() => {
-						new DeviceCodeModal(this.app, async (connected) => {
-							const account = createGoogleAccount(connected);
-							this.plugin.settings.accounts.push(account);
-							await this.plugin.saveSettings();
-							await this.discoverGoogleCalendars(account.id);
-							this.display();
-						}).open();
-					})
-			);
-		}
+						if (GOOGLE_INTEGRATION_ENABLED) {
+							addAccountSetting.addButton((btn) =>
+								btn
+									.setButtonText(t("settingsAddGoogleAccountButton"))
+									.setCta()
+									.onClick(() => {
+										new DeviceCodeModal(this.app, async (connected) => {
+											const account = createGoogleAccount(connected);
+											this.plugin.settings.accounts.push(account);
+											await this.plugin.saveSettings();
+											await this.discoverGoogleCalendars(account.id);
+											this.update();
+										}).open();
+									})
+							);
+						}
+					});
+				},
+			},
+		];
 	}
 
-	private renderAccount(containerEl: HTMLElement, accountId: string): void {
+	private renderAccount(parentGroup: SettingGroup, accountId: string): void {
 		const account = this.plugin.settings.accounts.find((a) => a.id === accountId);
 		if (!account) return;
 
-		const section = containerEl.createDiv({ cls: "harang-calendar-account" });
-		new Setting(section).setName(account.name || t("settingsUnnamedAccount")).setHeading();
+		const section = new SettingGroup(parentGroup.listEl);
+		section.addClass("harang-calendar-account");
+		section.setHeading(account.name || t("settingsUnnamedAccount"));
 
 		if (account.google) {
-			new Setting(section)
-				.setName(t("settingsAccountNameLabel"))
-				.setDesc(t("googleConnectedAs", { email: account.google.email ?? "" }))
-				.addText((text) =>
-					text.setValue(account.name).onChange(async (value) => {
-						account.name = value;
-						await this.plugin.saveSettings();
-					})
-				);
-
-			new Setting(section)
-				.setName(t("settingsDiscoverName"))
-				.setDesc(account.calendars.length > 0 ? t("settingsCalendarsSummary", { count: account.calendars.length }) : t("settingsCalendarsPending"))
-				.addButton((btn) =>
-					btn.setButtonText(t("googleDiscoverCalendarsButton")).onClick(async () => {
-						btn.setDisabled(true);
-						try {
-							await this.discoverGoogleCalendars(accountId);
-							this.display();
-						} finally {
-							btn.setDisabled(false);
-						}
-					})
-				)
-				.addButton((btn) =>
-					btn
-						.setButtonText(t("googleDisconnectButton"))
-						.setWarning()
-						.onClick(async () => {
-							this.plugin.settings.accounts = this.plugin.settings.accounts.filter((a) => a.id !== accountId);
-							this.app.secretStorage.setSecret(googleTokenSecretId(accountId), "");
+			const googleAccount = account.google;
+			section.addSetting((setting) => {
+				setting
+					.setName(t("settingsAccountNameLabel"))
+					.setDesc(t("googleConnectedAs", { email: googleAccount.email ?? "" }))
+					.addText((text) =>
+						text.setValue(account.name).onChange(async (value) => {
+							account.name = value;
 							await this.plugin.saveSettings();
-							this.display();
 						})
-				);
+					);
+			});
+
+			section.addSetting((setting) => {
+				setting
+					.setName(t("settingsDiscoverName"))
+					.setDesc(account.calendars.length > 0 ? t("settingsCalendarsSummary", { count: account.calendars.length }) : t("settingsCalendarsPending"))
+					.addButton((btn) =>
+						btn.setButtonText(t("googleDiscoverCalendarsButton")).onClick(async () => {
+							btn.setDisabled(true);
+							try {
+								await this.discoverGoogleCalendars(accountId);
+								this.update();
+							} finally {
+								btn.setDisabled(false);
+							}
+						})
+					)
+					.addButton((btn) =>
+						btn
+							.setButtonText(t("googleDisconnectButton"))
+							.setDestructive()
+							.onClick(async () => {
+								this.plugin.settings.accounts = this.plugin.settings.accounts.filter((a) => a.id !== accountId);
+								this.app.secretStorage.setSecret(googleTokenSecretId(accountId), "");
+								await this.plugin.saveSettings();
+								this.update();
+							})
+					);
+			});
 
 			for (const calendar of account.calendars) {
 				this.renderCalendar(section, accountId, calendar.id);
@@ -130,137 +149,155 @@ export class HarangCalendarSettingTab extends PluginSettingTab {
 			return;
 		}
 
-		new Setting(section)
-			.setName(t("settingsAccountNameLabel"))
-			.setDesc(t("settingsAccountNameDesc"))
-			.addText((text) =>
-				text.setValue(account.name).onChange(async (value) => {
-					account.name = value;
-					await this.plugin.saveSettings();
-				})
-			);
-
-		new Setting(section)
-			.setName(t("settingsServerUrlLabel"))
-			.setDesc(t("settingsServerUrlDesc"))
-			.addText((text) =>
-				text
-					.setPlaceholder(SERVER_URL_PLACEHOLDER)
-					.setValue(account.serverUrl)
-					.onChange(async (value) => {
-						account.serverUrl = value;
+		section.addSetting((setting) => {
+			setting
+				.setName(t("settingsAccountNameLabel"))
+				.setDesc(t("settingsAccountNameDesc"))
+				.addText((text) =>
+					text.setValue(account.name).onChange(async (value) => {
+						account.name = value;
 						await this.plugin.saveSettings();
 					})
-			);
+				);
+		});
 
-		new Setting(section).setName(t("settingsUsernameLabel")).addText((text) =>
-			text.setValue(account.username).onChange(async (value) => {
-				account.username = value;
-				await this.plugin.saveSettings();
-			})
-		);
-
-		new Setting(section)
-			.setName(t("settingsPasswordLabel"))
-			.setDesc(t("settingsPasswordDesc"))
-			.addText((text) => {
-				text.inputEl.type = "password";
-				text.setValue(account.password).onChange(async (value) => {
-					account.password = value;
-					await this.plugin.saveSettings();
-				});
-			});
-
-		new Setting(section)
-			.setName(t("settingsTimezoneLabel"))
-			.setDesc(t("settingsTimezoneDesc"))
-			.addDropdown((dropdown) => {
-				for (const zone of KNOWN_TIMEZONES) dropdown.addOption(zone, zone);
-				dropdown.addOption(CUSTOM_OFFSET_OPTION, t("settingsTimezoneCustomOffsetOption"));
-				dropdown.setValue(account.timezone.kind === "iana" ? account.timezone.zone : CUSTOM_OFFSET_OPTION);
-				dropdown.onChange(async (value) => {
-					account.timezone =
-						value === CUSTOM_OFFSET_OPTION
-							? { kind: "offset", offsetMinutes: account.timezone.kind === "offset" ? account.timezone.offsetMinutes : 0 }
-							: { kind: "iana", zone: value };
-					await this.plugin.saveSettings();
-					this.display();
-				});
-			});
-
-		if (account.timezone.kind === "offset") {
-			const offsetMinutes = account.timezone.offsetMinutes;
-			new Setting(section)
-				.setName(t("settingsTimezoneOffsetLabel"))
-				.setDesc(t("settingsTimezoneOffsetDesc"))
+		section.addSetting((setting) => {
+			setting
+				.setName(t("settingsServerUrlLabel"))
+				.setDesc(t("settingsServerUrlDesc"))
 				.addText((text) =>
 					text
-						.setPlaceholder("+09:00")
-						.setValue(formatUtcOffsetMinutes(offsetMinutes))
+						.setPlaceholder(SERVER_URL_PLACEHOLDER)
+						.setValue(account.serverUrl)
 						.onChange(async (value) => {
-							const parsed = parseUtcOffsetInput(value);
-							if (parsed === null) return;
-							account.timezone = { kind: "offset", offsetMinutes: parsed };
+							account.serverUrl = value;
 							await this.plugin.saveSettings();
 						})
 				);
-		}
+		});
 
-		new Setting(section)
-			.setName(t("settingsDiscoverName"))
-			.setDesc(account.calendars.length > 0 ? t("settingsCalendarsSummary", { count: account.calendars.length }) : t("settingsCalendarsPending"))
-			.addButton((btn) =>
-				btn.setButtonText(t("settingsTestConnectionIdle")).onClick(async () => {
-					btn.setDisabled(true).setButtonText(t("settingsTestConnectionLoading"));
-					try {
-						await this.discoverCalendars(account);
-						this.display();
-					} finally {
-						btn.setDisabled(false).setButtonText(t("settingsTestConnectionIdle"));
-					}
+		section.addSetting((setting) => {
+			setting.setName(t("settingsUsernameLabel")).addText((text) =>
+				text.setValue(account.username).onChange(async (value) => {
+					account.username = value;
+					await this.plugin.saveSettings();
 				})
 			);
+		});
+
+		section.addSetting((setting) => {
+			setting
+				.setName(t("settingsPasswordLabel"))
+				.setDesc(t("settingsPasswordDesc"))
+				.addText((text) => {
+					text.inputEl.type = "password";
+					text.setValue(account.password).onChange(async (value) => {
+						account.password = value;
+						await this.plugin.saveSettings();
+					});
+				});
+		});
+
+		section.addSetting((setting) => {
+			setting
+				.setName(t("settingsTimezoneLabel"))
+				.setDesc(t("settingsTimezoneDesc"))
+				.addDropdown((dropdown) => {
+					for (const zone of KNOWN_TIMEZONES) dropdown.addOption(zone, zone);
+					dropdown.addOption(CUSTOM_OFFSET_OPTION, t("settingsTimezoneCustomOffsetOption"));
+					dropdown.setValue(account.timezone.kind === "iana" ? account.timezone.zone : CUSTOM_OFFSET_OPTION);
+					dropdown.onChange(async (value) => {
+						account.timezone =
+							value === CUSTOM_OFFSET_OPTION
+								? { kind: "offset", offsetMinutes: account.timezone.kind === "offset" ? account.timezone.offsetMinutes : 0 }
+								: { kind: "iana", zone: value };
+						await this.plugin.saveSettings();
+						this.update();
+					});
+				});
+		});
+
+		if (account.timezone.kind === "offset") {
+			const offsetMinutes = account.timezone.offsetMinutes;
+			section.addSetting((setting) => {
+				setting
+					.setName(t("settingsTimezoneOffsetLabel"))
+					.setDesc(t("settingsTimezoneOffsetDesc"))
+					.addText((text) =>
+						text
+							.setPlaceholder("+09:00")
+							.setValue(formatUtcOffsetMinutes(offsetMinutes))
+							.onChange(async (value) => {
+								const parsed = parseUtcOffsetInput(value);
+								if (parsed === null) return;
+								account.timezone = { kind: "offset", offsetMinutes: parsed };
+								await this.plugin.saveSettings();
+							})
+					);
+			});
+		}
+
+		section.addSetting((setting) => {
+			setting
+				.setName(t("settingsDiscoverName"))
+				.setDesc(account.calendars.length > 0 ? t("settingsCalendarsSummary", { count: account.calendars.length }) : t("settingsCalendarsPending"))
+				.addButton((btn) =>
+					btn.setButtonText(t("settingsTestConnectionIdle")).onClick(async () => {
+						btn.setDisabled(true).setButtonText(t("settingsTestConnectionLoading"));
+						try {
+							await this.discoverCalendars(account);
+							this.update();
+						} finally {
+							btn.setDisabled(false).setButtonText(t("settingsTestConnectionIdle"));
+						}
+					})
+				);
+		});
 
 		for (const calendar of account.calendars) {
 			this.renderCalendar(section, account.id, calendar.id);
 		}
 
-		new Setting(section).addButton((btn) =>
-			btn
-				.setButtonText(t("settingsDeleteAccountButton"))
-				.setWarning()
-				.onClick(async () => {
-					this.plugin.settings.accounts = this.plugin.settings.accounts.filter((a) => a.id !== accountId);
-					this.app.secretStorage.setSecret(caldavPasswordSecretId(accountId), "");
-					await this.plugin.saveSettings();
-					this.display();
-				})
-		);
+		section.addSetting((setting) => {
+			setting.addButton((btn) =>
+				btn
+					.setButtonText(t("settingsDeleteAccountButton"))
+					.setDestructive()
+					.onClick(async () => {
+						this.plugin.settings.accounts = this.plugin.settings.accounts.filter((a) => a.id !== accountId);
+						this.app.secretStorage.setSecret(caldavPasswordSecretId(accountId), "");
+						await this.plugin.saveSettings();
+						this.update();
+					})
+			);
+		});
 	}
 
-	private renderCalendar(containerEl: HTMLElement, accountId: string, calendarId: string): void {
+	private renderCalendar(parentGroup: SettingGroup, accountId: string, calendarId: string): void {
 		const account = this.plugin.settings.accounts.find((a) => a.id === accountId);
 		const calendar = account?.calendars.find((c) => c.id === calendarId);
 		if (!account || !calendar) return;
 
-		new Setting(containerEl)
-			.setName(calendar.displayName)
-			.setDesc(t("settingsCalendarColorDesc"))
-			.addToggle((toggle) =>
-				toggle.setTooltip(t("settingsCalendarEnabledLabel")).setValue(calendar.enabled).onChange(async (value) => {
-					calendar.enabled = value;
-					await this.plugin.saveSettings();
-				})
-			)
-			.addText((text) =>
-				text
-					.setPlaceholder("#4285F4")
-					.setValue(calendar.color ?? "")
-					.onChange(async (value) => {
-						calendar.color = value.trim() || null;
+		parentGroup.addSetting((setting) => {
+			setting
+				.setName(calendar.displayName)
+				.setDesc(t("settingsCalendarColorDesc"))
+				.addToggle((toggle) =>
+					toggle.setTooltip(t("settingsCalendarEnabledLabel")).setValue(calendar.enabled).onChange(async (value) => {
+						calendar.enabled = value;
 						await this.plugin.saveSettings();
 					})
-			);
+				)
+				.addText((text) =>
+					text
+						.setPlaceholder("#4285F4")
+						.setValue(calendar.color ?? "")
+						.onChange(async (value) => {
+							calendar.color = value.trim() || null;
+							await this.plugin.saveSettings();
+						})
+				);
+		});
 	}
 
 	private async discoverCalendars(account: CalDavAccount): Promise<void> {

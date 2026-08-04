@@ -51,7 +51,7 @@ The plugin doesn't appear after installing
 
 **Fix:** confirm the plugin is enabled under **Settings → Community
 plugins** (installing it via **Browse** does not enable it automatically),
-and that Obsidian is on version 1.12.7 or later (see :doc:`prerequisites`).
+and that Obsidian is on version 1.13.4 or later (see :doc:`prerequisites`).
 If you installed manually, also confirm ``main.js``, ``manifest.json``, and
 ``styles.css`` are directly inside
 ``<vault>/.obsidian/plugins/harang-calendar/`` (not a subfolder), and fully
