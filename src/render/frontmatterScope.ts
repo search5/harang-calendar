@@ -31,5 +31,5 @@ export function getFrontmatterScope(app: App, file: TFile): CalendarScope | null
 	const accountName = readTextFrontmatter(frontmatter, "harang-account");
 	const calendarName = readTextFrontmatter(frontmatter, "harang-calendar");
 	if (!accountName && !calendarName) return null;
-	return { accountName, calendarName };
+	return { accountId: null, accountName, calendarName };
 }

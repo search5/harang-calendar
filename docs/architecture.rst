@@ -56,11 +56,11 @@ All of the plugin's logic lives under ``src/``:
    * - ``editorSuggest/HrcalEditorSuggest.ts``, ``dateCandidates.ts``
      - Triggers on ``{{hrcal:``. A single staged suggester (no separate
        ``@date[``/``@event[`` triggers): it splits the typed query on ``:``
-       to figure out which stage it's in - account name, then that
-       account's calendar name, then a combined date-candidate/event-title
-       search - and inserts
-       ``{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}`` or
-       ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}``.
+       to figure out which stage it's in - account name (searched by name,
+       resolved to that account's id), then that account's calendar name,
+       then a combined date-candidate/event-title search - and inserts
+       ``{{hrcal:<accountId>:<calendarName>:date:YYYY-MM-DD}}`` or
+       ``{{hrcal:<accountId>:<calendarName>:event:<uid>}}``.
    * - ``render/frontmatterScope.ts``
      - Reads a note's ``harang-account``/``harang-calendar`` frontmatter
        into a ``CalendarScope``. **Currently unused** - nothing calls
@@ -76,14 +76,14 @@ All of the plugin's logic lives under ``src/``:
        purpose.
    * - ``render/dateWidget.ts``
      - Builds the ``{{hrcal:...:date:YYYY-MM-DD}}`` card widget: a heading,
-       a warning if the embedded account/calendar name doesn't match a
+       a warning if the embedded account id/calendar name doesn't match a
        registered one, and that day's events from that specific
        account/calendar as clickable rows.
    * - ``render/eventChip.ts`` / ``render/eventCard.ts``
      - The inline event chip, and the click-to-open detail popup (a
        manually positioned floating panel, closed on outside click or
-       Esc). The lookup is scoped to the ``accountName``/``calendarName``
-       embedded in the ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}``
+       Esc). The lookup is scoped to the ``accountId``/``calendarName``
+       embedded in the ``{{hrcal:<accountId>:<calendarName>:event:<uid>}}``
        reference itself - the reference already names one exact event.
    * - ``render/livePreview.ts``
      - A CodeMirror 6 ``ViewPlugin`` that replaces ``{{hrcal:...}}`` ranges
@@ -151,17 +151,26 @@ Data flow
 Reference syntax
 ------------------
 
-``{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}`` renders as a date
-widget; ``{{hrcal:<accountName>:<calendarName>:event:<uid>}}`` renders as an
+``{{hrcal:<accountId>:<calendarName>:date:YYYY-MM-DD}}`` renders as a date
+widget; ``{{hrcal:<accountId>:<calendarName>:event:<uid>}}`` renders as an
 event chip. Both are normally inserted by the staged ``{{hrcal:`` editor
 suggest, but either can be typed by hand too — an unresolvable reference
 renders as a faded, dashed chip (or, for a date whose account/calendar
 doesn't match a registered one, a warning inside the widget) instead of
 failing silently.
 
-Both kinds are always scoped by the ``accountName``/``calendarName`` named
+Both kinds are always scoped by the ``accountId``/``calendarName`` named
 directly in the reference - note frontmatter (``harang-account``/
 ``harang-calendar``, see :doc:`usage`) plays no role here any more.
+``accountId`` is the account's stable internal id rather than its display
+name, generated once when the account is created and never changing, so
+renaming an account in Settings does not affect references inserted after
+this id-based scheme took effect; ``calendarName`` is still the calendar's
+display name, so a calendar rename can still break existing references, the
+same as before this change. There is no id-or-name fallback, so a reference
+written before this change — using the account's old name-based segment —
+will no longer resolve and needs to be deleted and re-inserted via the
+``{{hrcal:`` editor suggest.
 
 Note events (``harang-date``/``harang-repeat``/``harang-time``)
 -------------------------------------------------------------------------

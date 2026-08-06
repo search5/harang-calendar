@@ -25,8 +25,8 @@ function colorForCalendar(plugin: HarangCalendarPlugin, calendarId: string): str
 /** Account/calendar names in `scope` (from a `{{hrcal:...}}` reference) that don't match any registered account/calendar - e.g. a hand-typed or stale reference. */
 export function unknownScopeNames(plugin: HarangCalendarPlugin, scope: HrcalScope): string[] {
 	const unknown: string[] = [];
-	if (!plugin.settings.accounts.some((account) => account.name === scope.accountName)) {
-		unknown.push(scope.accountName);
+	if (!plugin.settings.accounts.some((account) => account.id === scope.accountId)) {
+		unknown.push(scope.accountId);
 	}
 	const knownCalendars = new Set(plugin.settings.accounts.flatMap((account) => account.calendars.map((c) => c.displayName)));
 	if (!knownCalendars.has(scope.calendarName)) {
@@ -55,7 +55,7 @@ function createDateWidgetItem(plugin: HarangCalendarPlugin, event: CalDavEvent):
 }
 
 /**
- * Builds the inline "{{hrcal:<accountName>:<calendarName>:date:YYYY-MM-DD}}"
+ * Builds the inline "{{hrcal:<accountId>:<calendarName>:date:YYYY-MM-DD}}"
  * widget: a heading plus that day's events (from that one specific
  * account/calendar) unfolded as clickable rows (click/Enter/Space opens the
  * same detail popup as an event chip).
@@ -81,7 +81,7 @@ export function createDateWidget(plugin: HarangCalendarPlugin, dateIso: string, 
 	const start = new Date(year, month - 1, day);
 	const end = new Date(year, month - 1, day + 1);
 	const events = plugin.calendarStore
-		.getEventsInRange({ start, end }, scope)
+		.getEventsInRange({ start, end }, { accountId: scope.accountId, accountName: null, calendarName: scope.calendarName })
 		.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 
 	if (events.length === 0) {

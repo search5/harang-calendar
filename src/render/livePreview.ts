@@ -11,7 +11,7 @@ const HRCAL_RE = /\{\{hrcal:([^:}]+):([^:}]+):(date|event):([^}]+)\}\}/g;
 class DateRefWidget extends WidgetType {
 	constructor(
 		private plugin: HarangCalendarPlugin,
-		private accountName: string,
+		private accountId: string,
 		private calendarName: string,
 		private dateIso: string
 	) {
@@ -19,11 +19,11 @@ class DateRefWidget extends WidgetType {
 	}
 
 	eq(other: DateRefWidget): boolean {
-		return other.accountName === this.accountName && other.calendarName === this.calendarName && other.dateIso === this.dateIso;
+		return other.accountId === this.accountId && other.calendarName === this.calendarName && other.dateIso === this.dateIso;
 	}
 
 	toDOM(): HTMLElement {
-		const scope = { accountName: this.accountName, calendarName: this.calendarName };
+		const scope = { accountId: this.accountId, calendarName: this.calendarName };
 		return createDateWidget(this.plugin, this.dateIso, scope);
 	}
 }
@@ -31,7 +31,7 @@ class DateRefWidget extends WidgetType {
 class EventRefWidget extends WidgetType {
 	constructor(
 		private plugin: HarangCalendarPlugin,
-		private accountName: string,
+		private accountId: string,
 		private calendarName: string,
 		private uid: string
 	) {
@@ -39,11 +39,11 @@ class EventRefWidget extends WidgetType {
 	}
 
 	eq(other: EventRefWidget): boolean {
-		return other.accountName === this.accountName && other.calendarName === this.calendarName && other.uid === this.uid;
+		return other.accountId === this.accountId && other.calendarName === this.calendarName && other.uid === this.uid;
 	}
 
 	toDOM(): HTMLElement {
-		const scope = { accountName: this.accountName, calendarName: this.calendarName };
+		const scope = { accountId: this.accountId, accountName: null, calendarName: this.calendarName };
 		return createEventChip(this.plugin.calendarStore.getEventByUid(this.uid, scope), this.uid);
 	}
 }
@@ -88,13 +88,13 @@ export function buildHarangCalendarLivePreviewPlugin(plugin: HarangCalendarPlugi
 					HRCAL_RE.lastIndex = 0;
 					let m: RegExpExecArray | null;
 					while ((m = HRCAL_RE.exec(text))) {
-						const [raw, accountName, calendarName, kind, value] = m;
+						const [raw, accountId, calendarName, kind, value] = m;
 						if (kind === "date" && !isValidIsoDate(value)) continue;
 						const start = from + m.index;
 						const widget =
 							kind === "date"
-								? new DateRefWidget(plugin, accountName, calendarName, value)
-								: new EventRefWidget(plugin, accountName, calendarName, value);
+								? new DateRefWidget(plugin, accountId, calendarName, value)
+								: new EventRefWidget(plugin, accountId, calendarName, value);
 						pending.push({
 							from: start,
 							to: start + raw.length,

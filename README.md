@@ -8,13 +8,13 @@ An [Obsidian](https://obsidian.md) plugin that lets you view events from a [CalD
 
 ## Features
 
-- **`{{hrcal:` staged autocomplete** — type `{{hrcal:` and pick an account, then a calendar, then either a date or an event title from one combined list. It inserts `{{hrcal:<accountName>:<calendarName>:date:yyyy-mm-dd}}` (renders as a widget listing that day's events as cards) or `{{hrcal:<accountName>:<calendarName>:event:<uid>}}` (renders as an inline chip). Click a chip (or a card in a date widget) to see the full detail popup.
+- **`{{hrcal:` staged autocomplete** — type `{{hrcal:` and pick an account, then a calendar, then either a date or an event title from one combined list. It inserts `{{hrcal:<accountId>:<calendarName>:date:yyyy-mm-dd}}` (renders as a widget listing that day's events as cards) or `{{hrcal:<accountId>:<calendarName>:event:<uid>}}` (renders as an inline chip). Click a chip (or a card in a date widget) to see the full detail popup. You still search by the account's readable name when picking it in the popup — `<accountId>` is the account's internal id, inserted for you automatically, never typed by hand. Because it's an id rather than a name, renaming an account afterward no longer breaks references you've already inserted; `<calendarName>` is still the calendar's display name, so renaming a calendar can still break existing references, same as before.
 - **Calendar view** — an agenda list of upcoming events in the sidebar, and a full month grid (with navigation, and click-a-day to see its events) in a workspace tab, both built with Vue 3.
 - **Multiple CalDAV servers and calendars** — configure any number of server accounts; each account is tested and its calendars discovered and individually enabled/colored from Settings.
 - **Configurable time zone** — pick your calendar's IANA time zone or a manual UTC offset per account, used to resolve event times that aren't already UTC.
 - **Recurring events** — `RRULE`/`EXDATE` are expanded into their actual occurrences within whatever range is being viewed.
 - **Follows Obsidian's UI language** — Korean or English depending on your Obsidian language setting (via the official `getLanguage()` API).
-- **Stale-reference warnings** — a date widget warns if the account or calendar named in its `{{hrcal:...}}` reference no longer matches one you have configured (e.g. after a rename).
+- **Stale-reference warnings** — a date widget warns if the account or calendar referenced by its `{{hrcal:...}}` reference no longer matches one you have configured (e.g. after a calendar rename, or an account that no longer exists).
 
 ## Prerequisites
 

@@ -151,6 +151,7 @@ function buildEvent(
 		calendarId,
 		calendarName,
 		// Overwritten by store.ts's fetchCalendar right after this returns - the account isn't known this deep in the parsing call chain.
+		accountId: "",
 		accountName: "",
 		summary: firstValue(props, "SUMMARY")?.value.trim() || uid,
 		description: firstValue(props, "DESCRIPTION")?.value.trim() || null,

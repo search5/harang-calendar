@@ -173,7 +173,7 @@ export class CalendarStore {
 	private async fetchCalendar(job: FetchJob, range: CalDavTimeRange): Promise<CalDavEvent[]> {
 		const client = new CalDavClient(job.account);
 		const events = await client.fetchEvents(job.calendar.id, job.calendar.displayName, job.calendar.url, range);
-		return events.map((event) => ({ ...event, accountName: job.account.name }));
+		return events.map((event) => ({ ...event, accountId: job.account.id, accountName: job.account.name }));
 	}
 
 	/** Events overlapping `range` (recurrence expanded), optionally scoped to an account/calendar. */
@@ -205,6 +205,7 @@ export class CalendarStore {
 		if (!scope) return all;
 		return all.filter(
 			(event) =>
+				(!scope.accountId || event.accountId === scope.accountId) &&
 				(!scope.accountName || event.accountName === scope.accountName) &&
 				(!scope.calendarName || event.calendarName === scope.calendarName)
 		);

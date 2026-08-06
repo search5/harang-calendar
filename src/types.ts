@@ -44,19 +44,22 @@ export interface HarangCalendarSettings {
 }
 
 /**
- * An optional account/calendar filter for `CalendarStore` lookups. Either
- * field alone scopes to that account or that calendar name (across every
- * account); both together scope to that specific calendar within that
- * specific account.
+ * An optional account/calendar filter for `CalendarStore` lookups. `accountId` is what
+ * `{{hrcal:...}}` references use (see HrcalScope below); `accountName` exists only for the
+ * still-unused frontmatter-scope feature (render/frontmatterScope.ts), which is deliberately
+ * name-based since its whole design is "type what you see in settings, no autocomplete" -- an id
+ * would be untypeable there. `calendarName` is shared by both (see AGENTS.md: only the account
+ * segment of {{hrcal:...}} moved to id, the calendar segment stays name-based on purpose).
  */
 export interface CalendarScope {
+	accountId: string | null;
 	accountName: string | null;
 	calendarName: string | null;
 }
 
-/** A fully-specified account+calendar pair, embedded directly in a `{{hrcal:...}}` reference (see render/postProcessor.ts). Assignable to `CalendarScope` wherever a scope is accepted. */
+/** A fully-specified account+calendar pair, embedded directly in a `{{hrcal:...}}` reference (see render/postProcessor.ts). Not directly assignable to `CalendarScope` anymore (accountId vs accountName) -- construct one explicitly at each call site. */
 export interface HrcalScope {
-	accountName: string;
+	accountId: string;
 	calendarName: string;
 }
 
@@ -64,7 +67,11 @@ export interface CalDavEvent {
 	uid: string;
 	calendarId: string;
 	calendarName: string;
-	/** The CalDAV account's `name` this event's calendar belongs to. */
+	/** The CalDAV account's stable id this event's calendar belongs to -- what {{hrcal:...}}
+	 * scoping actually matches against, so renaming the account never breaks a reference. */
+	accountId: string;
+	/** The account's display name as of this event's last fetch. Display/frontmatter-scope only
+	 * (see CalendarScope) -- never used to identify a {{hrcal:...}} reference, that's accountId. */
 	accountName: string;
 	summary: string;
 	description: string | null;

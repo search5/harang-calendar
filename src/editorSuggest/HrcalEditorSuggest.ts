@@ -9,7 +9,7 @@ const TRIGGER = "{{hrcal:";
 const MAX_SUGGESTIONS = 10;
 
 type HrcalSuggestion =
-	| { stage: "account"; name: string }
+	| { stage: "account"; account: CalDavAccount }
 	| { stage: "calendar"; name: string }
 	| { stage: "date"; dateIso: string }
 	| { stage: "event"; event: CalDavEvent };
@@ -17,10 +17,14 @@ type HrcalSuggestion =
 /**
  * Types "{{hrcal:" and walks account name -> calendar name -> a combined
  * date/event picker, one colon-separated segment at a time - there's no
- * separate "@date["/"@event[" trigger. Each selection appends to the same
- * reference and re-triggers the next stage, finally inserting either
- * `{{hrcal:<accountName>:<calendarName>:date:<yyyy-mm-dd>}}` or
- * `{{hrcal:<accountName>:<calendarName>:event:<uid>}}`.
+ * separate "@date["/"@event[" trigger. The account segment is typed/matched
+ * by name (what the user recognizes) but selecting it inserts the account's
+ * stable id instead, so a later rename never breaks the reference; the
+ * calendar segment stays name-based on purpose (see types.ts's CalendarScope
+ * doc). Each selection appends to the same reference and re-triggers the
+ * next stage, finally inserting either
+ * `{{hrcal:<accountId>:<calendarName>:date:<yyyy-mm-dd>}}` or
+ * `{{hrcal:<accountId>:<calendarName>:event:<uid>}}`.
  */
 export class HrcalEditorSuggest extends EditorSuggest<HrcalSuggestion> {
 	constructor(app: App, private plugin: HarangCalendarPlugin) {
@@ -51,7 +55,7 @@ export class HrcalEditorSuggest extends EditorSuggest<HrcalSuggestion> {
 			return this.matchingAccounts(segments[0]);
 		}
 
-		const account = this.plugin.settings.accounts.find((a) => a.name === segments[0]);
+		const account = this.plugin.settings.accounts.find((a) => a.id === segments[0]);
 		if (!account) return [];
 
 		if (segments.length === 2) {
@@ -62,7 +66,7 @@ export class HrcalEditorSuggest extends EditorSuggest<HrcalSuggestion> {
 			const calendar = account.calendars.find((c) => c.displayName === segments[1]);
 			if (!calendar) return [];
 			void this.plugin.calendarStore.refreshIfStale();
-			return this.dateAndEventSuggestions(segments[2], account.name, calendar.displayName);
+			return this.dateAndEventSuggestions(segments[2], account.id, calendar.displayName);
 		}
 
 		return [];
@@ -71,10 +75,9 @@ export class HrcalEditorSuggest extends EditorSuggest<HrcalSuggestion> {
 	private matchingAccounts(query: string): HrcalSuggestion[] {
 		const q = query.trim().toLowerCase();
 		return this.plugin.settings.accounts
-			.map((a) => a.name)
-			.filter((name) => name.toLowerCase().includes(q))
+			.filter((a) => a.name.toLowerCase().includes(q))
 			.slice(0, MAX_SUGGESTIONS)
-			.map((name) => ({ stage: "account" as const, name }));
+			.map((account) => ({ stage: "account" as const, account }));
 	}
 
 	private matchingCalendars(account: CalDavAccount, query: string): HrcalSuggestion[] {
@@ -86,20 +89,26 @@ export class HrcalEditorSuggest extends EditorSuggest<HrcalSuggestion> {
 			.map((name) => ({ stage: "calendar" as const, name }));
 	}
 
-	private dateAndEventSuggestions(query: string, accountName: string, calendarName: string): HrcalSuggestion[] {
+	private dateAndEventSuggestions(query: string, accountId: string, calendarName: string): HrcalSuggestion[] {
 		const half = Math.ceil(MAX_SUGGESTIONS / 2);
 		const dates: HrcalSuggestion[] = suggestDateCandidates(query, new Date(), half).map((dateIso) => ({
 			stage: "date" as const,
 			dateIso,
 		}));
 		const events: HrcalSuggestion[] = this.plugin.calendarStore
-			.searchEvents(query, half, { accountName, calendarName })
+			.searchEvents(query, half, { accountId, accountName: null, calendarName })
 			.map((event) => ({ stage: "event" as const, event }));
 		return [...dates, ...events];
 	}
 
 	renderSuggestion(suggestion: HrcalSuggestion, el: HTMLElement): void {
-		if (suggestion.stage === "account" || suggestion.stage === "calendar") {
+		if (suggestion.stage === "account") {
+			el.addClass("harang-calendar-hrcal-suggestion");
+			el.setText(suggestion.account.name);
+			return;
+		}
+
+		if (suggestion.stage === "calendar") {
 			el.addClass("harang-calendar-hrcal-suggestion");
 			el.setText(suggestion.name);
 			return;
@@ -128,7 +137,7 @@ export class HrcalEditorSuggest extends EditorSuggest<HrcalSuggestion> {
 		let closesReference = false;
 		switch (suggestion.stage) {
 			case "account":
-				text = `${TRIGGER}${suggestion.name}:`;
+				text = `${TRIGGER}${suggestion.account.id}:`;
 				break;
 			case "calendar":
 				text = `${TRIGGER}${segments[0]}:${suggestion.name}:`;

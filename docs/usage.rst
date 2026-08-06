@@ -15,7 +15,9 @@ Adding a CalDAV account
      - Description
    * - Account name
      - A label for this account, shown when picking it in the ``{{hrcal:``
-       autocomplete and embedded in any reference you insert from it.
+       autocomplete. The account's internal id — not this name — is what
+       actually gets embedded in any reference you insert, so renaming the
+       account here later won't break references you've already inserted.
    * - Server URL
      - The CalDAV base URL, or the exact calendar collection URL.
    * - Username / Password
@@ -53,8 +55,9 @@ for dates vs. events:
    Let's meet {{hrcal:
 
 1. An autocomplete popup lists your registered **account names**; typing
-   narrows it. Selecting one appends ``<accountName>:`` and immediately
-   opens the next stage.
+   narrows it. Selecting one appends ``<accountId>:`` — the account's
+   internal id, not its display name — and immediately opens the next
+   stage.
 2. The popup now lists that account's **calendar names**. Selecting one
    appends ``<calendarName>:``.
 3. The popup now shows a combined list of **upcoming dates** and **matching
@@ -63,13 +66,13 @@ for dates vs. events:
    the events, and both can appear together.
 
 Selecting a date candidate inserts
-``{{hrcal:<accountName>:<calendarName>:date:2026-08-07}}`` and renders it as
+``{{hrcal:<accountId>:<calendarName>:date:2026-08-07}}`` and renders it as
 a card widget: a heading for that date, and every matching event that day
 from that specific account/calendar listed underneath (or a "No events on
 this day." message if there are none).
 
 Selecting an event candidate inserts
-``{{hrcal:<accountName>:<calendarName>:event:<uid>}}`` and renders it as an
+``{{hrcal:<accountId>:<calendarName>:event:<uid>}}`` and renders it as an
 inline chip — the event's title and time range in a rounded pill.
 
 Both render the same way in Live Preview and Reading view. Clicking a chip
@@ -78,6 +81,16 @@ date/time, location, and notes (whichever of those fields the event has).
 Click anywhere outside the popup, or press **Esc**, to close it. If a chip
 looks faded with a dashed border, the plugin could not resolve it to a known
 event — see :doc:`troubleshooting`.
+
+Because ``<accountId>`` is the account's stable internal id rather than its
+display name, renaming an account in Settings never breaks a reference
+inserted after this id-based scheme took effect — only ``<calendarName>``
+is still name-based, so renaming a *calendar* can still break existing
+references, same as before. This is **not** retroactive: a reference typed
+or inserted before this change used the account's old name-based segment,
+and since there is no id-or-name fallback, it will no longer resolve. Delete
+and re-insert any such reference via the ``{{hrcal:`` autocomplete to fix
+it.
 
 Scoping a note to one account or calendar
 -------------------------------------------------

@@ -9,7 +9,7 @@ interface CombinedMatch {
 	index: number;
 	raw: string;
 	kind: "date" | "event";
-	accountName: string;
+	accountId: string;
 	calendarName: string;
 	/** ISO date for "date"; the event uid for "event". */
 	value: string;
@@ -21,9 +21,9 @@ export function combinedMatches(text: string): CombinedMatch[] {
 	HRCAL_RE.lastIndex = 0;
 	let m: RegExpExecArray | null;
 	while ((m = HRCAL_RE.exec(text))) {
-		const [raw, accountName, calendarName, kind, value] = m;
+		const [raw, accountId, calendarName, kind, value] = m;
 		if (kind === "date" && !isValidIsoDate(value)) continue;
-		matches.push({ index: m.index, raw, kind: kind as "date" | "event", accountName, calendarName, value });
+		matches.push({ index: m.index, raw, kind: kind as "date" | "event", accountId, calendarName, value });
 	}
 
 	return matches.sort((a, b) => a.index - b.index);
@@ -78,11 +78,16 @@ function replaceInTextNode(textNode: Text, plugin: HarangCalendarPlugin): void {
 		if (match.index > lastIndex) {
 			fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
 		}
-		const scope = { accountName: match.accountName, calendarName: match.calendarName };
+		const scope = { accountId: match.accountId, calendarName: match.calendarName };
 		if (match.kind === "date") {
 			fragment.appendChild(createDateWidget(plugin, match.value, scope));
 		} else {
-			fragment.appendChild(createEventChip(plugin.calendarStore.getEventByUid(match.value, scope), match.value));
+			fragment.appendChild(
+				createEventChip(
+					plugin.calendarStore.getEventByUid(match.value, { accountId: scope.accountId, accountName: null, calendarName: scope.calendarName }),
+					match.value
+				)
+			);
 		}
 		lastIndex = match.index + match.raw.length;
 	}
