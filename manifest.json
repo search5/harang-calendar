@@ -4,7 +4,7 @@
 	"version": "0.0.10",
 	"minAppVersion": "1.13.4",
 	"description": "View CalDAV calendar events directly in your notes.",
-	"author": "search5",
-	"authorUrl": "",
+	"author": "Ji-Ho Lee",
+	"authorUrl": "https://www.flask.moe",
 	"isDesktopOnly": false
 }
